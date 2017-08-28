@@ -277,7 +277,7 @@ function drawWMstim(){
   ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
   function clearstimscreen(){ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height); timeout = setTimeout(drawWMstimscreen,preWMstimbuffer);}
   function drawWMstimscreen(){drawsquircle(wmC, 0,0, 2);
-    stimscreencount++; ITIinterval = 1500;
+    stimscreencount++; ITIinterval = 5;//1500;
     timeout = setTimeout(showITI,WMinterval);}
     clearstimscreen();
   };
