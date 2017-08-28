@@ -24,14 +24,14 @@
     var instructioncount = 0;
     var stimscreencount = 0;
     var area = 6000;
-    var WMinterval = 5;//500;
-    var preWMstimbuffer = 5;//500
-    var coloraveragingpresentationtime = 5;//500;
+    var WMinterval = 500;
+    var preWMstimbuffer = 500
+    var coloraveragingpresentationtime = 500;
     var probeaccrange = 10;//the deviation (in number of colors, from 256 possible colors) from actual color on the probe trials you are willing to accept as correct
     var numberofblocks = 5;
     var blocklength = 128;
     var instructionson = 0;
-    var decisionmakingtimeout = 5;//1800;
+    var decisionmakingtimeout = 1800;
     var block = 0;
     var acc
     wmCcounter = 0;
@@ -267,7 +267,7 @@ function drawWMstim(){
   ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
   function clearstimscreen(){ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height); timeout = setTimeout(drawWMstimscreen,preWMstimbuffer);}
   function drawWMstimscreen(){drawsquircle(wmC, 0,0, 2);
-    stimscreencount++; ITIinterval = 5;//1500;
+    stimscreencount++; ITIinterval = 1500;
     timeout = setTimeout(showITI,WMinterval);}
     clearstimscreen();
   };
@@ -295,7 +295,7 @@ function drawWMstim(){
       timeoutDMstim = setTimeout(clearstimscreen, coloraveragingpresentationtime);
     };
     drawstimscreenDM()
-    ITIinterval = 5;//1000;
+    ITIinterval = 1000;
     timeoutDMstim = setTimeout(showITI, decisionmakingtimeout);
   };
 
