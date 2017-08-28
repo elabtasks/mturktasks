@@ -29,7 +29,7 @@
     var coloraveragingpresentationtime = 500;
     var probeaccrange = 10;//the deviation (in number of colors, from 256 possible colors) from actual color on the probe trials you are willing to accept as correct
     var numberofblocks = 1;
-    var blocklength = 128;
+    var blocklength = 12;//128;
     var instructionson = 0;
     var decisionmakingtimeout = 1800;
     var block = 0;
@@ -69,20 +69,30 @@
     var type3 = [[1,1,1,0]]
     var type4 = [[1,0,1,0]]
 
-    var type5 = [[1,0,0,1]]
+    /*var type5 = [[1,0,0,1]]
     var type6 = [[1,1,0,1]]
     var type7 = [[1,1,1,1]]
-    var type8 = [[1,0,1,1]]
+    var type8 = [[1,0,1,1]]*/
+
+    var type5 = [[1,0,0,0]]
+    var type6 = [[1,1,0,0]]
+    var type7 = [[1,1,1,0]]
+    var type8 = [[1,0,1,0]]
 
     var type9 = [[-1,0,0,0]]
     var type10 = [[-1,1,0,0]]
     var type11 = [[-1,1,1,0]]
     var type12 = [[-1,0,1,0]]
 
-    var type13 = [[-1,0,0,1]]
+    /*var type13 = [[-1,0,0,1]]
     var type14 = [[-1,1,0,1]]
     var type15 = [[-1,1,1,1]]
-    var type16 = [[-1,0,1,1]]
+    var type16 = [[-1,0,1,1]]*/
+
+    var type13 = [[-1,0,0,0]]
+    var type14 = [[-1,1,0,0]]
+    var type15 = [[-1,1,1,0]]
+    var type16 = [[-1,0,1,0]]
 
     trialmatrix = [];
     for (var arraymaker=0; arraymaker<(blocklength/32); arraymaker++){
