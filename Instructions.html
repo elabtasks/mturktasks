@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="Task.css" type="text/css" charset="utf-8">
+  <script type="text/javascript" src="jquery-3.2.1.js"></script>
+  <script type="text/javascript">
+
+  /*function gup(name, tmpURL)
+	{
+		var regexS = "[\\?&]"+name+"=([^&#]*)";
+		var regex = new RegExp(regexS);
+		var results = regex.exec(tmpURL);
+		if (results == null)
+		{
+			return "";
+		}
+		else
+		{
+			return results[1];
+		}
+	}*/
+
+  $(document).ready(function(){
+
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    var i = 0;
+
+    function feedback(accuracy){
+      ctx.clearRect(0, 600, myCanvas.width, 650);
+      if (accuracy == 1){ctx.fillText("Correct!", (myCanvas.width)/2, 650);}
+      else if (accuracy == 0){ctx.fillText("Incorrect!", (myCanvas.width)/2, 650);}
+
+      ctx.moveTo(((255-wmC)*2)-probeaccrange+offset_probe, 300);
+      ctx.lineTo(((255-wmC)*2)+1+probeaccrange+offset_probe, 300);
+      ctx.lineTo(((255-wmC)*2)+1+probeaccrange+offset_probe, 620);
+      ctx.lineTo(((255-wmC)*2)-probeaccrange+offset_probe, 620);
+      ctx.fillStyle="grey"
+      ctx.globalAlpha = 0.65
+      ctx.fill();
+
+      ctx.fillStyle="black";
+      ctx.globalAlpha = 1;
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+310);
+      ctx.fillText("A grey box like the one above will always indicate", (myCanvas.width/2), (myCanvas.height/2)+250);
+      ctx.fillText("the correct answer after your have clicked.", (myCanvas.width/2), (myCanvas.height/2)+300);
+      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
+      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
+    }
+
+    function blockinstruction1(){
+
+      $("#continueButton").show();
+      $("#backButton").hide();
+
+      if (i == 0){
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="left";
+        ctx.textAlign="left";
+        ctx.fillText("Today you will be completing a simple task.", (myCanvas.width)-900, (myCanvas.height/2)-320);
+        ctx.fillText("__________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-300);
+        ctx.fillText("1. You will first see a colored circle presented on the screen.", (myCanvas.width)-900, (myCanvas.height/2)-250);
+        ctx.fillText("   Remember the color of this circle", (myCanvas.width)-900, (myCanvas.height/2)-200);
+
+        ctx.fillText("2. You will then see one of two potential screens.", (myCanvas.width)-900, (myCanvas.height/2)-150);
+
+        ctx.fillText("   2.a. One screen will display a color spectrum.", (myCanvas.width)-900, (myCanvas.height/2)-100);
+        ctx.fillText("        Using the mouse, click the color that is most", (myCanvas.width)-900, (myCanvas.height/2)-50);
+        ctx.fillText("        similar to the previous colored circle you saw.", (myCanvas.width)-900, (myCanvas.height/2)-0);
+
+        ctx.fillText("   2.b. The other screen will display 8 colored circles.", (myCanvas.width)-900, (myCanvas.height/2)+50);
+        ctx.fillText("        You will need to decide if the average color of those", (myCanvas.width)-900, (myCanvas.height/2)+100);
+        ctx.fillText("        circles is more red or blue.", (myCanvas.width)-900, (myCanvas.height/2)+150);
+        ctx.fillText("        If they are more RED, press the A key.", (myCanvas.width)-900, (myCanvas.height/2)+200);
+        ctx.fillText("        If they are more BLUE, press the S key.", (myCanvas.width)-900, (myCanvas.height/2)+250);
+
+        ctx.fillText("Press the button below to continue through the instructions.", (myCanvas.width)-900, (myCanvas.height/2)+320);
+
+
+      }
+      else if (i == 1){
+        $("#backButton").show();
+
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="middle";
+        ctx.textAlign="center";
+        ctx.fillText("Below is an example of the initial colored circle.", (myCanvas.width/2), (myCanvas.height/2)-300);
+        ctx.fillText("You should remember the color of the circle", (myCanvas.width/2), (myCanvas.height/2)-240);
+        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-220);
+        ctx.beginPath();
+        ctx.arc((myCanvas.width/2), (myCanvas.height/2), 50, 0, 2 * Math.PI);
+        ctx.fillStyle = "rgb(208,0,47)";
+        ctx.fill();
+        ctx.fillStyle="black";
+        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
+        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+300);
+        ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+350);
+
+      }
+      else if (i == 2){
+        $("#backButton").show();
+
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="middle";
+        ctx.textAlign="center";
+        ctx.fillText("Below is an example of the color spectrum.", (myCanvas.width/2), (myCanvas.height/2)-370);
+        ctx.textAlign="left";
+        ctx.fillText("1. Using the mouse you would click on the color that ", 100, (myCanvas.height/2)-320);
+        ctx.fillText("    is most like the previous circle.", 100, (myCanvas.height/2)-270);
+        ctx.fillText("2. Here you can try that by clicking as many", 100, (myCanvas.height/2)-220);
+        ctx.fillText("    times as you would like until you get it correct.", 100, (myCanvas.height/2)-170);
+        ctx.textAlign="center";
+        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-165);
+        linewidth = 2;
+        offset_probe = 195;
+        for (var y = linewidth/2, color = 255; y < 512; y += linewidth, color -= 1) {
+            addLineSubPath(ctx, y, color);
+        }
+
+        function addLineSubPath(ctx, y, color) {
+            ctx.beginPath();
+            ctx.lineWidth = linewidth;
+            ctx.moveTo(y+offset_probe, 300);
+            ctx.lineTo(y+offset_probe, 600);
+
+            col = 'rgb('+color+','+0+','+(255-color)+')';
+            ctx.strokeStyle = col;
+            ctx.stroke();
+        }
+        ctx.fillStyle="black";
+        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
+        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+300);
+        ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+350);
+        clickcount = 0;
+        $("body").click(function(event){
+          clickcount++;
+          //clearTimeout();
+          var rect = myCanvas.getBoundingClientRect();
+          key = event.clientX-rect.left;
+          acc = 0;
+          wmC = 208;
+          probeaccrange = 25;
+          offset_probe = 195;
+          correctmin = (((255-wmC)*2)-probeaccrange)+offset_probe;
+          correctmax = (((255-wmC)*2)+(probeaccrange+1))+offset_probe;
+          if (i == 2){
+          if (clickcount > 1){
+          if (key >= correctmin & key <= correctmax) {feedback(1)}
+          else {feedback(0)}}
+        }
+        });
+      }
+    else if (i == 3){
+      $("#backButton").show();
+
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="25px Arial";
+      ctx.fillStyle="black";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+      ctx.fillText("Below is an example of the 8 colored circles.", (myCanvas.width/2), (myCanvas.height/2)-350);
+      ctx.fillText("Determine whether the average color", (myCanvas.width/2), (myCanvas.height/2)-290);
+      ctx.fillText("of these circles is more red or blue.", (myCanvas.width/2), (myCanvas.height/2)-240);
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-220);
+
+      ctx.beginPath();
+      ctx.arc(510, 300, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgb(254,0,1)";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(390, 300, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgb(182,0,73)";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(600, 405, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgb(153,0,102)";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(300, 405, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgb(208,0,47)";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(600, 525, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgb(231,0,24)";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(300, 525, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgb(100,0,155)";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(510, 630, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgb(120,0,135)";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(390, 630, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgb(139,0,116)";
+      ctx.fill();
+
+
+      ctx.fillStyle="black";
+      ctx.fillText("The correct answer would be to press the A key to indicate RED.", (myCanvas.width/2), (myCanvas.height/2)+260);
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+310);
+      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
+      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
+    }
+    else if (i == 4){
+      $("#backButton").show();
+
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="30px Arial";
+      ctx.fillStyle="black";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+      ctx.fillText("To try a practice session, press 'Continue'", (myCanvas.width/2), (myCanvas.height/2));
+      ctx.fillText("To read through the instructions again, use the 'Go Back' button.", (myCanvas.width/2), (myCanvas.height/2)+100);
+    }
+    }
+
+    function runTrial(){
+      if (i < 5){
+        blockinstruction1();
+      }
+      else {
+        opener.updateMainMenu(2);
+        JavaScript:window.close();
+      }
+    }
+
+runTrial();
+
+
+$("#continueButton").click(function(){i++; runTrial();});
+$("#backButton").click(function(){i--; runTrial();});
+          });
+
+          </script>
+        </head>
+        <body>
+          <table>
+            <tr>
+              <td>
+                <canvas id="myCanvas" width="900" height="900"> </canvas>
+                <div style="text-align:center; align:center;">
+                </div>
+                <div style="text-align:center;">
+                  <button id="backButton">Go Back</button>
+                  <button id="continueButton">Continue</button>
+                </div>
+                    <input type="hidden" id="assignmentId" name="assignmentId" value="">
+                    <input type="hidden" id="workerId" name="workerId" value="">
+                    <input type="hidden" id="hitId" name="hitId" value="">
+                    <input type="hidden" id="RTs" name="RTs" value="">
+                    <input type="hidden" id="ExpName" name="ExpName" value="NEXT">
+                    <p style="font-family: Arial; color: black; font-size:24px"></p>
+                  </td>
+                </tr>
+              </table>
+            </body>
+            </html>
