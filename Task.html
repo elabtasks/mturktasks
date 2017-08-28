@@ -638,7 +638,7 @@ function setValues() {
             if (trialmatrix[random[i]][3] == 0){drawpDMstim();}
             else if (trialmatrix[random[i]][3] == 1){drawWMprobe();}
           }
-          else if (stimscreencount == 2){
+          else if (stimscreencount > 1){
             if (keyonoff == 1){
               data[logCounter] = ["NR:", block, "no response", "no response", "no response", "no response", trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
               logCounter++;
@@ -694,7 +694,7 @@ function setValues() {
 
           if(key == "s" || key == "S" || key == "a" || key == "A"){
             data[logCounter] = ["NR:", block, Ronset, key, respTime, acc, trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
-            logCounter++; acctotalcount++; stimscreencount = 2; clearTimeout(timeoutDMstim); showITI();
+            logCounter++; acctotalcount++; stimscreencount++; clearTimeout(timeoutDMstim); showITI();
           }
           else {wrongbuttonpress()}
         }
