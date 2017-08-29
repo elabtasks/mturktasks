@@ -631,14 +631,14 @@ function setValues() {
       if ((trialcount+instructionson == 0 || (trialcount+instructionson) % blocklength === 0)) {
         instructionson = 1; i = 0; shuffle(random); instructions();}
 
-        else if (stimscreencount == 0){checkSize();
+        else if (stimscreencount == 0){type = 1; checkSize();
           if (checkwindowsize == 0) {setValues(); drawWMstim();}
           else if (checkwindowsize == 1) {nonfullscreen();}}
-          else if (stimscreencount == 1){
-            if (trialmatrix[random[i]][3] == 0){drawpDMstim();}
-            else if (trialmatrix[random[i]][3] == 1){drawWMprobe();}
+        else if (stimscreencount == 1){type = 0;
+            if (trialmatrix[random[i]][3] == 0){type = 2; drawpDMstim(); type = 0;}
+            else if (trialmatrix[random[i]][3] == 1){type = 3; drawWMprobe();}
           }
-          else if (stimscreencount > 1){
+          else if (stimscreencount == 2){type = 0;
             if (keyonoff == 1){
               data[logCounter] = ["NR:", block, "no response", "no response", "no response", "no response", trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
               logCounter++;
