@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="Task.css" type="text/css" charset="utf-8">
+  <link rel="stylesheet" href="TaskExp.css" type="text/css" charset="utf-8">
   <script type="text/javascript" src="jquery-3.2.1.js"></script>
   <script type="text/javascript" src="math.js"></script>
   <script type="text/javascript">
@@ -22,11 +22,13 @@ $(document).ready(function(){
     var WMinterval = 500;
     var preWMstimbuffer = 500
     var coloraveragingpresentationtime = 500;
-    var probeaccrange = 10;//the deviation (in number of colors, from 256 possible colors) from actual color on the probe trials you are willing to accept as correct
-    var numberofblocks = 5;
-    var blocklength = 128;
+    var probeaccrange = 20;//the deviation (in number of colors, from 256 possible colors) from actual color on the probe trials you are willing to accept as correct
+    var numberofblocks = 8;
+    var blocklength = 75;
     var instructionson = 0;
     var block = 0;
+    var colorspectrum = 149;
+    var linewidthoverall = 4;//colorspectrum * linewidthoverall cannot be greater than 900 (otherwise it doesn't fit on the screen)
     wmCcounter = 0;
     i=0;
     acccount = 0;
@@ -76,12 +78,12 @@ $(document).ready(function(){
                                           type5,type6,type7,type8,type13,type14,type15,type16);
     };
     //WM cue stim values
-    startingvalue = [0,1,2,3];
+    startingvalue = [0,1];
     shuffle(startingvalue);
     wmCvalues = [];
-    for (var arraymaker=startingvalue[0]; arraymaker<256;){
+    for (var arraymaker=startingvalue[0]; arraymaker<colorspectrum+1;){
         wmCvalues.push(arraymaker);
-        arraymaker++; arraymaker++; arraymaker++; arraymaker++;
+        arraymaker++; arraymaker++;
     };
     shuffle(wmCvalues);
     //logfile
@@ -142,8 +144,8 @@ $(document).ready(function(){
     var ycoordinate7 = r * Math.sin((Math.PI / 180) * (315+offset));
     var xcoordinate7 = r * Math.cos((Math.PI / 180) * (315+offset));
   //mean color parameters for trials
-    var mcref = (256/2);
-    var mccategory = 255;
+    var mcref = ((colorspectrum+1)/2);
+    var mccategory = colorspectrum;
     var mccondition = 1;
     var mcscaling = .0666;
     function mcolor(mccategory, conditionaddm){
@@ -158,7 +160,7 @@ $(document).ready(function(){
     //var meanshape = msref + mscategory * mscondition * msscaling;
     //};
   //standard deviation color parameters
-    var sdccondition = 256;
+    var sdccondition = colorspectrum+1;
     var sdcscaling = .0666;
     function sdcolor(conditionaddsd){
     standarddeviationcolor = ((3+conditionaddsd)*(sdccondition)) * sdcscaling;
@@ -188,7 +190,7 @@ $(document).ready(function(){
         if (color == 4) {
           col = "yellow"
         }*/
-        col = 'rgb('+color+','+0+','+(255-color)+')';
+        col = 'rgb('+color+','+0+','+(colorspectrum-color)+')';
         //sets up the area and the n (ie. able to vary n to make more square or circle)
         var n = degree;
         //this is the function for area of a squircle solved for the semi-diameter a
@@ -273,9 +275,9 @@ $(document).ready(function(){
       ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
       ctx.rotate((-45) * Math.PI / 180);
       ctx.translate(-450,-450);
-      linewidth = 2;
-      offset_probe = 195;
-      for (var y = linewidth/2, color = 255; y < 512; y += linewidth, color -= 1) {
+      linewidth = linewidthoverall;
+      offset_probe = (900-(colorspectrum*linewidth))/2;
+      for (var y = linewidth/2, color = colorspectrum; y < colorspectrum*linewidth+1; y += linewidth, color -= 1) {
           addLineSubPath(ctx, y, color);
       }
       function addLineSubPath(ctx, y, color) {
@@ -283,7 +285,7 @@ $(document).ready(function(){
           ctx.lineWidth = linewidth;
           ctx.moveTo(y+offset_probe, 300);
           ctx.lineTo(y+offset_probe, 600);
-          col = 'rgb('+color+','+0+','+(255-color)+')';
+          col = 'rgb('+color+','+0+','+(colorspectrum-color)+')';
           ctx.strokeStyle = col;
           ctx.stroke();
       }
@@ -292,41 +294,41 @@ $(document).ready(function(){
       type = 0;
       drawcorrectanswercounter++;
       document.getElementById("myCanvas").style.cursor = "pointer";
-      offset_probe = 195;
+      offset_probe = (900-(colorspectrum*linewidth))/2;
       if (acc == 1 & stimscreencount == 2){
         ctx.font="bold 50px Arial";
-        ctx.fillStyle="black";
+        ctx.fillStyle="white";
         ctx.textBaseline="middle";
         ctx.textAlign="center";
         ctx.fillText("Correct",myCanvas.width/2,(myCanvas.height/2)-225);
       }
       else if (acc == 0 & stimscreencount == 2){
         ctx.font="bold 50px Arial";
-        ctx.fillStyle="black";
+        ctx.fillStyle="white";
         ctx.textBaseline="middle";
         ctx.textAlign="center";
         ctx.fillText("Incorrect",myCanvas.width/2,(myCanvas.height/2)-225);
       }
       ctx.beginPath();
-      if (wmC < 255-probeaccrange && wmC > probeaccrange-1){
-        ctx.moveTo(((255-wmC)*2)-probeaccrange+offset_probe, 280);
-        ctx.lineTo(((255-wmC)*2)+1+probeaccrange+offset_probe, 280);
-        ctx.lineTo(((255-wmC)*2)+1+probeaccrange+offset_probe, 620);
-        ctx.lineTo(((255-wmC)*2)-probeaccrange+offset_probe, 620);
+      if (wmC < colorspectrum-probeaccrange && wmC > probeaccrange-1){
+        ctx.moveTo(((colorspectrum-wmC)*linewidthoverall)-probeaccrange+offset_probe, 280);
+        ctx.lineTo(((colorspectrum-wmC)*linewidthoverall)+1+probeaccrange+offset_probe, 280);
+        ctx.lineTo(((colorspectrum-wmC)*linewidthoverall)+1+probeaccrange+offset_probe, 620);
+        ctx.lineTo(((colorspectrum-wmC)*linewidthoverall)-probeaccrange+offset_probe, 620);
       }
-      else if (wmC > 255-probeaccrange-1){
+      else if (wmC > colorspectrum-probeaccrange-1){
         ctx.moveTo(offset_probe, 280);
         ctx.lineTo(offset_probe+(probeaccrange*2), 280);
         ctx.lineTo(offset_probe+(probeaccrange*2), 620);
         ctx.lineTo(offset_probe, 620);
       }
       else if (wmC < probeaccrange){
-        ctx.moveTo(offset_probe+(255*2)-(probeaccrange*2), 280);
-        ctx.lineTo(offset_probe+(255*2), 280);
-        ctx.lineTo(offset_probe+(255*2), 620);
-        ctx.lineTo(offset_probe+(255*2)-(probeaccrange*2), 620);
+        ctx.moveTo(offset_probe+(colorspectrum*linewidthoverall)-(probeaccrange*2), 280);
+        ctx.lineTo(offset_probe+(colorspectrum*linewidthoverall), 280);
+        ctx.lineTo(offset_probe+(colorspectrum*linewidthoverall), 620);
+        ctx.lineTo(offset_probe+(colorspectrum*linewidthoverall)-(probeaccrange*2), 620);
       }
-      ctx.fillStyle = "grey";
+      ctx.fillStyle = "black";
       ctx.globalAlpha = 0.65
       ctx.fill();
       document.getElementById("myCanvas").style.cursor = "none";
@@ -341,7 +343,7 @@ $(document).ready(function(){
       if (time > 0)
       {
         $("#startButton").hide();
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "white";
         ctx.font="60px Arial";
         ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
         ctx.fillText(""+time, 0, 0);
@@ -369,7 +371,7 @@ $(document).ready(function(){
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
         ctx.font="bold 50px Arial";
-        ctx.fillStyle="black";
+        ctx.fillStyle="white";
         ctx.textBaseline="middle";
         ctx.textAlign="center";
         ctx.fillText("Correct",myCanvas.width/2,myCanvas.height/2);
@@ -378,7 +380,7 @@ $(document).ready(function(){
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
         ctx.font="bold 50px Arial";
-        ctx.fillStyle="black";
+        ctx.fillStyle="white";
         ctx.textBaseline="middle";
         ctx.textAlign="center";
         ctx.fillText("Incorrect",myCanvas.width/2,myCanvas.height/2);
@@ -393,7 +395,7 @@ $(document).ready(function(){
       ctx.rotate((-45) * Math.PI / 180);
       ctx.translate(-450,-450);
       ctx.font="bold 50px Arial";
-      ctx.fillStyle="black";
+      ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
       ctx.fillText("Wrong response option. Try again.",myCanvas.width/2,myCanvas.height/2);
@@ -406,7 +408,7 @@ $(document).ready(function(){
       ctx.rotate((-45) * Math.PI / 180);
       ctx.translate(-450,-450);
       ctx.font="bold 30px Arial";
-      ctx.fillStyle="black";
+      ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
       if (notfullscreen == 0){
@@ -459,7 +461,7 @@ $(document).ready(function(){
       ctx.rotate((-45) * Math.PI / 180);
       ctx.translate(-450,-450);
       ctx.font="25px Arial";
-      ctx.fillStyle="black";
+      ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
       if (instructioncount == 0){
@@ -506,7 +508,7 @@ $(document).ready(function(){
           }
         }
     function setValues() {
-      mcolor((trialmatrix[random[i]][0] * 255), trialmatrix[random[i]][1]);
+      mcolor((trialmatrix[random[i]][0] * colorspectrum), trialmatrix[random[i]][1]);
       sdcolor(trialmatrix[random[i]][2]);
       distribution = gaussian(meancolor, standarddeviationcolor);
       samplemeanrangemax = meancolor+1
@@ -516,9 +518,9 @@ $(document).ready(function(){
       samplecheck = 0
       wmC = wmCvalues[wmCcounter]
       while (samplecheck < 1){
-        sample = [distribution(Math.floor(Math.random() * (255 - 0)) + 0),distribution(Math.floor(Math.random() * (255 - 0)) + 0),distribution(Math.floor(Math.random() * (255 - 0)) + 0),
-                  distribution(Math.floor(Math.random() * (255 - 0)) + 0),distribution(Math.floor(Math.random() * (255 - 0)) + 0),distribution(Math.floor(Math.random() * (255 - 0)) + 0),
-                  distribution(Math.floor(Math.random() * (255 - 0)) + 0),distribution(Math.floor(Math.random() * (255 - 0)) + 0)]
+        sample = [distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),
+                  distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),
+                  distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0)]
         samplemeancheck = math.mean(sample)
         samplesdcheck = math.std(sample)
         sample.sort();
@@ -526,7 +528,7 @@ $(document).ready(function(){
         repeatcheck = 0
         for (aa=0; aa<sample.length; aa++){
           if (aa < (sample.length)-1){valueadd = -1;}
-          if(Math.round(sample[aa])>255 || Math.round(sample[aa])<0
+          if(Math.round(sample[aa])>colorspectrum || Math.round(sample[aa])<0
               || Math.round(sample[aa]==sample[aa+valueadd]) || Math.round(sample[aa]==wmC)){
                 repeatcheck++;
               }
@@ -629,9 +631,9 @@ $(document).ready(function(){
         if (type == 3) {jokes++;}
         if (type == 4) {clearTimeout(timeoutITI); showITI();}
         if (type == 5) {
-          if (wmC < 255-probeaccrange && wmC > probeaccrange-1){correctmin = ((255-wmC)*2)-probeaccrange+offset_probe; correctmax = ((255-wmC)*2)+1+probeaccrange+offset_probe;}
-          else if (wmC > 255-probeaccrange-1) {correctmin = offset_probe; correctmax = offset_probe+(probeaccrange*2)}
-          else if (wmC < probeaccrange){correctmin = offset_probe+(256*2)-(probeaccrange*2); correctmax = offset_probe+(256*2)}
+          if (wmC < colorspectrum-probeaccrange && wmC > probeaccrange-1){correctmin = ((colorspectrum-wmC)*linewidthoverall)-probeaccrange+offset_probe; correctmax = ((colorspectrum-wmC)*linewidthoverall)+1+probeaccrange+offset_probe;}
+          else if (wmC > colorspectrum-probeaccrange-1) {correctmin = offset_probe; correctmax = offset_probe+(probeaccrange*2)}
+          else if (wmC < probeaccrange){correctmin = offset_probe+(colorspectrum*linewidthoverall)-(probeaccrange*2); correctmax = offset_probe+(colorspectrum*linewidthoverall);}
           if (key >= correctmin & key <= correctmax) {acc=1;acccount++;}
             data[logCounter] = ["NR:", block, Ronset, key, respTime, acc, trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
             logCounter++; acctotalcount++; stimscreencount++; document.getElementById("myCanvas").style.cursor = "none"; drawcorrectanswercounter++; drawcorrectanswer();
@@ -664,7 +666,7 @@ $(document).ready(function(){
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
               <input type="hidden" id="ExpName" name="ExpName" value="pWM">
-              <p style="font-family: Arial; color: black; font-size:24px">Click button to submit</p>
+              <p style="font-family: Arial; color: white; font-size:24px">Click button to submit</p>
               <input id="submitButton" type="submit" name="Finish" value="Submit">
             </td>
           </tr>
