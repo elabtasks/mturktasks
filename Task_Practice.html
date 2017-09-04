@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="Task.css" type="text/css" charset="utf-8">
+  <link rel="stylesheet" href="TaskExp.css" type="text/css" charset="utf-8">
   <script type="text/javascript" src="jquery-3.2.1.js"></script>
   <script type="text/javascript" src="math.js"></script>
   <script type="text/javascript">
@@ -345,14 +345,14 @@ function drawWMstim(){
 
     if (acc == 1 & stimscreencount == 2){
       ctx.font="bold 50px Arial";
-      ctx.fillStyle="black";
+      ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
       ctx.fillText("Correct",myCanvas.width/2,(myCanvas.height/2)-225);
     }
     else if (acc == 0 & stimscreencount == 2){
       ctx.font="bold 50px Arial";
-      ctx.fillStyle="black";
+      ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
       ctx.fillText("Incorrect",myCanvas.width/2,(myCanvas.height/2)-225);
@@ -394,7 +394,7 @@ function drawWMstim(){
     if (time > 0)
     {
       $("#startButton").hide();
-      ctx.fillStyle = "black";
+      ctx.fillStyle = "white";
       ctx.font="60px Arial";
       ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
       ctx.fillText(""+time, 0, 0);
@@ -415,7 +415,7 @@ function drawWMstim(){
     ctx.rotate((-45) * Math.PI / 180);
     ctx.translate(-450,-450);
     ctx.font="bold 50px Arial";
-    ctx.fillStyle="black";
+    ctx.fillStyle="grey";
     ctx.textBaseline="middle";
     ctx.textAlign="center";
     ctx.fillText("*",myCanvas.width/2,(myCanvas.height/2)+9);
@@ -423,7 +423,7 @@ function drawWMstim(){
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
       ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
       ctx.font="bold 50px Arial";
-      ctx.fillStyle="black";
+      ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
       acctotalcount++; stimscreencount=2;
@@ -433,7 +433,7 @@ function drawWMstim(){
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
       ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
       ctx.font="bold 50px Arial";
-      ctx.fillStyle="black";
+      ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
       ctx.fillText("Correct",myCanvas.width/2,myCanvas.height/2);
@@ -442,7 +442,7 @@ function drawWMstim(){
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
       ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
       ctx.font="bold 50px Arial";
-      ctx.fillStyle="black";
+      ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
       ctx.fillText("Incorrect",myCanvas.width/2,myCanvas.height/2);
@@ -460,7 +460,7 @@ function drawWMstim(){
     ctx.rotate((-45) * Math.PI / 180);
     ctx.translate(-450,-450);
     ctx.font="bold 50px Arial";
-    ctx.fillStyle="black";
+    ctx.fillStyle="white";
     ctx.textBaseline="middle";
     ctx.textAlign="center";
     ctx.fillText("Wrong response option. Try again.",myCanvas.width/2,myCanvas.height/2);
@@ -474,7 +474,7 @@ function drawWMstim(){
     ctx.rotate((-45) * Math.PI / 180);
     ctx.translate(-450,-450);
     ctx.font="bold 30px Arial";
-    ctx.fillStyle="black";
+    ctx.fillStyle="white";
     ctx.textBaseline="middle";
     ctx.textAlign="center";
     if (notfullscreen == 0){
@@ -534,7 +534,7 @@ function instructions(){
   ctx.rotate((-45) * Math.PI / 180);
   ctx.translate(-450,-450);
   ctx.font="25px Arial";
-  ctx.fillStyle="black";
+  ctx.fillStyle="white";
   ctx.textBaseline="middle";
   ctx.textAlign="center";
 
@@ -757,7 +757,7 @@ function setValues() {
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
               <input type="hidden" id="ExpName" name="ExpName" value="pWM_Practice">
-              <p style="font-family: Arial; color: black; font-size:24px">Click button to submit</p>
+              <p style="font-family: Arial; color: white; font-size:24px">Click button to submit</p>
               <input id="submitButton" type="submit" name="Finish" value="Submit">
             </td>
           </tr>
