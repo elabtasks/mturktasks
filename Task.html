@@ -71,12 +71,30 @@ $(document).ready(function(){
     var type15 = [[-1,1,1,1]]
     var type16 = [[-1,0,1,1]]
     trialmatrix = [];
-    for (var arraymaker=0; arraymaker<(blocklength/32); arraymaker++){
+
+    trialmatrix = trialmatrix.concat(type1,type2,type3,type4,type9,type10,type11,type12,
+                                      type1,type2,type3,type4,type9,type10,type11,type12,
+                                      type1,type2,type3,type4,type9,type10,type11,type12,
+                                      type1,type2,type3,type4,type9,type10,type11,type12,
+                                      type1,type2,type3,type4,type9,type10,type11,type12,
+                                      type1,type2,type3,type4,type9,type10,type11,type12,
+                                      type1,type2,type3,type4,type9,type10,type11,type12,
+                                      type5,type6,type7,type8,type13,type14,type15,type16,
+                                      type5,type6,type7,type8,type13,type14,type15,type16,
+                                      type5,type6,type7,type8);
+
+    /*for (var arraymaker=0; arraymaker<(blocklength/32); arraymaker++){
         trialmatrix = trialmatrix.concat(type1,type2,type3,type4,type9,type10,type11,type12,
                                           type1,type2,type3,type4,type9,type10,type11,type12,
                                           type1,type2,type3,type4,type9,type10,type11,type12,
-                                          type5,type6,type7,type8,type13,type14,type15,type16);
-    };
+                                          type1,type2,type3,type4,type9,type10,type11,type12,
+                                          type1,type2,type3,type4,type9,type10,type11,type12,
+                                          type1,type2,type3,type4,type9,type10,type11,type12,
+                                          type1,type2,type3,type4,type9,type10,type11,type12,
+                                          type5,type6,type7,type8,type13,type14,type15,type16,
+                                          type5,type6,type7,type8,type13,type14,type15,type16,
+                                          type5,type6,type7,type8);
+    };*/
     //WM cue stim values
     startingvalue = [0,1];
     shuffle(startingvalue);
