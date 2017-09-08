@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="TaskExp.css" type="text/css" charset="utf-8">
+	<link rel="stylesheet" href="Task.css" type="text/css" charset="utf-8">
 	<script type="text/javascript" src="jquery-3.2.1.js"></script>
 	<script type="text/javascript">
 	curStage = 0;
@@ -65,16 +65,16 @@
 		$("#instructions").hide();
 		$("#myButton").hide();
 
-		document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
+		/*document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
 		document.getElementById("workerId").value = gup("workerId", document.referrer);
 		document.getElementById("hitId").value = gup("hitId", document.referrer);
 
-		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")
-		/*document.getElementById("assignmentId").value = 123;
+		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")*/
+		document.getElementById("assignmentId").value = 123;
 		document.getElementById("workerId").value = 123;
 		document.getElementById("hitId").value = 123;
 
-		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")*/
+		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")
 		{
 			$("#instruction").text("Accept HIT first");
 			$("#instruction").show();
@@ -112,7 +112,7 @@
 		<table>
 			<tr>
 				<td>
-					<p id="instruction" style="font-family: arial; font-size: 40px; color: white;">Click the button to fill out demographics</p>
+					<p id="instruction" style="font-family: arial; font-size: 40px; color: black;">Click the button to fill out demographics</p>
 					<button id="myButton"> Continue </button>
 					<button id="redo"> Redo </button>
 						<form id="mturk_form" method="POST" action="http://152.3.33.45/AMTSubmit/dataHandler.php">
@@ -124,8 +124,8 @@
 							<input type="hidden" id="RTs" name="RTs" value="">
 							<input type="hidden" id="demographics" name="demographics" value="pWM">
 							<input type="hidden" id="ExpName" name="ExpName" value="pWM">
-							<p style="font-family: Arial; color: white; font-size:24px">Click button to submit</p>
-							<p style="font-family: Arial; color: white; font-size:12px">“Thank you for participating in this study aimed to understand different aspects of memory and perception. In this particular study, we were looking to see if the memory stimulus we asked you to remember biased your judgement of the shape arrays shown after that stimulus. For example, we would expect that when we asked you to remember a blue circle and then judge whether an array of shapes was more red or blue, that you would be biased by the initially presented circle (the blue circle) to respond that the shapes are blue. The memory task at the end was designed to ensure you were encoding the initially presented item into working memory. Thus your responses are invaluable for us because we are looking to see working memory influences perception. At this time we haven’t been able to make any formal conclusions as we are just collecting data and haven’t analyzed the data yet! But, if you want to know more, feel free to contact me at any time at psw13@duke.edu or tobias.egner@duke.edu. Again, thanks so much for your participation!”</p>
+							<p style="font-family: Arial; color: black; font-size:24px">Click button to submit</p>
+							<p style="font-family: Arial; color: black; font-size:12px">“Thank you for participating in this study aimed to understand different aspects of memory and attention. In this particular study, we were looking to see if you responded more quickly to words in the first task of every block that were not overlapping in response dimensions with the prospective task. A congruent item in the first task of each block was when the correct response button was compatible with the correct response button for the prospective task, an incongruent item was when they were not compatible. There was not such a dichotomy in the prospective task of each block. Thus your responses are invaluable for us because we are looking to see how overlapping stimulus dimensions versus stimulus-response associations in both the first and prospective task were differentially impacted. At this time we haven’t been able to make any formal conclusions as we are just collecting data and haven’t analyzed the data yet! But, if you want to know more, feel free to contact me at any time at psw13@duke.edu or tobias.egner@duke.edu. Again, thanks so much for your participation!”</p>
 							<input id="submitButton" type="submit" name="Finish" value="Submit">
 							</form>
 				</td>
