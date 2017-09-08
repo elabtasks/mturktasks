@@ -25,7 +25,7 @@
     var numberofblocks = 4;
     var blocklength = 8;
     var instructionson = 0;
-    var block = 4;
+    var block = 0;
     var colorspectrum = 1
     ;
     var linewidthoverall = 4;//colorspectrum * linewidthoverall cannot be greater than 900 (otherwise it doesn't fit on the screen)
@@ -75,19 +75,8 @@
     var type16 = [[-1,0,1,1]]
     trialmatrix = [];
 
-    trialmatrix = trialmatrix.concat(type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type5,type6,type7,type8,type13,type14,type15,type16,
-      type5,type6,type7,type8);
+    trialmatrix = trialmatrix.concat(type1,type2,type3,type4,type13,type14,type15,type16
+      );
 
       /*for (var arraymaker=0; arraymaker<(blocklength/32); arraymaker++){
       trialmatrix = trialmatrix.concat(type1,type2,type3,type4,type9,type10,type11,type12,
@@ -499,8 +488,8 @@ function instructions(){
     ctx.fillText("Please remember the shape of the initial item presented in each sequence.", (myCanvas.width/2), (myCanvas.height/2)-250);
     ctx.textAlign="left";
     ctx.fillText("In the following screen you will be asked to either:", (0.0), (myCanvas.height/2)-100);
-    ctx.fillText("1. Use the mouse to drag the slider until the pictured shape", 0, (myCanvas.height/2)-50);
-    ctx.fillText("  is the same you previously needed to remember.", (0.0), (myCanvas.height/2)+0);
+    ctx.fillText("1. Use the mouse to drag the slider until the pictured shape is the same", 0, (myCanvas.height/2)-50);
+    ctx.fillText("   as the one you needed to remember. Then press the L-key.", (0.0), (myCanvas.height/2)+0);
     ctx.fillText("2. Determine if the average of 8 new shapes presented is more square or circle.", (0.0), (myCanvas.height/2)+100);
     ctx.fillText("  If it is more CIRCLE, press " +button1, (0.0), (myCanvas.height/2)+150);
     ctx.fillText("  If it is more SQUARE, press " +button2, (0.0), (myCanvas.height/2)+200);
@@ -513,8 +502,8 @@ function instructions(){
     ctx.fillText("Please remember the shape of the initial item presented in each sequence.", (myCanvas.width/2), (myCanvas.height/2)-250);
     ctx.textAlign="left";
     ctx.fillText("In the following screen you will be asked to either:", (0.0), (myCanvas.height/2)-100);
-    ctx.fillText("1. Use the mouse to drag the slider until the pictured shape", 0, (myCanvas.height/2)-50);
-    ctx.fillText("  is the same you previously needed to remember.", (0.0), (myCanvas.height/2)+0);
+    ctx.fillText("1. Use the mouse to drag the slider until the pictured shape is the same", 0, (myCanvas.height/2)-50);
+    ctx.fillText("   as the one you needed to remember. Then press the L-key.", (0.0), (myCanvas.height/2)+0);
     ctx.fillText("2. Determine if the average of 8 new shapes presented is more square or circle.", (0.0), (myCanvas.height/2)+100);
     ctx.fillText("  If it is more CIRCLE, press " +button1, (0.0), (myCanvas.height/2)+150);
     ctx.fillText("  If it is more SQUARE, press " +button2, (0.0), (myCanvas.height/2)+200);
