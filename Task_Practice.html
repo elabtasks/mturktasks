@@ -74,7 +74,7 @@
     var type16 = [[-1,0,1,1]]
     trialmatrix = [];
 
-    trialmatrix = trialmatrix.concat(type1,type2,type3,type4,type13,type14,type15,type16
+    trialmatrix = trialmatrix.concat(type1,type2,type9,type10,type13,type14,type15,type16
       );
 
       /*for (var arraymaker=0; arraymaker<(blocklength/32); arraymaker++){
@@ -289,6 +289,7 @@ function drawWMstim(){
     ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
     drawsquircle(0, 0,0, 1+.5)
     $('#slider').show();
+    ('slider').value=.5;
     $('#slider').on('input', function(){
       ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height)
       drawsquircle(0, 0,0, 1+(+document.getElementById("slider").value))
@@ -489,9 +490,10 @@ function instructions(){
     ctx.fillText("In the following screen you will be asked to either:", (0.0), (myCanvas.height/2)-100);
     ctx.fillText("1. Use the mouse to drag the slider until the pictured shape is the same", 0, (myCanvas.height/2)-50);
     ctx.fillText("   as the one you needed to remember. Then press the L-key.", (0.0), (myCanvas.height/2)+0);
-    ctx.fillText("2. Determine if the average of 8 new shapes presented is more square or circle.", (0.0), (myCanvas.height/2)+100);
-    ctx.fillText("  If it is more CIRCLE, press " +button1, (0.0), (myCanvas.height/2)+150);
-    ctx.fillText("  If it is more SQUARE, press " +button2, (0.0), (myCanvas.height/2)+200);
+    ctx.fillText("2. Determine if the average of 8 new shapes presented is", (0.0), (myCanvas.height/2)+100);
+    ctx.fillText("  more square shaped or circle shaped.", (0.0), (myCanvas.height/2)+150);
+    ctx.fillText("  If it is more CIRCLE shaped, press the " +button1, (0.0), (myCanvas.height/2)+200);
+    ctx.fillText("  If it is more SQUARE shaped, press the " +button2, (0.0), (myCanvas.height/2)+250);
     ctx.textAlign="center";
     ctx.fillText("Press any button to begin the task.", (myCanvas.width/2), (myCanvas.height/2)+300);
   }
@@ -503,9 +505,10 @@ function instructions(){
     ctx.fillText("In the following screen you will be asked to either:", (0.0), (myCanvas.height/2)-100);
     ctx.fillText("1. Use the mouse to drag the slider until the pictured shape is the same", 0, (myCanvas.height/2)-50);
     ctx.fillText("   as the one you needed to remember. Then press the L-key.", (0.0), (myCanvas.height/2)+0);
-    ctx.fillText("2. Determine if the average of 8 new shapes presented is more square or circle.", (0.0), (myCanvas.height/2)+100);
-    ctx.fillText("  If it is more CIRCLE, press " +button1, (0.0), (myCanvas.height/2)+150);
-    ctx.fillText("  If it is more SQUARE, press " +button2, (0.0), (myCanvas.height/2)+200);
+    ctx.fillText("2. Determine if the average of 8 new shapes presented is", (0.0), (myCanvas.height/2)+100);
+    ctx.fillText("  more square shaped or circle shaped.", (0.0), (myCanvas.height/2)+150);
+    ctx.fillText("  If it is more CIRCLE shaped, press the " +button1, (0.0), (myCanvas.height/2)+200);
+    ctx.fillText("  If it is more SQUARE shaped, press the " +button2, (0.0), (myCanvas.height/2)+250);
     ctx.textAlign="center";
     ctx.fillText("Press any button to begin the task.", (myCanvas.width/2), (myCanvas.height/2)+300);
     block++;
@@ -643,9 +646,9 @@ function setValues() {
       else if (type == 5) {
         if(key == "l" || key == "L"){
           choice = (+document.getElementById("slider").value);
-          if (key > wmC-.15 & key < wmC+.15){acc=1;}
+          if (choice > wmC-.15 & choice < wmC+.15){acc=1;}
           data[logCounter] = ["NR:", block, Ronset, choice, respTime, acc, trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
-          logCounter++; acctotalcount++; stimscreencount++; document.getElementById("myCanvas").style.cursor = "none"; $("#slider").hide(); showITI();
+          logCounter++; acctotalcount++; stimscreencount++; document.getElementById("myCanvas").style.cursor = "none"; $("#slider").hide(); document.getElementById('slider').value=.50; showITI();
         }
       }
       else if (type == 6) {ctx.rotate(45 * Math.PI / 180); ctx.translate(Math.sqrt(2*(450*450)),0); instructioncount++; document.getElementById("myCanvas").style.cursor = "none"; countDown(3);}

@@ -108,9 +108,9 @@ $(document).ready(function(){
 
       ctx.fillText("   2.b. The other screen will display 8 shapes.", (myCanvas.width)-900, (myCanvas.height/2)+50);
       ctx.fillText("        You will need to decide if the average shape of those", (myCanvas.width)-900, (myCanvas.height/2)+100);
-      ctx.fillText("        8 is more square or more circle.", (myCanvas.width)-900, (myCanvas.height/2)+150);
-      ctx.fillText("        If they are more CIRCLE, press the F key.", (myCanvas.width)-900, (myCanvas.height/2)+200);
-      ctx.fillText("        If they are more SQUARE, press the G key.", (myCanvas.width)-900, (myCanvas.height/2)+250);
+      ctx.fillText("        8 is more square like or more circle like.", (myCanvas.width)-900, (myCanvas.height/2)+150);
+      ctx.fillText("        If they are more CIRCLE like, press the F key.", (myCanvas.width)-900, (myCanvas.height/2)+200);
+      ctx.fillText("        If they are more SQUARE like, press the G key.", (myCanvas.width)-900, (myCanvas.height/2)+250);
 
       ctx.fillText("Press the button below to continue through the instructions.", (myCanvas.width)-900, (myCanvas.height/2)+320);
 
@@ -179,16 +179,17 @@ $(document).ready(function(){
         ctx.textAlign="center";
         ctx.fillText("Below is an example of the 8 shapes.", (myCanvas.width/2), (myCanvas.height/2)-350);
         ctx.fillText("Determine whether the average shape", (myCanvas.width/2), (myCanvas.height/2)-290);
-        ctx.fillText("is more square or more circle.", (myCanvas.width/2), (myCanvas.height/2)-240);
+        ctx.fillText("is more square shaped or more circle shaped.", (myCanvas.width/2), (myCanvas.height/2)-240);
         ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-220);
 
         ctx.drawImage(imgs[0],(myCanvas.width/2)-300, (myCanvas.height/2)-200);
 
         ctx.fillStyle="white";
-        ctx.fillText("The correct answer would be to press the G key to indicate SQUARE.", (myCanvas.width/2), (myCanvas.height/2)+260);
-        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+310);
-        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
-        ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
+        ctx.fillText("The correct answer would be to press the G key to indicate ", (myCanvas.width/2), (myCanvas.height/2)+260);
+        ctx.fillText("these items are more SQUARE-like.", (myCanvas.width/2), (myCanvas.height/2)+310);
+        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+340);
+        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+370);
+        ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+420);
       }
       else if (i == 4){
         $("#backButton").show();
