@@ -27,7 +27,7 @@
     var blocklength = 100;
     var instructionson = 0;
     var block = 0;
-    var colorspectrum = 1;
+    var colorspectrum = 100;
     var linewidthoverall = 4;//colorspectrum * linewidthoverall cannot be greater than 900 (otherwise it doesn't fit on the screen)
     wmCcounter = 0;
     i=0;
@@ -168,7 +168,7 @@
     var ycoordinate7 = r * Math.sin((Math.PI / 180) * (315+offset));
     var xcoordinate7 = r * Math.cos((Math.PI / 180) * (315+offset));
     //mean color parameters for trials
-    var mcref = ((colorspectrum+1)/2);
+    var mcref = ((colorspectrum)/2);
     var mccategory = colorspectrum;
     var mccondition = 1;
     var mcscaling = .0666;
@@ -176,8 +176,8 @@
       meancolor = mcref + mccategory * (mccondition+conditionaddm) * mcscaling;
     };
     //mean shape parameters
-    var msref = .5;
-    var mscategory
+    var msref = 50;
+    var mscategory = 100
     var mscondition = 1;
     var msscaling = .05;
     function mshape(mscategory, conditionaddsd){
@@ -190,10 +190,10 @@
       standarddeviationcolor = ((3+conditionaddsd)*(sdccondition)) * sdcscaling;
     };
     //standard deviation shape parameters
-    var sdscondition = 1
+    var sdscondition = 100
     var sdsscaling = .05
     function sdshape(conditionaddsd){
-      standarddeviationshape = ((1+conditionaddsd)*(sdccondition)) * sdcscaling;
+      standarddeviationshape = ((3+conditionaddsd)*(sdccondition)) * sdcscaling;
     };  //Drawing the squircle shape function
     var color
     var locx
@@ -571,23 +571,14 @@ function setValues() {
     }
     //checkarray(sample)
     shuffle(sample)
-    /*pdmC0 = Math.round(sample[0]);
-    pdmC1 = Math.round(sample[1]);
-    pdmC2 = Math.round(sample[2]);
-    pdmC3 = Math.round(sample[3]);
-    pdmC4 = Math.round(sample[4]);
-    pdmC5 = Math.round(sample[5]);
-    pdmC6 = Math.round(sample[6]);
-    pdmC7 = Math.round(sample[7]);*/
-
-    pdmC0 = sample[0];
-    pdmC1 = sample[1];
-    pdmC2 = sample[2];
-    pdmC3 = sample[3];
-    pdmC4 = sample[4];
-    pdmC5 = sample[5];
-    pdmC6 = sample[6];
-    pdmC7 = sample[7];
+    pdmC0 = Math.round(sample[0])/100;
+    pdmC1 = Math.round(sample[1])/100;
+    pdmC2 = Math.round(sample[2])/100;
+    pdmC3 = Math.round(sample[3])/100;
+    pdmC4 = Math.round(sample[4])/100;
+    pdmC5 = Math.round(sample[5])/100;
+    pdmC6 = Math.round(sample[6])/100;
+    pdmC7 = Math.round(sample[7])/100;
 
     arraymean = math.mean([pdmC7, pdmC6, pdmC5, pdmC4, pdmC3, pdmC2, pdmC1, pdmC0]);
     arraystd = math.std([pdmC7, pdmC6, pdmC5, pdmC4, pdmC3, pdmC2, pdmC1, pdmC0]);
@@ -657,7 +648,7 @@ function setValues() {
       else if (type == 5) {
         if(key == "l" || key == "L"){
           choice = (+document.getElementById("slider").value);
-          if (choice > wmC-.10 & choice < wmC+.10){acc=1;}
+          if (choice > wmC-.05 & choice < wmC+.05){acc=1;}
           data[logCounter] = ["NR:", block, Ronset, choice, respTime, acc, trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
           logCounter++; acctotalcount++; stimscreencount++; document.getElementById("myCanvas").style.cursor = "none"; $("#slider").hide(); document.getElementById('slider').value=.50; showITI();
         }
