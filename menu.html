@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" href="Task.css" type="text/css" charset="utf-8">
 	<script type="text/javascript" src="jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="subcheck.js"></script>
 	<script type="text/javascript">
 	curStage = 0;
 	function basicPopup(url)
@@ -64,19 +65,32 @@
 		$("#mturk_form").hide();
 		$("#instructions").hide();
 		$("#myButton").hide();
+		preventparticipation = 0;
 
-		/*document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
+		document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
 		document.getElementById("workerId").value = gup("workerId", document.referrer);
 		document.getElementById("hitId").value = gup("hitId", document.referrer);
 
-		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")*/
-		document.getElementById("assignmentId").value = 123;
+		for (subnum=0; subnum < subj.length; subnum++){
+				if (subj[subnum] == document.getElementById("workerId").value){
+					preventparticipation == 1;
+				}
+		}
+
+		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")
+		/*document.getElementById("assignmentId").value = 123;
 		document.getElementById("workerId").value = 123;
 		document.getElementById("hitId").value = 123;
 
-		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")
+		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")*/
 		{
 			$("#instruction").text("Accept HIT first");
+			$("#instruction").show();
+			$("#myButton").hide();
+			$("#redo").hide();
+		}
+		else if (preventparticipation == 1 & document.getElementById("assignmentId").value != "" & document.getElementById("assignmentId").value != "ASSIGNMENT_ID_NOT_AVAILABLE"){
+			$("#instruction").text("You have already participated in this HIT.");
 			$("#instruction").show();
 			$("#myButton").hide();
 			$("#redo").hide();
