@@ -90,11 +90,11 @@
       type5,type6,type7,type8);
     };*/
     //WM cue stim values
-    startingvalue = [0,1];
+    startingvalue = [.25,.5,.75];
     shuffle(startingvalue);
     wmCvalues = [];
-    for (var arraymaker=startingvalue[0]; arraymaker<100;){
-      wmCvalues.push(arraymaker/100);
+    for (var arraymaker=startingvalue[0]; arraymaker<(100+startingvalue[0]);){
+      wmCvalues.push((arraymaker/100));
       arraymaker++
     };
     shuffle(wmCvalues);
@@ -156,32 +156,32 @@
     var ycoordinate7 = r * Math.sin((Math.PI / 180) * (315+offset));
     var xcoordinate7 = r * Math.cos((Math.PI / 180) * (315+offset));
     //mean color parameters for trials
-    var mcref = ((colorspectrum+1)/2);
+    /*var mcref = ((colorspectrum)/2);
     var mccategory = colorspectrum;
     var mccondition = 1;
     var mcscaling = .0666;
     function mcolor(mccategory, conditionaddm){
       meancolor = mcref + mccategory * (mccondition+conditionaddm) * mcscaling;
-    };
+    };*/
     //mean shape parameters
-    var msref = .5;
-    var mscategory
+    var msref = 50;
+    var mscategory = 100;
     var mscondition = 1;
     var msscaling = .05;
     function mshape(mscategory, conditionaddsd){
       meanshape = msref + mscategory * (mscondition+conditionaddsd) * msscaling;
     };
     //standard deviation color parameters
-    var sdccondition = colorspectrum+1;
+    /*var sdccondition = colorspectrum+1;
     var sdcscaling = .0666;
     function sdcolor(conditionaddsd){
       standarddeviationcolor = ((3+conditionaddsd)*(sdccondition)) * sdcscaling;
-    };
+    };*/
     //standard deviation shape parameters
-    var sdscondition = 1
+    var sdscondition = 100
     var sdsscaling = .05
     function sdshape(conditionaddsd){
-      standarddeviationshape = ((3+conditionaddsd)*(sdccondition)) * sdcscaling;
+      standarddeviationshape = ((1+conditionaddsd)*(sdscondition)) * sdsscaling;
     };  //Drawing the squircle shape function
     var color
     var locx
@@ -289,7 +289,7 @@ function drawWMstim(){
     ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
     drawsquircle(0, 0,0, 1+.5)
     $('#slider').show();
-    ('slider').value=.5;
+    $('#WMprobe').show();
     $('#slider').on('input', function(){
       ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height)
       drawsquircle(0, 0,0, 1+(+document.getElementById("slider").value))
@@ -489,7 +489,7 @@ function instructions(){
     ctx.textAlign="left";
     ctx.fillText("In the following screen you will be asked to either:", (0.0), (myCanvas.height/2)-100);
     ctx.fillText("1. Use the mouse to drag the slider until the pictured shape is the same", 0, (myCanvas.height/2)-50);
-    ctx.fillText("   as the one you needed to remember. Then press the L-key.", (0.0), (myCanvas.height/2)+0);
+    ctx.fillText("   as the one you needed to remember. Then click the enter button.", (0.0), (myCanvas.height/2)+0);
     ctx.fillText("2. Determine if the average of 8 new shapes presented is", (0.0), (myCanvas.height/2)+100);
     ctx.fillText("  more square shaped or circle shaped.", (0.0), (myCanvas.height/2)+150);
     ctx.fillText("  If it is more CIRCLE shaped, press the " +button1, (0.0), (myCanvas.height/2)+200);
@@ -504,7 +504,7 @@ function instructions(){
     ctx.textAlign="left";
     ctx.fillText("In the following screen you will be asked to either:", (0.0), (myCanvas.height/2)-100);
     ctx.fillText("1. Use the mouse to drag the slider until the pictured shape is the same", 0, (myCanvas.height/2)-50);
-    ctx.fillText("   as the one you needed to remember. Then press the L-key.", (0.0), (myCanvas.height/2)+0);
+    ctx.fillText("   as the one you needed to remember. Then click the enter button.", (0.0), (myCanvas.height/2)+0);
     ctx.fillText("2. Determine if the average of 8 new shapes presented is", (0.0), (myCanvas.height/2)+100);
     ctx.fillText("  more square shaped or circle shaped.", (0.0), (myCanvas.height/2)+150);
     ctx.fillText("  If it is more CIRCLE shaped, press the " +button1, (0.0), (myCanvas.height/2)+200);
@@ -547,10 +547,12 @@ function setValues() {
       sample.sort();
       valueadd = 1;
       repeatcheck = 0
+
       for (aa=0; aa<sample.length; aa++){
         if (aa < (sample.length)-1){valueadd = -1;}
-        if(Math.round(sample[aa])>colorspectrum || Math.round(sample[aa])<0
-        || Math.round(sample[aa]==sample[aa+valueadd]) || Math.round(sample[aa]==wmC)){
+        if (aa == 0){valueadd = 1;}
+        if(math.round(sample[aa],3)>colorspectrum || math.round(sample[aa],3)<0
+        || (math.round(sample[aa],3)==math.round(sample[aa+valueadd],3)) || math.round(sample[aa])==(wmC*100)){
           repeatcheck++;
         }
       }
@@ -560,23 +562,23 @@ function setValues() {
     }
     //checkarray(sample)
     shuffle(sample)
-    /*pdmC0 = Math.round(sample[0]);
-    pdmC1 = Math.round(sample[1]);
-    pdmC2 = Math.round(sample[2]);
-    pdmC3 = Math.round(sample[3]);
-    pdmC4 = Math.round(sample[4]);
-    pdmC5 = Math.round(sample[5]);
-    pdmC6 = Math.round(sample[6]);
-    pdmC7 = Math.round(sample[7]);*/
+    pdmC0 = math.round(sample[0],3)/100;
+    pdmC1 = math.round(sample[1],3)/100;
+    pdmC2 = math.round(sample[2],3)/100;
+    pdmC3 = math.round(sample[3],3)/100;
+    pdmC4 = math.round(sample[4],3)/100;
+    pdmC5 = math.round(sample[5],3)/100;
+    pdmC6 = math.round(sample[6],3)/100;
+    pdmC7 = math.round(sample[7],3)/100;
 
-    pdmC0 = sample[0];
+    /*pdmC0 = sample[0];
     pdmC1 = sample[1];
     pdmC2 = sample[2];
     pdmC3 = sample[3];
     pdmC4 = sample[4];
     pdmC5 = sample[5];
     pdmC6 = sample[6];
-    pdmC7 = sample[7];
+    pdmC7 = sample[7];*/
 
     arraymean = math.mean([pdmC7, pdmC6, pdmC5, pdmC4, pdmC3, pdmC2, pdmC1, pdmC0]);
     arraystd = math.std([pdmC7, pdmC6, pdmC5, pdmC4, pdmC3, pdmC2, pdmC1, pdmC0]);
@@ -610,7 +612,7 @@ function setValues() {
       //Detect events likes clicks or button presses
       $("body").keypress(function(event){
         //clearTimeout();
-        if (type == 2||type ==5) {key = String.fromCharCode(event.which);};
+        if (type == 2) {key = String.fromCharCode(event.which);};
         //creates more data
         d1 = new Date();
         Ronset = d1.getTime()-runStart;
@@ -643,50 +645,37 @@ function setValues() {
       }
       else if (type == 3) {jokes++;}
       else if (type == 4) {clearTimeout(timeoutITI); showITI();}
-      else if (type == 5) {
-        if(key == "l" || key == "L"){
-          choice = (+document.getElementById("slider").value);
-          if (choice > wmC-.15 & choice < wmC+.15){acc=1;}
-          data[logCounter] = ["NR:", block, Ronset, choice, respTime, acc, trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
-          logCounter++; acctotalcount++; stimscreencount++; document.getElementById("myCanvas").style.cursor = "none"; $("#slider").hide(); document.getElementById('slider').value=.50; showITI();
-        }
-      }
+      else if (type == 5) {jokes++;}
       else if (type == 6) {ctx.rotate(45 * Math.PI / 180); ctx.translate(Math.sqrt(2*(450*450)),0); instructioncount++; document.getElementById("myCanvas").style.cursor = "none"; countDown(3);}
       else if (type == 7) {checkSize(); if (checkwindowsize == 0 && notfullscreen == 1) {countDown(3);} else {jokes++;}}
     });
-    /*$("body").click(function(event){
-    //clearTimeout();
-    var rect = myCanvas.getBoundingClientRect();
-    if (type == 5) {key = event.clientX-rect.left;};
-    //creates more data
-    d1 = new Date();
-    Ronset = d1.getTime()-runStart;
-    respTime = Ronset-onset;
-    acc = 0;
-    if (type == 0) {jokes++;}
-    if (type == 1) {clearTimeout(timeout); timeout = setTimeout(showITI,WMinterval);}
-    if (type == 2) {jokes++;}
-    if (type == 3) {jokes++;}
-    if (type == 4) {clearTimeout(timeoutITI); showITI();}
-    if (type == 5) {
-    if (wmC < colorspectrum-probeaccrange && wmC > probeaccrange-1){correctmin = ((colorspectrum-wmC)*linewidthoverall)-probeaccrange+offset_probe; correctmax = ((colorspectrum-wmC)*linewidthoverall)+1+probeaccrange+offset_probe;}
-    else if (wmC > colorspectrum-probeaccrange-1) {correctmin = offset_probe; correctmax = offset_probe+(probeaccrange*2)}
-    else if (wmC < probeaccrange){correctmin = offset_probe+(colorspectrum*linewidthoverall)-(probeaccrange*2); correctmax = offset_probe+(colorspectrum*linewidthoverall);}
-    if (key >= correctmin & key <= correctmax) {acc=1;acccount++;}
-    data[logCounter] = ["NR:", block, Ronset, key, respTime, acc, trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
-    logCounter++; acctotalcount++; stimscreencount++; document.getElementById("myCanvas").style.cursor = "none"; drawcorrectanswercounter++; drawcorrectanswer();
-  }
-  if (type == 6) {jokes++;}
-});*/
+
+
+    $("#WMprobe").click(function(){
+      acc = 0;
+      choice = (+document.getElementById("slider").value);
+      if (choice > wmC-.10 & choice < wmC+.10){acc=1;}
+      if(choice != .500){
+      data[logCounter] = ["NR:", block, Ronset, choice, respTime, acc, trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
+      logCounter++; acctotalcount++; stimscreencount++; document.getElementById("myCanvas").style.cursor = "none"; $("#slider").hide(); $("#WMprobe").hide(); $("#warning").hide(); document.getElementById('slider').value=.50; showITI();
+      }
+      if(choice == .500){
+        $("#slider").show();
+        $("#WMprobe").show();
+        $("#warning").show();
+      }
+    });
+
 //Start stuff
 $("#info").hide();
 $("#mturk_form").hide();
 $("#slider").hide();
+$("#WMprobe").hide();
+$("#warning").hide();
 d1 = new Date();
 runStart = d1.getTime();
 runTrial();
 });
-
 </script>
 </head>
 <body>
@@ -699,16 +688,17 @@ runTrial();
         <div style="text-align:center;">
           <button id="startButton">Start</button>
         </div>
+        <p id="warning" style="font-family: arial; font-size:30px">You must move the slider.</p>
         <input type="range" name="points" id="slider" value=".5" min="0" max="1" step=".01" class="slider-width100">
-
+        <button id="WMprobe">Enter</button>
         <form id="mturk_form" method="POST" action="http://152.3.33.45/AMTSubmit/dataHandler.php">
           <form id="mturk_form" method="POST" action="https://workersandbox.mturk.com/mturk/externalSubmit">
             <input type="hidden" id="assignmentId" name="assignmentId" value="">
             <input type="hidden" id="workerId" name="workerId" value="">
             <input type="hidden" id="hitId" name="hitId" value="">
             <input type="hidden" id="RTs" name="RTs" value="">
-            <input type="hidden" id="ExpName" name="ExpName" value="pWM_Practice">
-            <p style="font-family: Arial; color: black; font-size:24px">Click button to submit</p>
+            <input type="hidden" id="ExpName" name="ExpName" value="pWM">
+            <p style="font-family: Arial; color: white; font-size:24px">Click button to submit</p>
             <input id="submitButton" type="submit" name="Finish" value="Submit">
           </td>
         </tr>
