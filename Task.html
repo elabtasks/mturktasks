@@ -29,11 +29,7 @@ $(document).ready(function(){
     var stimscreencount = 0;
     var instructionsfirst = 0;
     var ITIinterval = 500; //Inter-trial-interval in milliseconds
-<<<<<<< HEAD
     var blocklength = 42;
-=======
-    var blocklength = 40;
->>>>>>> 1c4d851c62ccb76ed560433a8ad971d5d9b8c2a7
     var counter = 0;
     var numberofblocks = 4;
     var block = 0;
@@ -75,6 +71,8 @@ $(document).ready(function(){
       type = 4;
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         if (instructionsfirst == 0){
+          instructioninterval = 30000;
+
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.font="25px Arial";
         ctx.fillStyle="black";
@@ -97,6 +95,8 @@ $(document).ready(function(){
         ctx.fillText("this color", (myCanvas.width/2)-15, (myCanvas.height/2)-100);
       }
       if (instructionsfirst == 1){
+        instructioninterval = 5000;
+
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.font="25px Arial";
         ctx.fillStyle="black";
@@ -204,7 +204,7 @@ $(document).ready(function(){
     };
 
     function showITI(){
-      type = 0;
+      type = 4;
       if(stimscreencount == 1){
         stimscreencount++;
         ITIinterval = 500;
@@ -225,19 +225,9 @@ $(document).ready(function(){
       }
     };
 
-    function showITIspecial(){
-      type = 0;
-        $("#startButton").hide();
-        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-        ctx.font="bold 50px Arial";
-        ctx.fillStyle="black";
-        ctx.fillText("*",(myCanvas.width)/2,(myCanvas.height)/2);
-        setTimeout(runTrial,500);
-    };
-
     function countDown(time)
     {
-      type = 3;
+      type = 4;
       if (time > 0)
       {
         $("#startButton").hide();
@@ -399,6 +389,9 @@ $(document).ready(function(){
       d1 = new Date();
       Ronset = d1.getTime()-runStart;
       respTime = Ronset-onset;
+    });
+
+    $("body").keyup(function(event){
       acc = 0;
       if (type == 1){
         if(key == "d" || key == "D"){
@@ -445,7 +438,7 @@ $(document).ready(function(){
         stimscreencount = 0; i++; counter++; w++; w++; b++; showITI();}
         else {jokes++;}
       }
-      if (type == 4){showITIspecial(); jokes++;}
+      if (type == 4){jokes++;}
     });
 
     $("#info").hide();
