@@ -225,6 +225,16 @@ $(document).ready(function(){
       }
     };
 
+    function showITIspecial(){
+      type = 0;
+        $("#startButton").hide();
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="bold 50px Arial";
+        ctx.fillStyle="black";
+        ctx.fillText("*",(myCanvas.width)/2,(myCanvas.height)/2);
+        setTimeout(runTrial,500);
+    };
+
     function countDown(time)
     {
       type = 3;
@@ -435,7 +445,7 @@ $(document).ready(function(){
         stimscreencount = 0; i++; counter++; w++; w++; b++; showITI();}
         else {jokes++;}
       }
-      if (type == 4){jokes++;}
+      if (type == 4){showITIspecial(); jokes++;}
     });
 
     $("#info").hide();
