@@ -109,10 +109,22 @@
 
 			setup();*/
 
+			/*document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
+			document.getElementById("workerId").value = gup("workerId", document.referrer);
+			document.getElementById("hitId").value = gup("hitId", document.referrer);
+
+
+			if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")*/
+
 			document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
 			document.getElementById("workerId").value = gup("workerId", document.referrer);
 			document.getElementById("hitId").value = gup("hitId", document.referrer);
 
+			for (subnum=0; subnum < subj.length; subnum++){
+					if (subj[subnum] == document.getElementById("workerId").value){
+						preventparticipation == 1;
+					}
+			}
 
 			if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")
 			{
