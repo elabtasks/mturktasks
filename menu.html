@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" href="NEXT.css" type="text/css" charset="utf-8">
 	<script type="text/javascript" src="jquery-3.1.1.js"></script>
+	<script type="text/javascript" src="subcheck.js"></script>
 	<script type="text/javascript">
 	/*var curStage = 0;
 	var setupfunction = 0;
@@ -85,7 +86,7 @@
 			case 3:
 			$("#myButton").show();
 			$("#redo").show();
-				$("#instruction").text("Click 'Continue' button to start main task. Or click 'Redo' to practice again. Do not close this window.");
+				$("#instruction").text("Click button to start task. Do not close this window.");
 				break;
 			case 4:
 				$("#instruction").hide();
@@ -107,18 +108,20 @@
 
 			setup();*/
 
-			/*document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
+			document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
 			document.getElementById("workerId").value = gup("workerId", document.referrer);
 			document.getElementById("hitId").value = gup("hitId", document.referrer);
 
-			if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")*/
-			document.getElementById("assignmentId").value = 123;
-			document.getElementById("workerId").value = 123;
-			document.getElementById("hitId").value = 123;
 
 			if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")
 			{
 				$("#instruction").text("Accept HIT first");
+				$("#instruction").show();
+				$("#myButton").hide();
+				$("#redo").hide();
+			}
+			else if (preventparticipation == 1 & document.getElementById("assignmentId").value != "" & document.getElementById("assignmentId").value != "ASSIGNMENT_ID_NOT_AVAILABLE"){
+				$("#instruction").text("You have already participated in this HIT.");
 				$("#instruction").show();
 				$("#myButton").hide();
 				$("#redo").hide();
