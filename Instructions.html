@@ -1,207 +1,184 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="TaskExp.css" type="text/css" charset="utf-8">
-  <script type="text/javascript" src="jquery-3.2.1.js"></script>
+  <link rel="stylesheet" href="NEXT.css" type="text/css" charset="utf-8">
+  <script type="text/javascript" src="jquery-3.1.1.js"></script>
   <script type="text/javascript">
 
   /*function gup(name, tmpURL)
-  {
-  var regexS = "[\\?&]"+name+"=([^&#]*)";
-  var regex = new RegExp(regexS);
-  var results = regex.exec(tmpURL);
-  if (results == null)
-  {
-  return "";
-}
-else
-{
-return results[1];
-}
-}*/
+	{
+		var regexS = "[\\?&]"+name+"=([^&#]*)";
+		var regex = new RegExp(regexS);
+		var results = regex.exec(tmpURL);
+		if (results == null)
+		{
+			return "";
+		}
+		else
+		{
+			return results[1];
+		}
+	}*/
 
-$(document).ready(function(){
+  $(document).ready(function(){
 
-  var c = document.getElementById("myCanvas");
-  var ctx = c.getContext("2d");
-  var i = 0;
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    var i = 0;
 
-  function drawsquircle(color, locx, locy, degree) {
-    ctx.moveTo(900, 900);
-    ctx.beginPath();
-    var n = degree;
-    //this is the function for area of a squircle solved for the semi-diameter a
-    var a1 = (Math.pow((math.gamma(1 + (1 / n))), (2)));
-    var a2 = ((math.gamma(1 + (2 / n))));
-    var a3 = 4;
-    var a = Math.pow(((a3 * (a1 / a2)) / area), (1 / (-2)));
-    //a=50;
-    //loop for parametric equations
-    for (theta = 0; theta < 360; theta++) {
-      //makes the x and y parameters for the squircle
-      var x = a *
-      (Math.pow((Math.abs(Math.cos(((Math.PI / 180) * (theta))))), (2 / n)));
-      if ((Math.cos((Math.PI / 180) * (theta))) < 0) {
-        x = -1 * x
-      };
-      if ((Math.cos((Math.PI / 180) * (theta))) == 0) {
-        x = 0 * x
-      };
-      var y = a *
-      (Math.pow((Math.abs(Math.sin(((Math.PI / 180) * (theta))))), (2 / n)));
-      if ((Math.sin((Math.PI / 180) * (theta))) < 0) {
-        y = -1 * y
-      };
-      if ((Math.sin((Math.PI / 180) * (theta))) == 0) {
-        y = 0 * y
-      };
-      //plots
-      ctx.lineTo((x + locx), (y + locy));
-    }
-    ctx.closePath();
-    //ctx.rotate(315*(Math.PI/180));
-    //fills with color
-    //ctx.fillStyle = "white";
-    //ctx.fill();
-    ctx.lineWidth = 6;
-    ctx.strokeStyle = "black";
-    ctx.stroke();
-  };
+    function blockinstruction1(){
 
-  var fileName = ["squircledisplay.PNG","squircleWMcue.PNG","WMprobe.PNG"]
-  imgs= new Array(3);
-  var imgCount = 0;
+      $("#startButton").show();
 
-  function loadImage()
-  {
-    if (imgCount < 3)
-    {
-      imgs[imgCount] = new Image();
-      imgs[imgCount].src=fileName[imgCount];
-      imgs[imgCount].onload=loadImage;
-      imgCount++;
-    }
-  }
-//
-  function blockinstruction1(){
-
-    $("#continueButton").show();
-    $("#backButton").hide();
-
-    if (i == 0){
-      loadImage()
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="left";
-      ctx.textAlign="left";
-      ctx.fillText("Today you will be completing a simple task.", (myCanvas.width)-900, (myCanvas.height/2)-320);
-      ctx.fillText("__________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-300);
-      ctx.fillText("1. You will first see a shape presented on the screen.", (myCanvas.width)-900, (myCanvas.height/2)-250);
-      ctx.fillText("   Remember this shape.", (myCanvas.width)-900, (myCanvas.height/2)-200);
-
-      ctx.fillText("2. You will then see a screen that will...", (myCanvas.width)-900, (myCanvas.height/2)-150);
-
-      ctx.fillText("   2.b. Following this, you could see a screen that will", (myCanvas.width)-900, (myCanvas.height/2)+150);
-      ctx.fillText("        display a single shape and a slider.", (myCanvas.width)-900, (myCanvas.height/2)+200);
-      ctx.fillText("        Use the mouse to drag the slider until the pictured shape", (myCanvas.width)-900, (myCanvas.height/2)+250);
-      ctx.fillText("        is the same you previously needed to remember.", (myCanvas.width)-900, (myCanvas.height/2)+300);
-
-      ctx.fillText("   2.a. Display 8 shapes.", (myCanvas.width)-900, (myCanvas.height/2)-100);
-      ctx.fillText("        You will need to decide if the average shape of those", (myCanvas.width)-900, (myCanvas.height/2)-50);
-      ctx.fillText("        8 is more square like or more circle like.", (myCanvas.width)-900, (myCanvas.height/2)+0);
-      ctx.fillText("        If they are more CIRCLE like, press the F key.", (myCanvas.width)-900, (myCanvas.height/2)+50);
-      ctx.fillText("        If they are more SQUARE like, press the G key.", (myCanvas.width)-900, (myCanvas.height/2)+100);
-
-      ctx.fillText("Press the button below to continue through the instructions.", (myCanvas.width)-900, (myCanvas.height/2)+375);
-
-
-    }
-    else if (i == 1){
-      $("#backButton").show();
-
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
-      ctx.fillText("Below is an example of the initial shape item.", (myCanvas.width/2), (myCanvas.height/2)-300);
-      ctx.fillText("You should remember the shape carefully.", (myCanvas.width/2), (myCanvas.height/2)-240);
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-220);
-      ctx.drawImage(imgs[1],(myCanvas.width/2), (myCanvas.height/2));
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
-      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+300);
-      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+350);
-
-    }
-    else if (i == 2){
-      $("#backButton").show();
-
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
-      ctx.fillText("Below is an example of the shape slider.", (myCanvas.width/2), (myCanvas.height/2)-370);
-      ctx.textAlign="left";
-      ctx.fillText("1. Using the mouse you would be able to click slider", 100, (myCanvas.height/2)-320);
-      ctx.fillText("    and drag it until the pictured shape matched the", 100, (myCanvas.height/2)-270);
-      ctx.fillText("    one you were supposed to remmeber.", 100, (myCanvas.height/2)-220);
-      ctx.fillText("2. Once it does, you would click the enter button to continue.", 100, (myCanvas.height/2)-170);
-      ctx.textAlign="center";
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-165);
-      ctx.drawImage(imgs[2],(myCanvas.width/2)-250, (myCanvas.height/2)-100, 429.75,462);
-      clickcount = 0;
-      $("body").click(function(event){
-        clickcount++;
-        //clearTimeout();
-        var rect = myCanvas.getBoundingClientRect();
-        key = event.clientX-rect.left;
-        acc = 0;
-        wmC = 208;
-        probeaccrange = 25;
-        offset_probe = 195;
-        correctmin = (((255-wmC)*2)-probeaccrange)+offset_probe;
-        correctmax = (((255-wmC)*2)+(probeaccrange+1))+offset_probe;
-        if (i == 2){
-          if (clickcount > 1){
-            if (key >= correctmin & key <= correctmax) {feedback(1)}
-            else {feedback(0)}}
-          }
-        });
-      }
-      else if (i == 3){
-        $("#backButton").show();
-
+      if (i == 0){
+        $("#backButton").hide();
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.font="25px Arial";
-        ctx.fillStyle="white";
+        ctx.fillStyle="black";
+        ctx.textBaseline="left";
+        ctx.textAlign="left";
+        ctx.fillText("Today you will be completing a simple task.", (myCanvas.width)-900, (myCanvas.height/2)-320);
+        ctx.fillText("__________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-300);
+        ctx.fillText("1. You will see a series of words presented on the screen.", (myCanvas.width)-900, (myCanvas.height/2)-250);
+        ctx.fillText("2. The task is divided into many short blocks of trials,", (myCanvas.width)-900, (myCanvas.height/2)-200);
+        ctx.fillText("  each with unique instructions.", (myCanvas.width)-900, (myCanvas.height/2)-150);
+        ctx.fillText("3. There are three trial types:", (myCanvas.width)-900, (myCanvas.height/2)-100);
+        ctx.fillText("  3a. Trials where the word is RED, you will press the D-key to continue.", (myCanvas.width)-900, (myCanvas.height/2)-50);
+        ctx.fillText("  3b. Trials in which the word is BLUE and you need to implement the instructions.", (myCanvas.width)-900, (myCanvas.height/2)-0);
+        ctx.fillText("  3c. Trials in which you will need to remember but not implement the instructions.", (myCanvas.width)-900, (myCanvas.height/2)+50);
+
+        ctx.fillText("4. Each instruction set will appear for a limited time.", (myCanvas.width)-900, (myCanvas.height/2)+100);
+
+        ctx.fillText("5. If you do not do the task properly", (myCanvas.width)-900, (myCanvas.height/2)+150);
+        ctx.fillText("  (you need to get an accuracy > 75%) you will not get paid.", (myCanvas.width)-900, (myCanvas.height/2)+200);
+
+        ctx.fillText("Please press the button below for examples.", (myCanvas.width)-900, (myCanvas.height/2)+280);
+
+      }
+      else if (i == 1){
+        $("#backButton").show();
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
         ctx.textBaseline="middle";
         ctx.textAlign="center";
-        ctx.fillText("Below is an example of the 8 shapes.", (myCanvas.width/2), (myCanvas.height/2)-350);
-        ctx.fillText("Determine whether the average shape", (myCanvas.width/2), (myCanvas.height/2)-290);
-        ctx.fillText("is more square shaped or more circle shaped.", (myCanvas.width/2), (myCanvas.height/2)-240);
-        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-220);
+        ctx.fillText("Below is an example of the instructions for the task.", (myCanvas.width/2), (myCanvas.height/2)-300);
+        ctx.fillText("Instructions will appear before every short block of trials.", (myCanvas.width/2), (myCanvas.height/2)-250);
+        ctx.fillText("For the first two trials, instructions will look like this:", (myCanvas.width/2), (myCanvas.height/2)-200);
+        ctx.fillText("____________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
+        ctx.fillText("When the words appear in                                   press D", (myCanvas.width/2)-50, (myCanvas.height/2)+100)
+        ctx.fillText("When the words appear in                                  , follow the instructions below:", (myCanvas.width/2), (myCanvas.height/2)-100);
+        ctx.font="bold 25px Arial";
+        ctx.fillText("If you see the word: 'jewel' then press J", (myCanvas.width/2), (myCanvas.height/2));
+        ctx.fillText("If you see the word: 'angel' then press D", (myCanvas.width/2), (myCanvas.height/2)-50);
 
-        ctx.drawImage(imgs[0],(myCanvas.width/2)-300, (myCanvas.height/2)-200);
+        ctx.font="bold 50px Arial";
+        ctx.fillStyle="red";
+        ctx.fillText("this color", (myCanvas.width/2)+54, (myCanvas.height/2)+100);
 
-        ctx.fillStyle="white";
-        ctx.fillText("The correct answer would be to press the G key to indicate ", (myCanvas.width/2), (myCanvas.height/2)+260);
-        ctx.fillText("these items are more SQUARE-like.", (myCanvas.width/2), (myCanvas.height/2)+310);
-        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+340);
-        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+370);
-        ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+420);
+        ctx.fillStyle="blue";
+        ctx.fillText("this color", (myCanvas.width/2)-15, (myCanvas.height/2)-100);
+
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="middle";
+        ctx.textAlign="center";
+        ctx.fillText("____________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
+        ctx.fillText("Please press the button below for another example.", (myCanvas.width/2), (myCanvas.height/2)+300);
+      }
+      else if (i == 2){
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="middle";
+        ctx.textAlign="left";
+        ctx.fillText("Instructions could also appear like this.", (myCanvas.width)-900, (myCanvas.height/2)-250);
+        ctx.fillText("This is a simpler way to communicate the ", (myCanvas.width)-900, (myCanvas.height/2)-200);
+        ctx.fillText("same instructions as you saw previously.", (myCanvas.width)-900, (myCanvas.height/2)-150);
+        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-130);
+        ctx.font="bold 25px Arial";
+        ctx.fillText("If                                     press J", (myCanvas.width/2)-300, (myCanvas.height/2));
+        ctx.fillText("If                                     press D", (myCanvas.width/2)-300, (myCanvas.height/2)-50);
+
+        ctx.font="bold 50px Arial";
+        ctx.fillStyle="blue";
+        ctx.fillText("legend", (myCanvas.width/2)-280, (myCanvas.height/2));
+        ctx.fillText("talk", (myCanvas.width/2)-280, (myCanvas.height/2)-50);
+
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="middle";
+        ctx.textAlign="left";
+        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)+150);
+        ctx.fillText("PLEASE NOTE: The instruction to press the D key whenever words", (myCanvas.width)-900, (myCanvas.height/2)+180);
+        ctx.fillText("appear in RED is constant througout the ENTIRE task, even if", (myCanvas.width)-900, (myCanvas.height/2)+230);
+        ctx.fillText("it is not explicitly instructed.", (myCanvas.width)-900, (myCanvas.height/2)+280);
+        ctx.textAlign="center";
+
+        ctx.fillText("Please press the button below for another example.", (myCanvas.width/2), (myCanvas.height/2)+350);
+      }
+      else if (i == 3){
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="20px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="middle";
+        ctx.textAlign="left";
+        ctx.fillText("1. When the words are presented in BLUE, you could be asked to remember", (myCanvas.width)-900, (myCanvas.height/2)-400);
+        ctx.fillText("   or implement the instructions from the most recent instruction screen.", (myCanvas.width)-900, (myCanvas.height/2)-360);
+        ctx.fillText("2. Below is an example of what the screen would look like if you were asked", (myCanvas.width)-900, (myCanvas.height/2)-320);
+        ctx.fillText("   to remember, but not implement the instructions:", (myCanvas.width)-900, (myCanvas.height/2)-280);
+        ctx.fillText("3. Here, you need to assess whether the shown instructions are", (myCanvas.width)-900, (myCanvas.height/2)-240);
+        ctx.fillText("   the same, changed by one instruction, or both different than", (myCanvas.width)-900, (myCanvas.height/2)-200);
+        ctx.fillText("   the instructions you were tasked to remember.", (myCanvas.width)-900, (myCanvas.height/2)-160);
+        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-140);
+        ctx.font="25px Arial";
+        ctx.fillText("If                                     press D", (myCanvas.width/2)-300, (myCanvas.height/2)-50);
+        ctx.fillText("If                                     press J", (myCanvas.width/2)-300, (myCanvas.height/2));
+        ctx.textAlign="center";
+        ctx.fillText("For these instructions:", (myCanvas.width/2), (myCanvas.height/2)+200);
+        ctx.fillText("They are both the same press T", (myCanvas.width/2), (myCanvas.height/2)+250);
+        ctx.fillText("Only one is the same press G", (myCanvas.width/2), (myCanvas.height/2)+300);
+        ctx.fillText("Neither are the same press B", (myCanvas.width/2), (myCanvas.height/2)+350);
+        ctx.textAlign="left";
+
+        ctx.font="bold 50px Arial";
+        ctx.fillStyle="blue";
+
+          ctx.fillText("legend", (myCanvas.width/2)-280, (myCanvas.height/2)-50);
+          ctx.fillText("jewel", (myCanvas.width/2)-280, (myCanvas.height/2));
+
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textAlign="left";
+        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)+350);
+        ctx.textAlign="center";
+        ctx.fillText("Please press the button below for another example.", (myCanvas.width/2), (myCanvas.height/2)+400);
       }
       else if (i == 4){
-        $("#backButton").show();
-
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-        ctx.font="30px Arial";
-        ctx.fillStyle="white";
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="middle";
+        ctx.textAlign="left";
+        ctx.fillText("1. This is an example of what the screen would look like if you only", (myCanvas.width)-900, (myCanvas.height/2)-350);
+        ctx.fillText("   needed to implement the instructions you are currently remembering.", (myCanvas.width)-900, (myCanvas.height/2)-300);
+        ctx.fillText("2. Here, you simply need to implement the instructions you were", (myCanvas.width)-900, (myCanvas.height/2)-250);
+        ctx.fillText("   asked to remember.", (myCanvas.width)-900, (myCanvas.height/2)-200);
+        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-120);
+
+        ctx.font="bold 80px Arial";
+        ctx.fillStyle="blue";
         ctx.textBaseline="middle";
         ctx.textAlign="center";
-        ctx.fillText("To try a practice session, press 'Continue'", (myCanvas.width/2), (myCanvas.height/2));
-        ctx.fillText("To read through the instructions again, use the 'Go Back' button.", (myCanvas.width/2), (myCanvas.height/2)+100);
+        ctx.fillText("legend", (myCanvas.width/2), (myCanvas.height/2));
+
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="middle";
+        ctx.textAlign="left";
+        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)+250);
+        ctx.textAlign="center";
+        ctx.fillText("If you are ready please press the button below to start a short practice task.", (myCanvas.width/2), (myCanvas.height/2)+300);
       }
     }
 
@@ -215,34 +192,34 @@ $(document).ready(function(){
       }
     }
 
-    runTrial();
+runTrial();
 
 
-    $("#continueButton").click(function(){i++; runTrial();});
-    $("#backButton").click(function(){i--; runTrial();});
-  });
+$("#continueButton").click(function(){i++; runTrial();});
+$("#backButton").click(function(){i--; runTrial();});
+          });
 
-  </script>
-</head>
-<body>
-  <table>
-    <tr>
-      <td>
-        <canvas id="myCanvas" width="900" height="900"> </canvas>
-        <div style="text-align:center; align:center;">
-        </div>
-        <div style="text-align:center;">
-          <button id="backButton">Go Back</button>
-          <button id="continueButton">Continue</button>
-        </div>
-        <input type="hidden" id="assignmentId" name="assignmentId" value="">
-        <input type="hidden" id="workerId" name="workerId" value="">
-        <input type="hidden" id="hitId" name="hitId" value="">
-        <input type="hidden" id="RTs" name="RTs" value="">
-        <input type="hidden" id="ExpName" name="ExpName" value="NEXT">
-        <p style="font-family: Arial; color: white; font-size:24px"></p>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
+          </script>
+        </head>
+        <body>
+          <table>
+            <tr>
+              <td>
+                <canvas id="myCanvas" width="900" height="900"> </canvas>
+                <div style="text-align:center; align:center;">
+                </div>
+                <div style="text-align:center;">
+                  <button id="backButton">Go Back</button>
+                  <button id="continueButton">Continue</button>
+                                </div>
+                    <input type="hidden" id="assignmentId" name="assignmentId" value="">
+                    <input type="hidden" id="workerId" name="workerId" value="">
+                    <input type="hidden" id="hitId" name="hitId" value="">
+                    <input type="hidden" id="RTs" name="RTs" value="">
+                    <input type="hidden" id="ExpName" name="ExpName" value="NEXT">
+                    <p style="font-family: Arial; color: black; font-size:24px"></p>
+                  </td>
+                </tr>
+              </table>
+            </body>
+            </html>

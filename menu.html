@@ -1,10 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="Task.css" type="text/css" charset="utf-8">
-	<script type="text/javascript" src="jquery-3.2.1.js"></script>
-	<script type="text/javascript" src="subcheck.js"></script>
+	<link rel="stylesheet" href="NEXT.css" type="text/css" charset="utf-8">
+	<script type="text/javascript" src="jquery-3.1.1.js"></script>
 	<script type="text/javascript">
+	/*var curStage = 0;
+	var setupfunction = 0;
+	function setup() //thanks to Christina Bejjani for this chunk of code
+	 {
+			 var person = prompt("Please enter the subject ID");
+			 if (person == null || person == "") {
+					 alert("User cancelled the prompt. Please refresh the page - task will not save otherwise!");
+			 } else {
+					 document.getElementById('workerId').value = person;
+					 document.getElementById('assignmentId').value = person + "_assID";
+					 document.getElementById('hitId').value = person + "_hitID";
+					 updateMainMenu(0)
+			 }
+	 }
+
+	function basicPopup(url)
+	{
+		popupWindow = window.open(url, "popupWindow");
+	}
+
+	function gup(name, tmpURL)
+	{
+		var regexS = "[\\?&]"+name+"=([^&#]*)";
+		var regex = new RegExp(regexS);
+		var results = regex.exec(tmpURL);
+		if (results == null)
+		{
+			return "";
+		}
+		else
+		{
+			return results[1];
+		}
+	}
+	*/
+
 	curStage = 0;
 	function basicPopup(url)
 	{
@@ -31,115 +66,110 @@
 		curStage = expStage;
 		switch(expStage)
 		{
-		case 0:
-		$("#myButton").show();
-		$("#submit").hide();
-		$("#redo").hide();
-			$("#instruction").text("Click button to fill out demographic survey. Do not close this window.");
-			break;
-		case 1:
+			case 0:
+			$("#myButton").show();
+			$("#submit").hide();
+			$("#redo").hide();
+				$("#instruction").text("Click button to fill out demographic survey. Do not close this window.");
+				break;
+			case 1:
+				$("#myButton").show();
+				$("#redo").hide();
+					$("#instruction").text("Click button to see task instructions. Do not close this window.");
+					break;
+			case 2:
 			$("#myButton").show();
 			$("#redo").hide();
-				$("#instruction").text("Click button to see task instructions. Do not close this window.");
+				$("#instruction").text("Click button to start practice task. Do not close this window.");
 				break;
-		case 2:
-		$("#myButton").show();
-		$("#redo").hide();
-			$("#instruction").text("Click button to start practice task. Do not close this window.");
-			break;
-		case 3:
-		$("#myButton").show();
-		$("#redo").show();
-			$("#instruction").text("Click 'Continue' button once to start main task. Or click 'Redo' to practice again. Do not close this window.");
-			break;
-		case 4:
-			$("#instruction").hide();
-			$("#myButton").hide();
-			$("#redo").hide();
-			$("#mturk_form").show();
-			break;
+			case 3:
+			$("#myButton").show();
+			$("#redo").show();
+				$("#instruction").text("Click 'Continue' button to start main task. Or click 'Redo' to practice again. Do not close this window.");
+				break;
+			case 4:
+				$("#instruction").hide();
+				$("#myButton").hide();
+				$("#redo").hide();
+				$("#mturk_form").show();
+				break;
 		}
 	}
 
 	$(document).ready(function(){
 		$("#mturk_form").hide();
 		$("#instructions").hide();
-		$("#myButton").hide();
-		preventparticipation = 0;
+		$("#myButton").show();
 
-		document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
+		/*document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
 		document.getElementById("workerId").value = gup("workerId", document.referrer);
 		document.getElementById("hitId").value = gup("hitId", document.referrer);
 
-		for (subnum=0; subnum < subj.length; subnum++){
-				if (subj[subnum] == document.getElementById("workerId").value){
-					preventparticipation == 1;
-				}
-		}
+			setup();*/
 
-		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")
-		/*document.getElementById("assignmentId").value = 123;
-		document.getElementById("workerId").value = 123;
-		document.getElementById("hitId").value = 123;
+			/*document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
+			document.getElementById("workerId").value = gup("workerId", document.referrer);
+			document.getElementById("hitId").value = gup("hitId", document.referrer);
 
-		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")*/
-		{
-			$("#instruction").text("Accept HIT first");
-			$("#instruction").show();
-			$("#myButton").hide();
-			$("#redo").hide();
-		}
-		else if (preventparticipation == 1 & document.getElementById("assignmentId").value != "" & document.getElementById("assignmentId").value != "ASSIGNMENT_ID_NOT_AVAILABLE"){
-			$("#instruction").text("You have already participated in this HIT.");
-			$("#instruction").show();
-			$("#myButton").hide();
-			$("#redo").hide();
-		}
-		else
-		{
-			updateMainMenu(0);
+			if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")*/
+			document.getElementById("assignmentId").value = 123;
+			document.getElementById("workerId").value = 123;
+			document.getElementById("hitId").value = 123;
+
+			if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")
+			{
+				$("#instruction").text("Accept HIT first");
+				$("#instruction").show();
+				$("#myButton").hide();
+				$("#redo").hide();
+			}
+			else
+			{
+
+				updateMainMenu(0);
+
+
 			$("#myButton").click(function(){
 			switch(curStage)
-				{
-				case 0:
-					basicPopup("Demographics.html");
-					break;
-				case 1:
-					basicPopup("Instructions.html");
-					break;
-				case 2:
-					basicPopup("Task_Practice.html");
-					break;
-				case 3:
-					basicPopup("Task.html");
-					break;
-				}
+			{
+			case 0:
+				basicPopup("Demographics.html");
+				break;
+			case 1:
+				basicPopup("Instructions.html");
+				break;
+			case 2:
+				basicPopup("Task_Practice.html");
+				break;
+			case 3:
+				basicPopup("Task.html");
+				break;
+			}
+		});
+	}
 			});
-			$("#redo").click(function(){
-					basicPopup("Task_Practice.html");
-					});
-		}
-	});
 
+	$("#instruction").hide();
+	$("#myButton").hide();
+	$("#redo").hide();
+	$("#mturk_form").hide();
 	</script>
 	<body>
 		<table>
 			<tr>
 				<td>
 					<p id="instruction" style="font-family: arial; font-size: 40px; color: black;">Click the button to fill out demographics</p>
-					<button id="myButton"> Continue </button>
-					<button id="redo"> Redo </button>
+					<button id="myButton"> Click </button>
 						<form id="mturk_form" method="POST" action="http://152.3.33.45/AMTSubmit/dataHandler.php">
-							<form id="mturk_form" method="POST" action="https://workersandbox.mturk.com/mturk/externalSubmit">
 							<!-- <form id="mturk_form" method="POST" action="https://wwww.mturk.com/mturk/externalSubmit"> -->
-							<input type="hidden" id="assignmentId" name="assignmentId" value="">
+							<input type="hidden" id="assignmentId" name="assignmentId" value="123">
 							<input type="hidden" id="workerId" name="workerId" value="">
 							<input type="hidden" id="hitId" name="hitId" value="">
 							<input type="hidden" id="RTs" name="RTs" value="">
-							<input type="hidden" id="demographics" name="demographics" value="pWM">
-							<input type="hidden" id="ExpName" name="ExpName" value="pWM">
+							<input type="hidden" id="demographics" name="demographics" value="NEXT">
+							<input type="hidden" id="ExpName" name="ExpName" value="NEXT">
 							<p style="font-family: Arial; color: black; font-size:24px">Click button to submit</p>
-							<p style="font-family: Arial; color: black; font-size:12px">“Thank you for participating in this study aimed to understand different aspects of memory and attention. In this particular study, we were looking to see if you responded more quickly to words in the first task of every block that were not overlapping in response dimensions with the prospective task. A congruent item in the first task of each block was when the correct response button was compatible with the correct response button for the prospective task, an incongruent item was when they were not compatible. There was not such a dichotomy in the prospective task of each block. Thus your responses are invaluable for us because we are looking to see how overlapping stimulus dimensions versus stimulus-response associations in both the first and prospective task were differentially impacted. At this time we haven’t been able to make any formal conclusions as we are just collecting data and haven’t analyzed the data yet! But, if you want to know more, feel free to contact me at any time at psw13@duke.edu or tobias.egner@duke.edu. Again, thanks so much for your participation!”</p>
+							<p style="font-family: Arial; color: black; font-size:12px"></p>
 							<input id="submitButton" type="submit" name="Finish" value="Submit">
 							</form>
 				</td>

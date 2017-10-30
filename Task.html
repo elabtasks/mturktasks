@@ -1,113 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="TaskExp.css" type="text/css" charset="utf-8">
-  <script type="text/javascript" src="jquery-3.2.1.js"></script>
-  <script type="text/javascript" src="math.js"></script>
+  <link rel="stylesheet" href="NEXT.css" type="text/css" charset="utf-8">
+  <script type="text/javascript" src="jquery-3.1.1.js"></script>
+  <script type="text/javascript" src="wordlist.js"></script>
   <script type="text/javascript">
-  $(document).ready(function(){
-    var c = document.getElementById("myCanvas");
-    var ctx = c.getContext("2d");
-    document.getElementById("myCanvas").style.cursor = "none";
-    ctx.rotate(45 * Math.PI / 180);
-    ctx.translate(Math.sqrt(2*(450*450)),0);
-    //Experiment Parameters
-    //setup for experiment
-    var ITIinterval
-    var trialcount = 0;
-    var totalcount = 0;
-    var instructioncount = 0;
-    var stimscreencount = 0;
-    var area = 5000;
-    var WMinterval = 500;
-    var preWMstimbuffer = 500
-    var coloraveragingpresentationtime = 500;
-    var probeaccrange = 20;//the deviation (in number of colors, from 256 possible colors) from actual color on the probe trials you are willing to accept as correct
-    var numberofblocks = 6;
-    var blocklength = 96;
-    var instructionson = 0;
-    var block = 0;
-    var colorspectrum = 100;
-    var decisionorprobe = 0;
-    var respondfastertime = 1800;
-    wmCcounter = 0;
-    i=0;
-    acccount = 0;
-    acctotalcount = 0;
-    notfullscreen = 0;
-    drawcorrectanswercounter = 0;
-    //response button shuffle
-    var responsebutton = [0,1];
-    //shuffle(responsebutton);
-    if (responsebutton[0] == 0){button1 = "F key"; button2 = "G key"}
-    else {button2 = "F key"; button1 = "G key"}
-    //variables that just need to be
-    type = 0;
-    jokes = 0;
-    //randomizes the order of trials
-    random = [];
-    for (var g=0;g<blocklength;g++) {
-      random.push(g);
-    }
-    shuffle(random)
-    //trial matrix
-    //1st element = color (-1 = blue, 1 = red)
-    //2nd element = mean (0 = low mean, 1 = high mean)
-    //3rd element = variance (0 = low variance, 1 = high variance)
-    //4th element = probe/pDM screen (0 = perceptual decision, 1 = probe)
-    var type1 = [[1,0,0,0]]
-    var type2 = [[1,1,0,0]]
-    var type3 = [[1,1,1,0]]
-    var type4 = [[1,0,1,0]]
 
-    var type5 = [[1,0,0,1]]
-    var type6 = [[1,1,0,1]]
-    var type7 = [[1,1,1,1]]
-    var type8 = [[1,0,1,1]]
+$(document).ready(function(){
 
-    var type9 = [[-1,0,0,0]]
-    var type10 = [[-1,1,0,0]]
-    var type11 = [[-1,1,1,0]]
-    var type12 = [[-1,0,1,0]]
+  var c = document.getElementById("myCanvas");
+  var ctx = c.getContext("2d");
 
-    var type13 = [[-1,0,0,1]]
-    var type14 = [[-1,1,0,1]]
-    var type15 = [[-1,1,1,1]]
-    var type16 = [[-1,0,1,1]]
-    trialmatrix = [];
-
-    trialmatrix = trialmatrix.concat(type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-      type1,type2,type3,type4,type9,type10,type11,type12,
-
-      type5,type6,type7,type8,type13,type14,type15,type16,
-      type5,type6,type7,type8,type13,type14,type15,type16,
-      type5,type6,type7,type8,type13,type14,type15,type16);
-
-//WM cue stim values
-    wmCvalues1 = [];
-    wmCvalues2 = [];
-    wmCvalues = [];
-
-    for (var arraymaker=0; arraymaker<50;){
-      wmCvalues1.push((arraymaker/100));
-      arraymaker++
-    };
-
-    for (var arraymaker=51; arraymaker<101;){
-      wmCvalues2.push((arraymaker/100));
-      arraymaker++
-    };
-
-    wmCvalues = wmCvalues.concat(wmCvalues1, wmCvalues2)
-    shuffle(wmCvalues);
-    //logfile
+  //logfile
     var data=[['']];
     var runStart;
     var logCounter = 0;
@@ -116,545 +20,452 @@
     var checkResponse = false;
     var timeoutHandle = null;
 
-//Gaussian distribution function
-var gmean
-var gstdev
-function gaussian(gmean, gstdev) {
-  var y2;
-  var use_last = false;
-  return function() {
-    var y1;
-    if(use_last) {
-      y1 = y2;
-      use_last = false;
+  //Experiment Parameters
+    var i = 0;
+    var w = 0;
+    var b = 0;
+    var acccount = 0;
+    var acctotalcount = 0;
+    var stimscreencount = 0;
+    var instructionsfirst = 0;
+    var ITIinterval = 500; //Inter-trial-interval in milliseconds
+    var blocklength = 42;
+    var counter = 0;
+    var numberofblocks = 4;
+    var block = 0;
+    var instructioninterval = 30000;
+    var color = ["red", "blue"]
+    var allwords = words;
+    var dummywords = words2;
+    var jokes = 0;
+    showblock = 0;
+
+    shuffle(allwords)
+    shuffle(dummywords)
+
+    proportioncount = [];
+    proportionstart = [0,1];
+    shuffle(proportionstart)
+    g = proportionstart[0];
+    for (var x=0;x<numberofblocks;x++) {
+      if (g > 1){g = 0;}
+      proportioncount.push(g);
+      g++;
+    };
+
+    GOtrial = [];
+    for (var x=0;x<blocklength;x++) {
+      GOtrial.push(2);
+    };
+
+    NEXTtrial = [];
+    g = 0;
+    for (var x=0;x<blocklength;x++) {
+      if (g > 5){g = 0;}
+      NEXTtrial.push(g);
+      g++;
+    };
+    shuffle(NEXTtrial)
+
+    function showinstructions(){
+      type = 4;
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        if (instructionsfirst == 0){
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="middle";
+        ctx.textAlign="center";
+        ctx.fillText("Please answer as quickly and accurately as possible.", (myCanvas.width/2), (myCanvas.height/2)-300);
+        ctx.fillText("You have 30 seconds to read these instructions.", (myCanvas.width/2), (myCanvas.height/2)-240);
+        ctx.fillText("Instruction screens after this will be shorter.", (myCanvas.width/2), (myCanvas.height/2)-190);
+        ctx.fillText("FOR THE ENTIRE TASK, when the words appear in                                   press D", (myCanvas.width/2)-50, (myCanvas.height/2)+100)
+        ctx.fillText("When the words appear in                                  , follow the instructions below:", (myCanvas.width/2), (myCanvas.height/2)-100);
+        ctx.font="bold 25px Arial";
+        ctx.fillText("If you see the word: '" +compatibleword+ "' then press D", (myCanvas.width/2), (myCanvas.height/2)-50);
+        ctx.fillText("If you see the word: '"+incompatibleword+ "' then press J", (myCanvas.width/2), (myCanvas.height/2));
+
+        ctx.font="bold 50px Arial";
+        ctx.fillStyle=color[0];
+        ctx.fillText("this color", (myCanvas.width/2)+200, (myCanvas.height/2)+100);
+
+        ctx.fillStyle=color[1];
+        ctx.fillText("this color", (myCanvas.width/2)-15, (myCanvas.height/2)-100);
+      }
+      if (instructionsfirst == 1){
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="25px Arial";
+        ctx.fillStyle="black";
+        ctx.textBaseline="middle";
+        ctx.textAlign="left";
+        ctx.fillText("If                                     press D", (myCanvas.width/2)-300, (myCanvas.height/2)-50);
+        ctx.fillText("If                                     press J", (myCanvas.width/2)-300, (myCanvas.height/2));
+        ctx.font="bold 50px Arial";
+        ctx.fillStyle=color[1];
+        ctx.fillText(compatibleword, (myCanvas.width/2)-280, (myCanvas.height/2)-50);
+        ctx.fillText(incompatibleword, (myCanvas.width/2)-280, (myCanvas.height/2));
     }
-    else {
-      var x1, x2, w;
-      do {
-        x1 = 2.0 * Math.random() - 1.0;
-        x2 = 2.0 * Math.random() - 1.0;
-        w  = x1 * x1 + x2 * x2;
-      } while( w >= 1.0);
-      w = Math.sqrt((-2.0 * Math.log(w))/w);
-      y1 = x1 * w;
-      y2 = x2 * w;
-      use_last = true;
-    }
-    var retval = gmean + gstdev * y1;
-    if(retval > 0)
-    return retval;
-    return -retval;
-  }
-}
+        //stimscreencount++;
+        instructionsfirst = 1;
+        instructiontimeout = setTimeout(showITI,instructioninterval);
+    };
 
-//Set x and y polar coordinates
-    var offset = 22.5
-    var r = (Math.sqrt((900*900)*2)/4) *.45;
-    var ycoordinate = r * Math.sin((Math.PI / 180) * (0+offset));
-    var xcoordinate = r * Math.cos((Math.PI / 180) * (0+offset));
-    var ycoordinate1 = r * Math.sin((Math.PI / 180) * (45+offset));
-    var xcoordinate1 = r * Math.cos((Math.PI / 180) * (45+offset));
-    var ycoordinate2 = r * Math.sin((Math.PI / 180) * (90+offset));
-    var xcoordinate2 = r * Math.cos((Math.PI / 180) * (90+offset));
-    var ycoordinate3 = r * Math.sin((Math.PI / 180) * (135+offset));
-    var xcoordinate3 = r * Math.cos((Math.PI / 180) * (135+offset));
-    var ycoordinate4 = r * Math.sin((Math.PI / 180) * (180+offset));
-    var xcoordinate4 = r * Math.cos((Math.PI / 180) * (180+offset));
-    var ycoordinate5 = r * Math.sin((Math.PI / 180) * (225+offset));
-    var xcoordinate5 = r * Math.cos((Math.PI / 180) * (225+offset));
-    var ycoordinate6 = r * Math.sin((Math.PI / 180) * (270+offset));
-    var xcoordinate6 = r * Math.cos((Math.PI / 180) * (270+offset));
-    var ycoordinate7 = r * Math.sin((Math.PI / 180) * (315+offset));
-    var xcoordinate7 = r * Math.cos((Math.PI / 180) * (315+offset));
+    function runGOtest(){
+      type = 3;
+      d1 = new Date();
+      onset = d1.getTime() - runStart;
+      data[logCounter] = ["GOtest:", d1, onset, block, compatibleword, incompatibleword, dummyword1, dummyword2, GOtest[iGt], proportioncount[block], proportionGO[i]] ;
+      logCounter++;
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="25px Arial";
+      ctx.fillStyle="black";
+      ctx.textBaseline="middle";
+      ctx.textAlign="left";
+      ctx.fillText("If                                     press D", (myCanvas.width/2)-300, (myCanvas.height/2)-50);
+      ctx.fillText("If                                     press J", (myCanvas.width/2)-300, (myCanvas.height/2));
+      ctx.textAlign="center";
+      ctx.fillText("For these instructions:", (myCanvas.width/2), (myCanvas.height/2)+200);
+      ctx.fillText("They are both the same = T", (myCanvas.width/2), (myCanvas.height/2)+250);
+      ctx.fillText("Only one is the same = G", (myCanvas.width/2), (myCanvas.height/2)+300);
+      ctx.fillText("Neither are the same = B", (myCanvas.width/2), (myCanvas.height/2)+350);
+      ctx.textAlign="left";
 
-//mean color parameters for trials
-/*var mcref = ((colorspectrum)/2);
-var mccategory = colorspectrum;
-var mccondition = 1;
-var mcscaling = .0666;
-function mcolor(mccategory, conditionaddm){
-  meancolor = mcref + mccategory * (mccondition+conditionaddm) * mcscaling;
-};*/
+      ctx.font="bold 50px Arial";
+      ctx.fillStyle=color[1];
+      switch (GOtest[iGt]){
+        case 0:
+        ctx.fillText(compatibleword, (myCanvas.width/2)-280, (myCanvas.height/2)-50);
+        ctx.fillText(incompatibleword, (myCanvas.width/2)-280, (myCanvas.height/2));
+        break;
 
-//mean shape parameters
-var msref = 50;
-var mscategory = 100;
-var mscondition = 1;
-var msscaling = .05;
-function mshape(mscategory, conditionaddsd){
-  meanshape = msref + mscategory * (mscondition+conditionaddsd) * msscaling;
-  };
+        case 1:
+        ctx.fillText(dummyword1, (myCanvas.width/2)-280, (myCanvas.height/2)-50);
+        ctx.fillText(incompatibleword, (myCanvas.width/2)-280, (myCanvas.height/2));
+        break;
 
-//standard deviation color parameters
-/*var sdccondition = colorspectrum+1;
-var sdcscaling = .0666;
-function sdcolor(conditionaddsd){
-  standarddeviationcolor = ((3+conditionaddsd)*(sdccondition)) * sdcscaling;
-};*/
+        case 2:
+        ctx.fillText(compatibleword, (myCanvas.width/2)-280, (myCanvas.height/2)-50);
+        ctx.fillText(dummyword1, (myCanvas.width/2)-280, (myCanvas.height/2));
+        break;
 
-//standard deviation shape parameters
-var sdscondition = 100
-var sdsscaling = .05
-function sdshape(conditionaddsd){
-  standarddeviationshape = ((2+conditionaddsd)*(sdscondition)) * sdsscaling;
-  };
+        case 3:
+        ctx.fillText(dummyword1, (myCanvas.width/2)-280, (myCanvas.height/2)-50);
+        ctx.fillText(dummyword2, (myCanvas.width/2)-280, (myCanvas.height/2));
+        break;
+      }
+    };
 
-//Drawing the squircle shape function
-var color
-var locx
-var locy
-var degree
+    function runGOtrial(){
+      type = 2;
+      d1 = new Date();
+      onset = d1.getTime() - runStart;
+      data[logCounter] = ["GOtrial:", d1, onset, block, compatibleword, incompatibleword, iG, GOtrial[i], GOcongruency[iG], proportioncount[block], proportionGO[i]] ;
+      logCounter++;
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="bold 80px Arial";
+      ctx.fillStyle="blue";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+      switch (GOcongruency[iG]){
+        case 0:
+        ctx.fillText(compatibleword, (myCanvas.width/2), (myCanvas.height/2));
+        break;
 
-function drawsquircle(color, locx, locy, degree) {
-      ctx.moveTo(900, 900);
-      ctx.beginPath();
-      //sets up the area and the n (ie. able to vary n to make more square or circle)
-      var n = degree;
-      //this is the function for area of a squircle solved for the semi-diameter a
-      var a1 = (Math.pow((math.gamma(1 + (1 / n))), (2)));
-      var a2 = ((math.gamma(1 + (2 / n))));
-      var a3 = 4;
-      var a = Math.pow(((a3 * (a1 / a2)) / area), (1 / (-2)));
-        //loop for parametric equations
-      for (theta = 0; theta < 360; theta++) {
-          //makes the x and y parameters for the squircle
-          var x = a *
-          (Math.pow((Math.abs(Math.cos(((Math.PI / 180) * (theta))))), (2 / n)));
-          if ((Math.cos((Math.PI / 180) * (theta))) < 0) {
-            x = -1 * x
+        case 1:
+        ctx.fillText(incompatibleword, (myCanvas.width/2), (myCanvas.height/2));
+        break;
+      }
+    };
+
+    function runNEXTtrial(){
+      type = 1;
+      d1 = new Date();
+      onset = d1.getTime() - runStart;
+      data[logCounter] = ["NEXTtrial:", d1, onset, block, compatibleword, incompatibleword, iN, NEXTtrial[i], NEXTcongruency[iN], proportioncount[block], proportionGO[i]] ;
+      logCounter++;
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="bold 80px Arial";
+      ctx.fillStyle="red";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+      switch (NEXTcongruency[iN]){
+        case 0:
+        ctx.fillText(compatibleword, (myCanvas.width/2), (myCanvas.height/2));
+        break;
+
+        case 1:
+        ctx.fillText(incompatibleword, (myCanvas.width/2), (myCanvas.height/2));
+        break;
+      }
+    };
+
+    function showITI(){
+      type = 0;
+      if(stimscreencount == 1){
+        stimscreencount++;
+        ITIinterval = 500;
+        $("#startButton").hide();
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="bold 50px Arial";
+        ctx.fillStyle="black";
+        ctx.fillText("*",(myCanvas.width)/2,(myCanvas.height)/2);
+        countDown(3);}
+      else {
+        if (stimscreencount == 0){ITIinterval = 750;}
+        $("#startButton").hide();
+        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+        ctx.font="bold 50px Arial";
+        ctx.fillStyle="black";
+        ctx.fillText("*",(myCanvas.width)/2,(myCanvas.height)/2);
+        setTimeout(runTrial,ITIinterval);
+      }
+    };
+
+    function countDown(time)
+    {
+      type = 3;
+      if (time > 0)
+      {
+        $("#startButton").hide();
+        ctx.fillStyle = "black";
+        ctx.font="60px Arial";
+        ctx.clearRect(0,0, myCanvas.width, myCanvas.height);
+        ctx.fillText(""+time, myCanvas.width/2, myCanvas.height/2);
+        setTimeout(function(){countDown(time-1)},1000);
+      }
+      else
+      {
+        runTrial();
+      }
+    };
+
+
+    function setvalues(){
+      if (counter == blocklength){
+        shuffle(NEXTtrial)
+        counter = 0;
+        i = 0;
+        block++;
+        switch (proportioncount[block]){
+          case 0:
+          proportionGO = [];
+          g = 0;
+          for (var x=0;x<blocklength;x++) {
+            if (x > (blocklength*.80)){g = 1;}
+            proportionGO.push(g);
           };
-          if ((Math.cos((Math.PI / 180) * (theta))) == 0) {
-            x = 0 * x
+          shuffle(proportionGO)
+          break;
+
+          case 1:
+          proportionGO = [];
+          g = 1;
+          for (var x=0;x<blocklength;x++) {
+            if (x > (blocklength*.80)){g = 0;}
+            proportionGO.push(g);
           };
-          var y = a *
-          (Math.pow((Math.abs(Math.sin(((Math.PI / 180) * (theta))))), (2 / n)));
-          if ((Math.sin((Math.PI / 180) * (theta))) < 0) {
-            y = -1 * y
-          };
-          if ((Math.sin((Math.PI / 180) * (theta))) == 0) {
-            y = 0 * y
-          };
-          //plots
-          ctx.lineTo((x + locx), (y + locy));
+          shuffle(proportionGO)
+          break;
           }
-      ctx.closePath();
-      //ctx.rotate(315*(Math.PI/180));
-      //fills with color
-      //ctx.fillStyle = "black";
-      //ctx.fill();
-      ctx.lineWidth = 6;
-      ctx.strokeStyle = "black";
-      ctx.stroke();
+        }
+        if (instructionsfirst == 0){
+          switch (proportioncount[block]){
+            case 0:
+            proportionGO = [];
+            g = 0;
+            for (var x=0;x<blocklength;x++) {
+              if (x > (blocklength*.80)){g = 1;}
+              proportionGO.push(g);
+            };
+            shuffle(proportionGO)
+            break;
+
+            case 1:
+            proportionGO = [];
+            g = 1;
+            for (var x=0;x<blocklength;x++) {
+              if (x > (blocklength*.80)){g = 0;}
+              proportionGO.push(g);
+            };
+            shuffle(proportionGO)
+            break;
+            }
+          }
+      instructioninterval = 4000;
+      iN = 0;
+      iGt = 0;
+      iG = 0;
+      compatibleword = allwords[w]
+      incompatibleword =allwords[w+1]
+      dummyword1 = dummywords[w]
+      dummyword2 = dummywords[w+1]
+
+      NEXTcongruency = [];
+      g = 0;
+      for (var x=0;x<(NEXTtrial[i]+1);x++) {
+        if (g > 1){g = 0;}
+        NEXTcongruency.push(g);
+        g++;
+      };
+      shuffle(NEXTcongruency)
+
+      GOcongruency = [];
+      g = 0;
+      for (var x=0;x<2;x++) {
+        if (g > 1){g = 0;}
+        GOcongruency.push(g);
+        g++;
+      };
+      shuffle(GOcongruency)
+
+      GOtest = [];
+      g = 0;
+      for (var x=0;x<4;x++) {
+        if (g > 3){g = 0;}
+        GOtest.push(g);
+        g++;
+      };
+      shuffle(GOtest)
+
+      stimscreencount++;
+    };
+
+    function runTrial(){
+      if (b < blocklength*numberofblocks){
+        if (b % blocklength === 0 && b != 0 && showblock == 0){
+          showblock = 1;
+    				var input=prompt("This is the end of block " +(block+1)+ " of " +numberofblocks+ "\n Your accuracy is "+Math.round((acccount/acctotalcount)*100)+ "% \n Press ENTER to continue.");
+          }
+        if (stimscreencount == 0){setvalues();}
+        if (stimscreencount == 1){showinstructions();}
+        if (stimscreencount == 2){
+          if (NEXTtrial[i] == 0) {stimscreencount = 3; runTrial();}
+          else {runNEXTtrial();}
+        }
+        if (stimscreencount == 3){
+          if (proportionGO[i] == 0){runGOtrial();}
+          else if (proportionGO[i] == 1){runGOtest();}
+          showblock = 0;
+        }
+        }
+        else {
+          {
+            //alert(data.join(";"));
+            $("#info").css("color","white");
+            //$("#info").show();
+            $("#info").text(data.join(";"));
+            //$("#mturk_form").show();
+            $("#RTs", opener.window.document).val(data.join(";"));
+            opener.updateMainMenu(4);
+            JavaScript:window.close();
+          }
+        }
       };
 
-//Draw WM screens
-function drawWMstim(){
-  type = 1;
-  $("#startButton").hide();
-  ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-  function clearstimscreen(){ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height); timeout = setTimeout(drawWMstimscreen,preWMstimbuffer);}
-  function drawWMstimscreen(){drawsquircle(0, 0,0, 1+wmC);
-    stimscreencount++; ITIinterval = 1500;
-    timeout = setTimeout(showITI,WMinterval);}
-    clearstimscreen();
-  };
 
-//Draw perceptual Decision Making screens
-function drawpDMstim(){
-    d1 = new Date();
-    onset = d1.getTime() - runStart;
-    type = 2;
-    timoutonoff = 0;
-    $("#startButton").hide();
-    ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-    function clearstimscreen(){ if (type = 2){ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);}}
-    function drawstimscreenDM(){
-      timoutonoff = 1;
-      drawsquircle(0, xcoordinate,ycoordinate, pdmC0+1)
-      drawsquircle(0, xcoordinate1,ycoordinate1, pdmC1+1)
-      drawsquircle(0, xcoordinate2,ycoordinate2, pdmC2+1)
-      drawsquircle(0, xcoordinate3,ycoordinate3, pdmC3+1)
-      drawsquircle(0, xcoordinate4,ycoordinate4, pdmC4+1)
-      drawsquircle(0, xcoordinate5,ycoordinate5, pdmC5+1)
-      drawsquircle(0, xcoordinate6,ycoordinate6, pdmC6+1)
-      drawsquircle(0, xcoordinate7,ycoordinate7, pdmC7+1)
-      timeoutDMstim = setTimeout(clearstimscreen, coloraveragingpresentationtime);
-    };
-    drawstimscreenDM()
-    ITIinterval = 1000;
-  };
-//Draw WM probe screens
-function drawWMprobe(){
-    d1 = new Date();
-    onset = d1.getTime() - runStart;
-    type = 5;
-    drawcorrectanswercounter = 0;
-    document.getElementById("myCanvas").style.cursor = "pointer";
-    $("#startButton").hide();
-    ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-    drawsquircle(0, 0,0, 1+.5)
-    $('#slider').show();
-    $('#WMprobe').show();
-    $('#slider').on('input', function(){
-      ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height)
-      drawsquircle(0, 0,0, 1+(+document.getElementById("slider").value))
-    });
-  };
 
-//Countdown, Shuffle, and ITI screens/functions, and the full screeen check
-function countDown(time){
-  if (time == 3 | time == 5){ctx.rotate((-45) * Math.PI / 180);}
-  type = 3;
-  if (time > 0)
-  {
-    $("#startButton").hide();
-    ctx.fillStyle = "white";
-    ctx.font="60px Arial";
-    ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-    ctx.fillText(""+time, 0, 0);
-    timeoutcountdown = setTimeout(function(){countDown(time-1)},1000);
-  }
-  else
-  {
-    ctx.rotate((45) * Math.PI / 180);
-    runTrial();
-  }
-};
-
-function showITI(){
-  type = 4;
-  $("#startButton").hide();
-  ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-  ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-  ctx.rotate((-45) * Math.PI / 180);
-  ctx.translate(-450,-450);
-  ctx.font="bold 50px Arial";
-  ctx.fillStyle="black";
-  ctx.textBaseline="middle";
-  ctx.textAlign="center";
-  ctx.fillText("*",myCanvas.width/2,(myCanvas.height/2)+9);
-  if (acc == 1 & (stimscreencount == 2 | decisionorprobe == 1) & respTime > respondfastertime){
-    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-    ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-    ctx.font="bold 50px Arial";
-    ctx.fillStyle="white";
-    ctx.textBaseline="middle";
-    ctx.textAlign="center";
-    ctx.fillText("Respond Faster",myCanvas.width/2,myCanvas.height/2);
-  }
-  else if (acc == 1 & (stimscreencount == 2 | decisionorprobe == 1)){
-    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-    ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-    ctx.font="bold 50px Arial";
-    ctx.fillStyle="white";
-    ctx.textBaseline="middle";
-    ctx.textAlign="center";
-    ctx.fillText("Correct",myCanvas.width/2,myCanvas.height/2);
-  }
-  else if (acc == 0 & (stimscreencount == 2 | decisionorprobe == 1)){
-    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-    ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-    ctx.font="bold 50px Arial";
-    ctx.fillStyle="white";
-    ctx.textBaseline="middle";
-    ctx.textAlign="center";
-    ctx.fillText("Incorrect",myCanvas.width/2,myCanvas.height/2);
-  }
-  ctx.rotate(45 * Math.PI / 180); ctx.translate(Math.sqrt(2*(450*450)),0);
-  timeoutITI = setTimeout(runTrial,ITIinterval);
-};
-
-function wrongbuttonpress(){
-  type = 2;
-  ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-  ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-  ctx.rotate((-45) * Math.PI / 180);
-  ctx.translate(-450,-450);
-  ctx.font="bold 50px Arial";
-  ctx.fillStyle="white";
-  ctx.textBaseline="middle";
-  ctx.textAlign="center";
-  ctx.fillText("Wrong response option. Try again.",myCanvas.width/2,myCanvas.height/2);
-  ctx.rotate(45 * Math.PI / 180); ctx.translate(Math.sqrt(2*(450*450)),0);
-}
-
-function nonfullscreen(){
-  type = 7;
-  ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-  ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-  ctx.rotate((-45) * Math.PI / 180);
-  ctx.translate(-450,-450);
-  ctx.font="bold 30px Arial";
-  ctx.fillStyle="white";
-  ctx.textBaseline="middle";
-  ctx.textAlign="center";
-  if (notfullscreen == 0){
-    ctx.fillText("Your screen is not full screen.",myCanvas.width/2,myCanvas.height/2);
-    ctx.fillText("Please correct this and press any key to continue.",myCanvas.width/2,(myCanvas.height/2)+50);
-    ctx.fillText("If you exit full screen one more time during this experiment,",myCanvas.width/2,(myCanvas.height/2)+100);
-    ctx.fillText("you will have to restart the experiment and will not be paid",myCanvas.width/2,(myCanvas.height/2)+150);
-    ctx.fillText("for the previous time you have spent doing the experiment.",myCanvas.width/2,(myCanvas.height/2)+200);
-    notfullscreen++;
-  }
-  else {ctx.fillText("Please refresh the page to restart the experiment.",myCanvas.width/2,myCanvas.height/2);
-  notfullscreen++;
-  }
-
-  ctx.rotate(45 * Math.PI / 180); ctx.translate(Math.sqrt(2*(450*450)),0);
-};
-
-function checkSize(){
-  var w = window.innerWidth;
-  var h = window.innerHeight;
-  if (w < 800 || h < 600) // 800 by 600 is the lowest resolution on my laptop; seems like a good "minimum" (basically need 500 x 500 at least)
-  {
-    checkwindowsize = 1;
-  }
-  else // if their screen is the proper size...
-  {
-    checkwindowsize = 0;
-  }
-}
-
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-  return array;
-}
-
-//instruction screens
-function instructions(){
-  type = 6;
-  document.getElementById("myCanvas").style.cursor = "pointer";
-  $("#startButton").hide();
-  ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-  ctx.clearRect(-450, -450, myCanvas.width, myCanvas.height);
-  ctx.rotate((-45) * Math.PI / 180);
-  ctx.translate(-450,-450);
-  ctx.font="25px Arial";
-  ctx.fillStyle="white";
-  ctx.textBaseline="middle";
-  ctx.textAlign="center";
-  if (instructioncount == 0){
-    ctx.fillText("Please answer as quickly and accurately as possible.", (myCanvas.width/2), (myCanvas.height/2)-300);
-    ctx.fillText("Please remember the shape of the initial item presented in each sequence.", (myCanvas.width/2), (myCanvas.height/2)-250);
-    ctx.textAlign="left";
-    ctx.fillText("In the following screen you will be asked to:", (0.0), (myCanvas.height/2)-100);
-    ctx.fillText("2. Following this, on some trials you will be asked to use the mouse", 0, (myCanvas.height/2)+200);
-    ctx.fillText("   to drag the slider until the pictured shape is the same as the one", (0.0), (myCanvas.height/2)+250);
-    ctx.fillText("   you needed to remember. Then click the enter button to continue.", (0.0), (myCanvas.height/2)+300);
-    ctx.fillText("1. Determine if the average of 8 new shapes presented is", (0.0), (myCanvas.height/2)-50);
-    ctx.fillText("  more square shaped or circle shaped.", (0.0), (myCanvas.height/2)+0);
-    ctx.fillText("  If it is more CIRCLE shaped, press the " +button1, (0.0), (myCanvas.height/2)+50);
-    ctx.fillText("  If it is more SQUARE shaped, press the " +button2, (0.0), (myCanvas.height/2)+100);
-    ctx.textAlign="center";
-    ctx.fillText("Press any button to begin the task.", (myCanvas.width/2), (myCanvas.height/2)+350);
-  }
-  if (instructioncount > 0){
-    ctx.fillText("This is a short break. Your accuracy is: " +Math.round((acccount/acctotalcount)*100)+" %", (myCanvas.width/2), (myCanvas.height/2)-350);
-    ctx.fillText("You have completed " +(block+1)+" of "+ numberofblocks + " blocks.", (myCanvas.width/2), (myCanvas.height/2)-300);
-    ctx.fillText("Please remember the shape of the initial item presented in each sequence.", (myCanvas.width/2), (myCanvas.height/2)-250);
-    ctx.textAlign="left";
-    ctx.fillText("In the following screen you will be asked to:", (0.0), (myCanvas.height/2)-100);
-    ctx.fillText("2. Use the mouse to drag the slider until the pictured shape is the same", 0, (myCanvas.height/2)+200);
-    ctx.fillText("   to drag the slider until the pictured shape is the same as the one", (0.0), (myCanvas.height/2)+250);
-    ctx.fillText("   you needed to remember. Then click the enter button to continue.", (0.0), (myCanvas.height/2)+300);
-    ctx.fillText("1. Determine if the average of 8 new shapes presented is", (0.0), (myCanvas.height/2)-50);
-    ctx.fillText("  more square shaped or circle shaped.", (0.0), (myCanvas.height/2)+0);
-    ctx.fillText("  If it is more CIRCLE shaped, press the " +button1, (0.0), (myCanvas.height/2)+50);
-    ctx.fillText("  If it is more SQUARE shaped, press the " +button2, (0.0), (myCanvas.height/2)+100);
-    ctx.textAlign="center";
-    ctx.fillText("Press any button to begin the task.", (myCanvas.width/2), (myCanvas.height/2)+350);
-    block++;
-  }
-};
-
-//Variable setting functions
-
-function setValues() {
-  mshape((trialmatrix[random[i]][0] * colorspectrum), trialmatrix[random[i]][1]);
-  sdshape(trialmatrix[random[i]][2]);
-  distribution = gaussian(meanshape, standarddeviationshape);
-  samplemeanrangemax = meanshape+1
-  samplemeanrangemin = meanshape-1
-  samplesdrangemax = standarddeviationshape+1
-  samplesdrangemin = standarddeviationshape-1
-  samplecheck = 0
-  wmC = wmCvalues[wmCcounter]
-  while (samplecheck < 1){
-    sample = [distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),
-      distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),
-      distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0),distribution(Math.floor(Math.random() * (colorspectrum - 0)) + 0)]
-      samplemeancheck = math.mean(sample)
-      samplesdcheck = math.std(sample)
-      sample.sort();
-      valueadd = 1;
-      repeatcheck = 0
-
-      for (aa=0; aa<sample.length; aa++){
-        if (aa < (sample.length)-1){valueadd = -1;}
-        if (aa == 0){valueadd = 1;}
-        if(math.round(sample[aa],3)>colorspectrum || math.round(sample[aa],3)<0
-        || (math.round(sample[aa],3)==math.round(sample[aa+valueadd],3)) || math.round(sample[aa])==(wmC*100)){
-          repeatcheck++;
-        }
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
       }
-      if ((samplemeancheck > samplemeanrangemin & samplemeancheck < samplemeanrangemax) &
-      (samplesdcheck > samplesdrangemin & samplesdcheck < samplesdrangemax) &
-      repeatcheck == 0){samplecheck = 1}
-    }
-
-    shuffle(sample)
-    pdmC0 = math.round(sample[0],3)/100;
-    pdmC1 = math.round(sample[1],3)/100;
-    pdmC2 = math.round(sample[2],3)/100;
-    pdmC3 = math.round(sample[3],3)/100;
-    pdmC4 = math.round(sample[4],3)/100;
-    pdmC5 = math.round(sample[5],3)/100;
-    pdmC6 = math.round(sample[6],3)/100;
-    pdmC7 = math.round(sample[7],3)/100;
-
-    arraymean = math.mean([pdmC7, pdmC6, pdmC5, pdmC4, pdmC3, pdmC2, pdmC1, pdmC0]);
-    arraystd = math.std([pdmC7, pdmC6, pdmC5, pdmC4, pdmC3, pdmC2, pdmC1, pdmC0]);
+      return array;
     };
 
-//runTrial
-function runTrial(){
-  if (trialcount < random.length*numberofblocks){
-    if (wmCcounter == wmCvalues.length){shuffle(wmCvalues); wmCcounter = 0;}
-    if ((trialcount+instructionson == 0 || (trialcount+instructionson) % blocklength === 0)) {
-      instructionson = 1; i = 0; shuffle(random); shuffle(wmCvalues); wmCcounter = 0; instructions();}
-      else if (stimscreencount == 0){checkSize();
-        if (checkwindowsize == 0) {setValues(); drawWMstim();}
-        else if (checkwindowsize == 1) {nonfullscreen();}}
-        else if (stimscreencount == 1){
-          if (decisionorprobe == 0) {drawpDMstim();}
-          else if (decisionorprobe == 1) {drawWMprobe();}
-          //if (trialmatrix[random[i]][3] == 0){drawpDMstim();}
-          //else if (trialmatrix[random[i]][3] == 1){drawWMprobe();}
-        }
-        else if (stimscreencount == 2){stimscreencount = 0; i++; trialcount++; wmCcounter++; instructionson = 0; runTrial();}
-      }
-      else {
-        //alert(data.join(";"));
-        $("#info").css("color","white");
-        //$("#info").show();
-        $("#info").text(data.join(";"));
-        //$("#mturk_form").show();
-        $("#RTs", opener.window.document).val(data.join(";"));
-        opener.updateMainMenu(4);
-        JavaScript:window.close();
-      }
-    };
-
-//Detect events likes clicks or button presses
-      $("body").keypress(function(event){
-        //clearTimeout();
-        if (type == 2) {key = String.fromCharCode(event.which);};
-        //creates more data
-        d1 = new Date();
-        Ronset = d1.getTime()-runStart;
-        respTime = Ronset-onset;
-        acc = 0;
-        if (type == 0) {jokes++;}
-        else if (type == 1) {clearTimeout(timeout); timeout = setTimeout(showITI,WMinterval);}
-        else if (type == 2) {
-          if (responsebutton[0] == 0){
-            if (trialmatrix[random[i]][0] == -1){
-              if (key == "g" || key == "G"){acc=1;acccount++;}
-            }
-            if (trialmatrix[random[i]][0] == 1){
-              if (key == "f" || key == "F"){acc=1;acccount++;}
-            }
-          }
-          else if (responsebutton[0] == 1){
-            if (trialmatrix[random[i]][0] == -1){
-              if (key == "f" || key == "F"){acc=1;acccount++;}
-            }
-            if (trialmatrix[random[i]][0] == 1){
-              if (key == "g" || key == "G"){acc=1;acccount++;}
-            }
-          };
-          if(key == "g" || key == "G" || key == "f" || key == "F"){
-            if(trialmatrix[random[i]][3] == 0){
-              data[logCounter] = ["NR:", block, Ronset, key, respTime, acc, trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
-              logCounter++; acctotalcount++; stimscreencount++; clearTimeout(timeoutDMstim); decisionorprobe = 0; showITI();
-            }
-            else if(trialmatrix[random[i]][3] == 1){
-              data[logCounter] = ["NR:", block, Ronset, key, respTime, acc, trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
-              logCounter++; acctotalcount++; clearTimeout(timeoutDMstim); decisionorprobe = 1; showITI();
-            }
-        }
-        else {wrongbuttonpress()}
-      }
-      else if (type == 3) {jokes++;}
-      else if (type == 4) {clearTimeout(timeoutITI); showITI();}
-      else if (type == 5) {jokes++;}
-      else if (type == 6) {ctx.rotate(45 * Math.PI / 180); ctx.translate(Math.sqrt(2*(450*450)),0); instructioncount++; document.getElementById("myCanvas").style.cursor = "none"; countDown(3);}
-      else if (type == 7) {checkSize(); if (checkwindowsize == 0 && notfullscreen == 1) {countDown(3);} else {jokes++;}}
-    });
-
-
-    $("#WMprobe").click(function(){
+    $("body").keypress(function(event){
+      if (type == 1 || type == 2 || type == 3){key = String.fromCharCode(event.which);}
+      else {key = 0}
+      d1 = new Date();
+      Ronset = d1.getTime()-runStart;
+      respTime = Ronset-onset;
       acc = 0;
-      choice = (+document.getElementById("slider").value);
-      if (choice > wmC-.10 & choice < wmC+.10){acc=1;}
-      if(choice != .500){
-      data[logCounter] = ["NR:", block, Ronset, choice, respTime, acc, trialmatrix[random[i]][0], trialmatrix[random[i]][1], trialmatrix[random[i]][2], trialmatrix[random[i]][3], arraymean, arraystd, wmC, pdmC0, pdmC1, pdmC2, pdmC3, pdmC4, pdmC5, pdmC6, pdmC7];
-      logCounter++; acctotalcount++; stimscreencount++; decisionorprobe = 0; document.getElementById("myCanvas").style.cursor = "none"; $("#slider").hide(); $("#WMprobe").hide(); $("#warning").hide(); document.getElementById('slider').value=.50; showITI();
+      if (type == 1){
+        if(key == "d" || key == "D"){
+        if (iN < NEXTtrial[i]-1){
+          if (key == "d" || key == "D"){acc = 1;};
+          data[logCounter] = ["NR:", block, Ronset, key, respTime, acc, iN, NEXTtrial[i], NEXTcongruency[iN], proportioncount[block], proportionGO[i]];
+          logCounter++;
+          iN++; showITI();}
+        else if (iN == NEXTtrial[i]-1){
+          if (key == "d" || key == "D"){acc = 1;};
+          data[logCounter] = ["NR:", block, Ronset, key, respTime, acc, iN, NEXTtrial[i], NEXTcongruency[iN], proportioncount[block], proportionGO[i]];
+          logCounter++;
+          stimscreencount++; showITI();}
+        }
+        else {jokes++;}
       }
-      if(choice == .500){
-        $("#slider").show();
-        $("#WMprobe").show();
-        $("#warning").show();
+      if (type == 2){
+        acctotalcount++;
+        if(key == "d" || key == "D" || key == "j" || key == "J"){
+        if (iG < GOtrial[i]-1){
+          if (GOcongruency[iG] == 0 & (key == "d" || key == "D")){acc = 1; acccount++;};
+          if (GOcongruency[iG] == 1 & (key == "j" || key == "J")){acc = 1; acccount++;};
+          data[logCounter] = ["GR:", block, Ronset, key, respTime, acc, iG, GOtrial[i], GOcongruency[iG], proportioncount[block], proportionGO[i]];
+          logCounter++;
+          iG++; showITI();}
+        else if (iG == GOtrial[i]-1){
+          if (GOcongruency[iG] == 0 & (key == "d" || key == "D")){acc = 1; acccount++;};
+          if (GOcongruency[iG] == 1 & (key == "j" || key == "J")){acc = 1; acccount++;};
+          data[logCounter] = ["GR:", block, Ronset, key, respTime, acc, iG, GOtrial[i], GOcongruency[iG], proportioncount[block], proportionGO[i]];
+          logCounter++;
+          stimscreencount = 0; i++; counter++; w++; w++; b++; showITI();}
       }
+      else {jokes++;}
+    }
+      if (type == 3){
+        acctotalcount++;
+        if (key == "t" || key == "T" || key == "g" || key == "G" || key == "b" || key == "B"){
+        if (GOtest[iGt] == 0 & (key == "t" || key == "T")){acc = 1; acccount++;};
+        if (GOtest[iGt] == 1 & (key == "g" || key == "G")){acc = 1; acccount++;};
+        if (GOtest[iGt] == 2 & (key == "g" || key == "G")){acc = 1; acccount++;};
+        if (GOtest[iGt] == 3 & (key == "b" || key == "B")){acc = 1; acccount++;};
+        data[logCounter] = ["GtR:", block, Ronset, key, respTime, acc, iGt, GOtest[iGt], proportioncount[block], proportioncount[block], proportionGO[i]];
+        logCounter++;
+        stimscreencount = 0; i++; counter++; w++; w++; b++; showITI();}
+        else {jokes++;}
+      }
+      if (type == 4){jokes++;}
     });
 
-//Start stuff
-$("#info").hide();
-$("#mturk_form").hide();
-$("#slider").hide();
-$("#WMprobe").hide();
-$("#warning").hide();
-d1 = new Date();
-runStart = d1.getTime();
-runTrial();
-});
-</script>
-</head>
-<body>
-  <table>
-    <tr>
-      <td>
-        <canvas id="myCanvas" width="900" height="900"> </canvas>
-        <div style="text-align:center; align:center;">
-        </div>
-        <div style="text-align:center;">
-          <button id="startButton">Start</button>
-        </div>
-        <p id="warning" style="font-family: arial; font-size:30px">You must move the slider.</p>
-        <input type="range" name="points" id="slider" value=".5" min="0" max="1" step=".01" class="slider-width100">
-        <button id="WMprobe">Enter</button>
-        <form id="mturk_form" method="POST" action="http://152.3.33.45/AMTSubmit/dataHandler.php">
-          <form id="mturk_form" method="POST" action="https://workersandbox.mturk.com/mturk/externalSubmit">
-            <input type="hidden" id="assignmentId" name="assignmentId" value="">
-            <input type="hidden" id="workerId" name="workerId" value="">
-            <input type="hidden" id="hitId" name="hitId" value="">
-            <input type="hidden" id="RTs" name="RTs" value="">
-            <input type="hidden" id="ExpName" name="ExpName" value="pWM">
-            <p style="font-family: Arial; color: white; font-size:24px">Click button to submit</p>
-            <input id="submitButton" type="submit" name="Finish" value="Submit">
-          </td>
-        </tr>
-      </table>
-    </body>
-    </html>
+    $("#info").hide();
+    $("#mturk_form").hide();
+    $("#startButton").hide();
+    d1 = new Date();
+    runStart = d1.getTime();
+    runTrial();
+
+        });
+
+        </script>
+      </head>
+      <body>
+        <table>
+          <tr>
+            <td>
+              <canvas id="myCanvas" width="900" height="900"> </canvas>
+              <div style="text-align:center; align:center;">
+              </div>
+              <div style="text-align:center;">
+                <button id="startButton">Start</button>
+              </div>
+              <form id="mturk_form" method="POST" action="http://152.3.33.45/AMTSubmit/dataHandler.php">
+                <form id="mturk_form" method="POST" action="https://workersandbox.mturk.com/mturk/externalSubmit">
+                  <input type="hidden" id="assignmentId" name="assignmentId" value="">
+                  <input type="hidden" id="workerId" name="workerId" value="">
+                  <input type="hidden" id="hitId" name="hitId" value="">
+                  <input type="hidden" id="RTs" name="RTs" value="">
+                  <input type="hidden" id="ExpName" name="ExpName" value="NEXT">
+                  <p style="font-family: Arial; color: black; font-size:24px">Click button to submit</p>
+                  <input id="submitButton" type="submit" name="Finish" value="Submit">
+                </td>
+              </tr>
+            </table>
+          </body>
+          </html>
