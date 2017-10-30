@@ -306,11 +306,20 @@ $(document).ready(function(){
 
       NEXTcongruency = [];
       g = 0;
+      if (NEXTtrial[i] % 2 === 0){
+        for (var x=0;x<(NEXTtrial[i]+1);x++) {
+        if (g > 1){g = 0;}
+        NEXTcongruency.push(g);
+        g++;
+      };
+    }
+    else if (NEXTtrial[i] % 2 != 0){
       for (var x=0;x<(NEXTtrial[i]+1);x++) {
         if (g > 1){g = 0;}
         NEXTcongruency.push(g);
         g++;
       };
+    }
       shuffle(NEXTcongruency)
 
       GOcongruency = [];
@@ -463,7 +472,6 @@ $(document).ready(function(){
                 <button id="startButton">Start</button>
               </div>
               <form id="mturk_form" method="POST" action="http://152.3.33.45/AMTSubmit/dataHandler.php">
-                <form id="mturk_form" method="POST" action="https://workersandbox.mturk.com/mturk/externalSubmit">
                   <input type="hidden" id="assignmentId" name="assignmentId" value="">
                   <input type="hidden" id="workerId" name="workerId" value="">
                   <input type="hidden" id="hitId" name="hitId" value="">
