@@ -1496,7 +1496,8 @@ var words = [
 'fell',
 'delay']
 
-var words2 = ['serve',
+var words2 = [
+'serve',
 'below',
 'match',
 'joint',

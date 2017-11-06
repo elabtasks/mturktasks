@@ -33,13 +33,14 @@ $(document).ready(function(){
      counter = 0;
     var numberofblocks = 4;
     var block = 0;
-    var instructioninterval = 30000;
+    var instructioninterval = 25000;
     var color = ["red", "blue"]
     var allwords = words;
     var dummywords = words2;
     var jokes = 0;
      acc = 0;
     showblock = 0;
+    proportion = 1;
 
     shuffle(allwords)
     shuffle(dummywords)
@@ -60,9 +61,9 @@ $(document).ready(function(){
     };
 
     NEXTtrial = [];
-    g = 3;
+    g = 2;
     for (var x=0;x<blocklength;x++) {
-      if (g > 5){g = 0;}
+      if (g > 3){g = 0;}
       NEXTtrial.push(g);
       g++;
     };
@@ -73,14 +74,14 @@ $(document).ready(function(){
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
 
         if (instructionsfirst == 0){
-          instructioninterval = 30000;
+          instructioninterval = 25000;
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.font="25px Arial";
         ctx.fillStyle="black";
         ctx.textBaseline="middle";
         ctx.textAlign="center";
         ctx.fillText("Please answer as quickly and accurately as possible.", (myCanvas.width/2), (myCanvas.height/2)-300);
-        ctx.fillText("You have 30 seconds to read these instructions.", (myCanvas.width/2), (myCanvas.height/2)-240);
+        ctx.fillText("You have 25 seconds to read these instructions.", (myCanvas.width/2), (myCanvas.height/2)-240);
         ctx.fillText("Instruction screens after this will be shorter.", (myCanvas.width/2), (myCanvas.height/2)-190);
         ctx.fillText("FOR THE ENTIRE TASK, when the words appear in                                   press D", (myCanvas.width/2)-50, (myCanvas.height/2)+100)
         ctx.fillText("When the words appear in                                  , follow the instructions below:", (myCanvas.width/2), (myCanvas.height/2)-100);
@@ -128,10 +129,11 @@ $(document).ready(function(){
       ctx.fillText("If                                     press D", (myCanvas.width/2)-300, (myCanvas.height/2)-50);
       ctx.fillText("If                                     press J", (myCanvas.width/2)-300, (myCanvas.height/2));
       ctx.textAlign="center";
-      ctx.fillText("For these instructions:", (myCanvas.width/2), (myCanvas.height/2)+200);
-      ctx.fillText("They are both the same = T", (myCanvas.width/2), (myCanvas.height/2)+250);
-      ctx.fillText("Only one is the same = G", (myCanvas.width/2), (myCanvas.height/2)+300);
-      ctx.fillText("Neither are the same = B", (myCanvas.width/2), (myCanvas.height/2)+350);
+      ctx.fillText("For the above instructions, in comparison to", (myCanvas.width/2), (myCanvas.height/2)+150);
+      ctx.fillText("the instructions you are currently remembering:", (myCanvas.width/2), (myCanvas.height/2)+200);
+      ctx.fillText("Both 'word+response' key mappings are the same = T", (myCanvas.width/2), (myCanvas.height/2)+250);
+      ctx.fillText("Only one 'word+response' key mappings is the same = G", (myCanvas.width/2), (myCanvas.height/2)+300);
+      ctx.fillText("Neither 'word+response' key mappings are the same = B", (myCanvas.width/2), (myCanvas.height/2)+350);
       ctx.textAlign="left";
 
       ctx.font="bold 50px Arial";
@@ -215,7 +217,7 @@ $(document).ready(function(){
         ctx.fillText("*",(myCanvas.width)/2,(myCanvas.height)/2);
         countDown(3);}
       else {
-        if (stimscreencount == 0){ITIinterval = 1000;}
+        if (stimscreencount == 0){ITIinterval = 500;}
         $("#startButton").hide();
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.font="bold 50px Arial";
@@ -243,7 +245,7 @@ $(document).ready(function(){
         ctx.font="60px Arial";
         ctx.clearRect(0,0, myCanvas.width, myCanvas.height);
         ctx.fillText(""+time, myCanvas.width/2, myCanvas.height/2);
-        setTimeout(function(){countDown(time-1)},1000);
+        setTimeout(function(){countDown(time-1)},750);
       }
       else
       {
@@ -263,7 +265,7 @@ $(document).ready(function(){
           proportionGO = [];
           g = 0;
           for (var x=0;x<blocklength;x++) {
-            if (x > 77){g = 1;}
+            if (x > (blocklength*proportion)){g = 1;}
             proportionGO.push(g);
           };
           shuffle(proportionGO)
@@ -273,7 +275,7 @@ $(document).ready(function(){
           proportionGO = [];
           g = 1;
           for (var x=0;x<blocklength;x++) {
-            if (x > 77){g = 0;}
+            if (x > (blocklength*proportion)){g = 0;}
             proportionGO.push(g);
           };
           shuffle(proportionGO)
@@ -286,7 +288,7 @@ $(document).ready(function(){
             proportionGO = [];
             g = 0;
             for (var x=0;x<blocklength;x++) {
-              if (x > 77){g = 1;}
+              if (x > (blocklength*proportion)){g = 1;}
               proportionGO.push(g);
             };
             shuffle(proportionGO)
@@ -296,7 +298,7 @@ $(document).ready(function(){
             proportionGO = [];
             g = 1;
             for (var x=0;x<blocklength;x++) {
-              if (x > 77){g = 0;}
+              if (x > (blocklength*proportion)){g = 0;}
               proportionGO.push(g);
             };
             shuffle(proportionGO)
@@ -357,7 +359,6 @@ $(document).ready(function(){
         if (stimscreencount == 3){
           if (proportionGO[i] == 0){runGOtrial();}
           else if (proportionGO[i] == 1){runGOtest();}
-          showblock = 0;
         }
         }
         else {
@@ -401,16 +402,15 @@ $(document).ready(function(){
 
     $("body").keyup(function(event){
       acc = 0;
-      acctotalcount++;
       if (type == 1){
         if(key == "d" || key == "D"){
         if (iN < NEXTtrial[i]-1){
-          if (key == "d" || key == "D"){acc = 1; acccount++;};
+          if (key == "d" || key == "D"){acc = 1;};
           data[logCounter] = ["NR:", block, Ronset, key, respTime, acc, iN, NEXTtrial[i], NEXTcongruency[iN], proportioncount[block], proportionGO[i]];
           logCounter++;
           iN++; showITI();}
         else if (iN == NEXTtrial[i]-1){
-          if (key == "d" || key == "D"){acc = 1; acccount++;};
+          if (key == "d" || key == "D"){acc = 1;};
           data[logCounter] = ["NR:", block, Ronset, key, respTime, acc, iN, NEXTtrial[i], NEXTcongruency[iN], proportioncount[block], proportionGO[i]];
           logCounter++;
           stimscreencount++; showITI();}
@@ -418,6 +418,7 @@ $(document).ready(function(){
         else {ctx.fillStyle = "black"; ctx.font="25px Arial"; ctx.fillText("Wrong Response Option. Try again.", myCanvas.width/2, (myCanvas.height/2)+300); jokes++;}
       }
       if (type == 2){
+        acctotalcount++;
         if(key == "d" || key == "D" || key == "j" || key == "J"){
         if (iG < GOtrial[i]-1){
           if (GOcongruency[iG] == 0 & (key == "d" || key == "D")){acc = 1; acccount++;};
@@ -430,20 +431,21 @@ $(document).ready(function(){
           if (GOcongruency[iG] == 1 & (key == "j" || key == "J")){acc = 1; acccount++;};
           data[logCounter] = ["GR:", block, Ronset, key, respTime, acc, iG, GOtrial[i], GOcongruency[iG], proportioncount[block], proportionGO[i]];
           logCounter++;
-          stimscreencount = 0; i++; counter++; w++; w++; b++; showITI();}
+          stimscreencount = 0; i++; counter++; w++; w++; b++; showblock = 0; showITI();}
       }
       else {ctx.textBaseline="middle";ctx.textAlign="center";ctx.fillStyle = "black";
       ctx.font="25px Arial"; ctx.fillText("Wrong Response Option. Try again.", myCanvas.width/2, (myCanvas.height/2)+100); jokes++;}
     }
       if (type == 3){
+        acctotalcount++; acctotalcount++; acctotalcount++; acctotalcount++;
         if (key == "t" || key == "T" || key == "g" || key == "G" || key == "b" || key == "B"){
-        if (GOtest[iGt] == 0 & (key == "t" || key == "T")){acc = 1; acccount++;};
-        if (GOtest[iGt] == 1 & (key == "g" || key == "G")){acc = 1; acccount++;};
-        if (GOtest[iGt] == 2 & (key == "g" || key == "G")){acc = 1; acccount++;};
-        if (GOtest[iGt] == 3 & (key == "b" || key == "B")){acc = 1; acccount++;};
+        if (GOtest[iGt] == 0 & (key == "t" || key == "T")){acc = 1; acccount++;acccount++;acccount++;acccount++;};
+        if (GOtest[iGt] == 1 & (key == "g" || key == "G")){acc = 1; acccount++;acccount++;acccount++;acccount++;};
+        if (GOtest[iGt] == 2 & (key == "g" || key == "G")){acc = 1; acccount++;acccount++;acccount++;acccount++;};
+        if (GOtest[iGt] == 3 & (key == "b" || key == "B")){acc = 1; acccount++;acccount++;acccount++;acccount++;};
         data[logCounter] = ["GtR:", block, Ronset, key, respTime, acc, iGt, GOtest[iGt], proportioncount[block], proportioncount[block], proportionGO[i]];
         logCounter++;
-        stimscreencount = 0; i++; counter++; w++; w++; b++; showITI();}
+        stimscreencount = 0; i++; counter++; w++; w++; b++; showblock = 0; showITI();}
         else {ctx.textBaseline="middle";ctx.textAlign="center";ctx.fillStyle = "black";
         ctx.font="25px Arial"; ctx.fillText("Wrong Response Option. Try again.", myCanvas.width/2, (myCanvas.height/2)+100); jokes++;}
       }
