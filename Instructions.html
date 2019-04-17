@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="NEXT.css" type="text/css" charset="utf-8">
-  <script type="text/javascript" src="jquery-3.1.1.js"></script>
+  <link rel="stylesheet" href="Task.css" type="text/css" charset="utf-8">
+  <script type="text/javascript" src="jquery-3.2.1.js"></script>
+  <script type="text/javascript" src="images.js"></script>
   <script type="text/javascript">
 
   /*function gup(name, tmpURL)
@@ -26,164 +27,212 @@
     var ctx = c.getContext("2d");
     var i = 0;
 
+    var fileName = ['practice_pics/LM55.jpg']
+		var img = new Array(fileName.length);
+		var imgCount = 0;
+
+		function loadImage()
+		{
+			if (imgCount < fileName.length)
+			{
+				img[imgCount] = new Image();
+				img[imgCount].src=fileName[imgCount];
+				img[imgCount].onload=loadImage;
+				imgCount++;
+			}
+      runTrial();
+		}
+
     function blockinstruction1(){
 
-      $("#startButton").show();
+      $("#continueButton").show();
+      $("#backButton").hide();
 
       if (i == 0){
-        $("#backButton").hide();
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.font="25px Arial";
-        ctx.fillStyle="black";
+        ctx.fillStyle="white";
         ctx.textBaseline="left";
         ctx.textAlign="left";
         ctx.fillText("Today you will be completing a simple task.", (myCanvas.width)-900, (myCanvas.height/2)-320);
         ctx.fillText("__________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-300);
-        ctx.fillText("1. You will see a series of words presented on the screen.", (myCanvas.width)-900, (myCanvas.height/2)-250);
-        ctx.fillText("2. The task is divided into many short blocks of trials,", (myCanvas.width)-900, (myCanvas.height/2)-200);
-        ctx.fillText("  each with unique instructions.", (myCanvas.width)-900, (myCanvas.height/2)-150);
-        ctx.fillText("3. There are three trial types:", (myCanvas.width)-900, (myCanvas.height/2)-100);
-        ctx.fillText("  3a. Trials where the word is RED, you will press the D-key to continue.", (myCanvas.width)-900, (myCanvas.height/2)-50);
-        ctx.fillText("  3b. Trials in which the word is BLUE and you need to implement the instructions.", (myCanvas.width)-900, (myCanvas.height/2)-0);
-        ctx.fillText("  3c. Trials in which you will need to remember but not implement the instructions.", (myCanvas.width)-900, (myCanvas.height/2)+50);
 
-        ctx.fillText("4. Each instruction set will appear for a limited time.", (myCanvas.width)-900, (myCanvas.height/2)+100);
+        ctx.fillText("At the beginning of each trial, you will be presented with two letters that will", 0, (myCanvas.height/2)-250);
+        ctx.fillText("indicate what characteristics you will be using to judge the following picture and", (0.0), (myCanvas.height/2)-200);
+        ctx.fillText("which button you will press to indicate your response.", (0.0), (myCanvas.height/2)-150);
 
-        ctx.fillText("5. If you do not do the task properly", (myCanvas.width)-900, (myCanvas.height/2)+150);
-        ctx.fillText("  (you need to get an accuracy > 75%) you will not get paid.", (myCanvas.width)-900, (myCanvas.height/2)+200);
 
-        ctx.fillText("Please press the button below for examples.", (myCanvas.width)-900, (myCanvas.height/2)+280);
+        ctx.fillText("   -- M/N indicates mechanical (M) or non-mechanical (N).", (0.0), (myCanvas.height/2)-100);
+        ctx.fillText("   -- L/S indicates large (L) or small (S).", (0.0), (myCanvas.height/2)-50);
+
+        ctx.fillText("The order of the letters when presented indicates the response key options.", (0.0), (myCanvas.height/2)+50);
+        ctx.fillText("    -- The letter on the left indicates you should press the '1' key", (0.0), (myCanvas.height/2)+100);
+        ctx.fillText("          (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+150);
+        ctx.fillText("    -- The letter on the right indicates you should press the '0' key", 0, (myCanvas.height/2)+200);
+        ctx.fillText("          (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+250);
+
+        ctx.fillText("Press the button below for more details on the task.", (myCanvas.width)-900, (myCanvas.height/2)+400);
+
 
       }
       else if (i == 1){
         $("#backButton").show();
+
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.font="25px Arial";
-        ctx.fillStyle="black";
+        ctx.fillStyle="white";
         ctx.textBaseline="middle";
-        ctx.textAlign="center";
-        ctx.fillText("Below is an example of the instructions for the task.", (myCanvas.width/2), (myCanvas.height/2)-300);
-        ctx.fillText("Instructions will appear before every short block of trials.", (myCanvas.width/2), (myCanvas.height/2)-250);
-        ctx.fillText("For the first two trials, instructions will look like this:", (myCanvas.width/2), (myCanvas.height/2)-200);
-        ctx.fillText("____________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
-        ctx.fillText("When the words appear in                                   press D", (myCanvas.width/2)-50, (myCanvas.height/2)+100)
-        ctx.fillText("When the words appear in                                  , follow the instructions below:", (myCanvas.width/2), (myCanvas.height/2)-100);
-        ctx.font="bold 25px Arial";
-        ctx.fillText("If you see the word: 'jewel' then press J", (myCanvas.width/2), (myCanvas.height/2));
-        ctx.fillText("If you see the word: 'angel' then press D", (myCanvas.width/2), (myCanvas.height/2)-50);
+        ctx.textAlign="left";
+        ctx.fillText("The categories 'Large vs. Small' and 'Mechanical vs. Non-Mechanical'", (myCanvas.width/2)-450, (myCanvas.height/2)-400);
+        ctx.fillText("are defined as the following.", (myCanvas.width/2)-450, (myCanvas.height/2)-350);
+        ctx.fillText("Large vs. Small:", (myCanvas.width/2)-450, (myCanvas.height/2)-250);
+        ctx.fillText(" - A 'Large' object is one that, in real life, could NOT fit in to a shoebox.", (myCanvas.width/2)-450, (myCanvas.height/2)-200);
+        ctx.fillText(" - A 'Small' object is one that, in real life, could fit in to a shoebox.", (myCanvas.width/2)-450, (myCanvas.height/2)-150);
+        ctx.fillText("Mechanical vs. Non-Mechanical:", (myCanvas.width/2)-450, (myCanvas.height/2)-50);
+        ctx.fillText(" - A 'Mechanical' object is one that has any type of mechanism (i.e. multiple", (myCanvas.width/2)-450, (myCanvas.height/2)-0);
+        ctx.fillText("        parts that move/work together).", (myCanvas.width/2)-450, (myCanvas.height/2)+50);
 
-        ctx.font="bold 50px Arial";
-        ctx.fillStyle="red";
-        ctx.fillText("this color", (myCanvas.width/2)+54, (myCanvas.height/2)+100);
+        ctx.fillText(" - A 'Non-Mechanical' object is one that has no mechanism (i.e. a fork or", (myCanvas.width/2)-450, (myCanvas.height/2)+100);
+        ctx.fillText("        a dining room chair).", (myCanvas.width/2)-450, (myCanvas.height/2)+150);
 
-        ctx.fillStyle="blue";
-        ctx.fillText("this color", (myCanvas.width/2)-15, (myCanvas.height/2)-100);
+        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2)-450, (myCanvas.height/2)+300);
+        ctx.fillText("to the previous instructions.", (myCanvas.width/2)-450, (myCanvas.height/2)+350);
 
-        ctx.font="25px Arial";
-        ctx.fillStyle="black";
-        ctx.textBaseline="middle";
-        ctx.textAlign="center";
-        ctx.fillText("____________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
-        ctx.fillText("Please press the button below for another example.", (myCanvas.width/2), (myCanvas.height/2)+300);
       }
       else if (i == 2){
+        $("#backButton").show();
+
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.font="25px Arial";
-        ctx.fillStyle="black";
+        ctx.fillStyle="white";
         ctx.textBaseline="middle";
-        ctx.textAlign="left";
-        ctx.fillText("Instructions could also appear like this.", (myCanvas.width)-900, (myCanvas.height/2)-250);
-        ctx.fillText("This is a simpler way to communicate the ", (myCanvas.width)-900, (myCanvas.height/2)-200);
-        ctx.fillText("same instructions as you saw previously.", (myCanvas.width)-900, (myCanvas.height/2)-150);
-        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-130);
-        ctx.font="bold 25px Arial";
-        ctx.fillText("If                                     press J", (myCanvas.width/2)-300, (myCanvas.height/2));
-        ctx.fillText("If                                     press D", (myCanvas.width/2)-300, (myCanvas.height/2)-50);
-
-        ctx.font="bold 50px Arial";
-        ctx.fillStyle="blue";
-        ctx.fillText("legend", (myCanvas.width/2)-280, (myCanvas.height/2));
-        ctx.fillText("talk", (myCanvas.width/2)-280, (myCanvas.height/2)-50);
-
-        ctx.font="25px Arial";
-        ctx.fillStyle="black";
-        ctx.textBaseline="middle";
-        ctx.textAlign="left";
-        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)+150);
-        ctx.fillText("PLEASE NOTE: The instruction to press the D key whenever words", (myCanvas.width)-900, (myCanvas.height/2)+180);
-        ctx.fillText("appear in RED is constant througout the ENTIRE task, even if", (myCanvas.width)-900, (myCanvas.height/2)+230);
-        ctx.fillText("it is not explicitly instructed.", (myCanvas.width)-900, (myCanvas.height/2)+280);
         ctx.textAlign="center";
+        ctx.fillText("Below is an example of the initial letters you might see.", (myCanvas.width/2), (myCanvas.height/2)-400);
+        ctx.fillText("This would indicate to judge the subsequent picture on whether it was", (myCanvas.width/2), (myCanvas.height/2)-300);
+        ctx.fillText("large or small. The '1' key (on the left) would indicate 'Small'", (myCanvas.width/2), (myCanvas.height/2)-250);
+        ctx.fillText("and the '0' key (on the right) would indicate 'Large'.", (myCanvas.width/2), (myCanvas.height/2)-200);
 
-        ctx.fillText("Please press the button below for another example.", (myCanvas.width/2), (myCanvas.height/2)+350);
+        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
+        ctx.font="35px Arial";
+        ctx.fillText("S + L",myCanvas.width/2,myCanvas.height/2);
+        ctx.font="25px Arial";
+        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
+        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+300);
+        ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+350);
+
       }
       else if (i == 3){
-        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-        ctx.font="20px Arial";
-        ctx.fillStyle="black";
-        ctx.textBaseline="middle";
-        ctx.textAlign="left";
-        ctx.fillText("1. When the words are presented in BLUE, you could be asked to remember", (myCanvas.width)-900, (myCanvas.height/2)-400);
-        ctx.fillText("   or implement the instructions from the most recent instruction screen.", (myCanvas.width)-900, (myCanvas.height/2)-360);
-        ctx.fillText("2. Below is an example of what the screen would look like if you were asked", (myCanvas.width)-900, (myCanvas.height/2)-320);
-        ctx.fillText("   to remember, but not implement the instructions:", (myCanvas.width)-900, (myCanvas.height/2)-280);
-        ctx.fillText("3. Here, you need to assess whether the shown instructions are the same,", (myCanvas.width)-900, (myCanvas.height/2)-240);
-        ctx.fillText("   changed by one instruction, or both different than the instructions", (myCanvas.width)-900, (myCanvas.height/2)-200);
-        ctx.fillText("   you were tasked to remember. Please do this as quickly as possible.", (myCanvas.width)-900, (myCanvas.height/2)-160);
-        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-140);
-        ctx.font="25px Arial";
-        ctx.fillText("If                                     press D", (myCanvas.width/2)-300, (myCanvas.height/2)-50);
-        ctx.fillText("If                                     press J", (myCanvas.width/2)-300, (myCanvas.height/2));
-        ctx.textAlign="center";
-        ctx.fillText("For these instructions:", (myCanvas.width/2), (myCanvas.height/2)+200);
-        ctx.fillText("They are both the same press T", (myCanvas.width/2), (myCanvas.height/2)+250);
-        ctx.fillText("Only one is the same press G", (myCanvas.width/2), (myCanvas.height/2)+300);
-        ctx.fillText("Neither are the same press B", (myCanvas.width/2), (myCanvas.height/2)+350);
-        ctx.textAlign="left";
+        $("#backButton").show();
 
-        ctx.font="bold 50px Arial";
-        ctx.fillStyle="blue";
-
-          ctx.fillText("legend", (myCanvas.width/2)-280, (myCanvas.height/2)-50);
-          ctx.fillText("jewel", (myCanvas.width/2)-280, (myCanvas.height/2));
-
-        ctx.font="25px Arial";
-        ctx.fillStyle="black";
-        ctx.textAlign="left";
-        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)+350);
-        ctx.textAlign="center";
-        ctx.fillText("Please press the button below for another example.", (myCanvas.width/2), (myCanvas.height/2)+400);
-      }
-      else if (i == 4){
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.font="25px Arial";
-        ctx.fillStyle="black";
-        ctx.textBaseline="middle";
-        ctx.textAlign="left";
-        ctx.fillText("1. This is an example of what the screen would look like if you only", (myCanvas.width)-900, (myCanvas.height/2)-350);
-        ctx.fillText("   needed to implement the instructions you are currently remembering.", (myCanvas.width)-900, (myCanvas.height/2)-300);
-        ctx.fillText("2. Here, you simply need to implement the instructions you were", (myCanvas.width)-900, (myCanvas.height/2)-250);
-        ctx.fillText("   asked to remember. Please do this as quickly as possible.", (myCanvas.width)-900, (myCanvas.height/2)-200);
-        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-120);
-
-        ctx.font="bold 80px Arial";
-        ctx.fillStyle="blue";
+        ctx.fillStyle="white";
         ctx.textBaseline="middle";
         ctx.textAlign="center";
-        ctx.fillText("legend", (myCanvas.width/2), (myCanvas.height/2));
+        ctx.fillText("Below is an example of a picture you would need to respond to.", (myCanvas.width/2), (myCanvas.height/2)-400);
+        ctx.fillText("You would use the letters presented previously (here 'S + L')", (myCanvas.width/2), (myCanvas.height/2)-350);
+        ctx.fillText("to judge whether this picture is of something 'large' or 'small'", (myCanvas.width/2), (myCanvas.height/2)-300);
+        ctx.fillText("(i.e. fits inside a shoebox or not).", (myCanvas.width/2), (myCanvas.height/2)-250);
 
-        ctx.font="25px Arial";
-        ctx.fillStyle="black";
-        ctx.textBaseline="middle";
-        ctx.textAlign="left";
-        ctx.fillText("____________________________________________________________________________________", (myCanvas.width)-900, (myCanvas.height/2)+250);
-        ctx.textAlign="center";
-        ctx.fillText("If you are ready please press the button below to start a short practice task.", (myCanvas.width/2), (myCanvas.height/2)+300);
+        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-230);
+        ctx.drawImage(img[0], myCanvas.width/2-128, myCanvas.height/2-128);
+        ctx.fillStyle="white";
+        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+180);
+        ctx.fillText("Here the image is of something large, so given the previously cued", (myCanvas.width/2), (myCanvas.height/2)+220);
+        ctx.fillText("letters, you would press the '0' (right) key.", (myCanvas.width/2), (myCanvas.height/2)+270);
+
+        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
+        ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
+
       }
+    else if (i == 4){
+      $("#backButton").show();
+
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="25px Arial";
+      ctx.fillStyle="white";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+      ctx.fillText("You could also see other letters, such as 'M + N', inidicating", (myCanvas.width/2), (myCanvas.height/2)-400);
+      ctx.fillText("that you should judge the following picture on whether it is mechanical", (myCanvas.width/2), (myCanvas.height/2)-350);
+      ctx.fillText("or non-mechanical. ", (myCanvas.width/2), (myCanvas.height/2)-300);
+      ctx.fillText("Below, the presented letters would indicate to press the '1' key (left)", (myCanvas.width/2), (myCanvas.height/2)-250);
+      ctx.fillText("for 'mechanical' and the '0' key (right) for 'non-mechanical'.", (myCanvas.width/2), (myCanvas.height/2)-200);
+
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
+      ctx.font="35px Arial";
+      ctx.fillText("M + N",myCanvas.width/2,myCanvas.height/2);
+      ctx.font="25px Arial";
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
+      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+300);
+      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+350);
+    }
+    else if (i == 5){
+      $("#backButton").show();
+
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="25px Arial";
+      ctx.fillStyle="white";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+      ctx.fillText("If you were to see this picture after seeing the", (myCanvas.width/2), (myCanvas.height/2)-400);
+      ctx.fillText("letters 'M + N', you would judge whether this picture is of ", (myCanvas.width/2), (myCanvas.height/2)-350);
+      ctx.fillText("something 'mechanical' or 'non-mechanical'.", (myCanvas.width/2), (myCanvas.height/2)-300);
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-280);
+      ctx.drawImage(img[0], myCanvas.width/2-128, myCanvas.height/2-128);
+      ctx.fillStyle="white";
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+180);
+      ctx.fillText("Here the image is of something 'mechanical', so given the previously cued", (myCanvas.width/2), (myCanvas.height/2)+220);
+      ctx.fillText("letters, you would press the '1' (left) key.", (myCanvas.width/2), (myCanvas.height/2)+270);
+
+      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
+      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
+    }
+    else if (i == 6){
+      $("#backButton").show();
+
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="25px Arial";
+      ctx.fillStyle="white";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+      ctx.fillText("If you saw the letters 'N + M', this would mean still that you", (myCanvas.width/2), (myCanvas.height/2)-400);
+      ctx.fillText("should judge the following picture on whether it is mechanical", (myCanvas.width/2), (myCanvas.height/2)-350);
+      ctx.fillText("or non-mechanical. ", (myCanvas.width/2), (myCanvas.height/2)-300);
+      ctx.fillText("However, you would press the '1' key (left)", (myCanvas.width/2), (myCanvas.height/2)-250);
+      ctx.fillText("for 'non-mechanical' and the '0' key (right) for 'mechanical'.", (myCanvas.width/2), (myCanvas.height/2)-200);
+
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
+      ctx.font="35px Arial";
+      ctx.fillText("N + M",myCanvas.width/2,myCanvas.height/2);
+      ctx.font="25px Arial";
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
+      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+300);
+      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+350);
+    }
+    else if (i == 7){
+      $("#backButton").show();
+
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="25px Arial";
+      ctx.fillStyle="white";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+      ctx.fillText("Hence, here, you would press", (myCanvas.width/2), (myCanvas.height/2)-400);
+      ctx.fillText("the '0' key to indicate that the below image", (myCanvas.width/2), (myCanvas.height/2)-350);
+      ctx.fillText("was something 'mechanical'.", (myCanvas.width/2), (myCanvas.height/2)-300);
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-280);
+      ctx.drawImage(img[0], myCanvas.width/2-128, myCanvas.height/2-128);
+      ctx.fillStyle="white";
+      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+180);
+
+      ctx.fillText("Use the buttons below to complete a practice task or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
+      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
+    }
     }
 
     function runTrial(){
-      if (i < 5){
+      if (i < 8){
         blockinstruction1();
       }
       else {
@@ -192,7 +241,7 @@
       }
     }
 
-runTrial();
+loadImage();
 
 
 $("#continueButton").click(function(){i++; runTrial();});
@@ -211,13 +260,13 @@ $("#backButton").click(function(){i--; runTrial();});
                 <div style="text-align:center;">
                   <button id="backButton">Go Back</button>
                   <button id="continueButton">Continue</button>
-                                </div>
+                </div>
                     <input type="hidden" id="assignmentId" name="assignmentId" value="">
                     <input type="hidden" id="workerId" name="workerId" value="">
                     <input type="hidden" id="hitId" name="hitId" value="">
                     <input type="hidden" id="RTs" name="RTs" value="">
-                    <input type="hidden" id="ExpName" name="ExpName" value="NEXT">
-                    <p style="font-family: Arial; color: black; font-size:24px"></p>
+                    <input type="hidden" id="ExpName" name="ExpName" value="SCSAswitch">
+                    <p style="font-family: Arial; color: white; font-size:24px"></p>
                   </td>
                 </tr>
               </table>
