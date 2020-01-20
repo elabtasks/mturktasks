@@ -19,31 +19,26 @@
     //#######################################################//
 
     //------------------------TIMINGS-----------------------//
-    var CUEinterval = 700
-    var OBJECTinterval = 2000
+    var IMAGEinterval = 2000
     var ITIinterval = 500
     var ISIinterval = 500
 
     //---------------------TRIAL COUNTS--------------------//
-    var numberofblocks = 2;
-    var blocklength = 160;
+    var numberofblocks = 3;
+    var blocklength = 240;
 
     //----------------------SHUFFLE FUNCTION------------------//
     //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+
     function shuffle(array) {
-      var currentIndex = array.length, temporaryValue, randomIndex;
-      // While there remain elements to shuffle...
-      while (0 !== currentIndex) {
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
+      for (var i = array.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var temp = array[i];
+          array[i] = array[j];
+          array[j] = temp;
       }
-      return array;
-    };
+        return array;
+      };
 
     //#######################################################//
     //-----------------------LOAD IMAGES---------------------//
@@ -113,345 +108,1683 @@
       prev_switch_final = []
       correct_answer_final = []
 
+      //----------------------Miniblock lengths--------------------//
+      blocksize = [4,4,4,4,4,4,8,8,8,8,8,8,12,12,12,12,12,12,16,16,16,16,16,16]
+      shuffle(blocksize)
+
       //----------------------MiniBlock Loop---------------------//
       //This should create enough miniblocks to fit the given blocklength
-      for (var j = 0; j < blocklength/8; j++){
+      for (var j = 0; j < blocksize.length; j++){
+        if (blocksize[j] == 4){
 
-          //----------------------Prime---------------------//
-          //-----------------------------------------------//
-          picture = [random_img[0+(j*4+(picorder*blocklength))],random_img[1+(j*4+(picorder*blocklength))],
-          random_img[2+(j*4+(picorder*blocklength))],random_img[3+(j*4+(picorder*blocklength))]]
+            //----------------------Prime 1-------------------//
+            //-----------------------------------------------//
+            picture = [random_img[0+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[1+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[2+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[3+(j*4+(picorder*(blocksize.length*4)))]]
 
-          //----------------------Category---------------------//
-          category_balence = 0
-          while (category_balence == 0){
-            category = []
-            for (var g=0;g<4;g++){
-              category.push(Math.round(Math.random()))
-            }
-            shuffle(category)
+            //----------------------Category---------------------//
+            category_balence = 0
+            while (category_balence == 0){
+              category = []
+              for (var g=0;g<4;g++){
+                category.push(math.randomInt(0,2))
+              }
+              shuffle(category)
 
-            category_switch = []
-            for (var g=0;g<4;g++){
-              if(g == 0){category_switch.push(2)}
-              else{
-                if(category[g] != category[g-1]){
-                  category_switch.push(0) //switch
-                }
-                if(category[g] == category[g-1]){
-                  category_switch.push(1) //repeat
+              category_switch = []
+              for (var g=0;g<4;g++){
+                if(g == 0){category_switch.push(2)}
+                else{
+                  if(category[g] != category[g-1]){
+                    category_switch.push(0) //switch
+                  }
+                  if(category[g] == category[g-1]){
+                    category_switch.push(1) //repeat
+                  }
                 }
               }
-            }
 
-            if(math.sum(category_switch) != 2 && math.sum(category_switch) != 5){
-              category_balence = 1
-            }
-          };
-
-          //----------------------Action---------------------//
-          action_balence = 0
-          while (action_balence == 0){
-
-            action = []
-            for (var g=0;g<4;g++){
-              action.push(Math.round(Math.random()))
-            }
-            shuffle(action)
-
-            action_switch = []
-            correct_answer = []
-            for (var g = 0; g < 4; g++){
-              if (category[g] == 0 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mechnon[picture[g]] == 0){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 0 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mechnon[picture[g]] == 0){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 1 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mechnon[picture[g]] == 0){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 1 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mechnon[picture[g]] == 0){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 0 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mechnon[picture[g]] == 0){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 0 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mechnon[picture[g]] == 0){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 1 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mechnon[picture[g]] == 0){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 1 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mechnon[picture[g]] == 0){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 0 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mechnon[picture[g]] == 1){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 0 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mechnon[picture[g]] == 1){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 1 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mechnon[picture[g]] == 1){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 1 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mechnon[picture[g]] == 1){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 0 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mechnon[picture[g]] == 1){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 0 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mechnon[picture[g]] == 1){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 1 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mechnon[picture[g]] == 1){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 1 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mechnon[picture[g]] == 1){
-                  correct_answer.push(48)
-                }
+              if(math.sum(category_switch) != 2 && math.sum(category_switch) != 5){
+                category_balence = 1
+              }
             };
 
-            for (var g=0;g<4;g++){
-              if(g == 0){action_switch.push(2)}
-              else{
-                if(correct_answer[g] != correct_answer[g-1]){
-                  action_switch.push(0) //switch
-                }
-                if(correct_answer[g] == correct_answer[g-1]){
-                  action_switch.push(1) //repeat
+            //----------------------Action---------------------//
+            action_balence = 0
+            while (action_balence == 0){
+
+              action = []
+              for (var g=0;g<4;g++){
+                action.push(math.randomInt(0,2))
+              }
+              shuffle(action)
+
+              action_switch = []
+              correct_answer = []
+              for (var g = 0; g < 4; g++){
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+              };
+
+              for (var g=0;g<4;g++){
+                if(g == 0){action_switch.push(2)}
+                else{
+                  if(correct_answer[g] != correct_answer[g-1]){
+                    action_switch.push(0) //switch
+                  }
+                  if(correct_answer[g] == correct_answer[g-1]){
+                    action_switch.push(1) //repeat
+                  }
                 }
               }
-            }
 
-            if(math.sum(action_switch) != 2 && math.sum(action_switch) != 5  &&
-          math.sum(correct_answer) != 192 && math.sum(correct_answer) != 196){
-              action_balence = 1
-            }
+              if(math.sum(action_switch) != 2 && math.sum(action_switch) != 5  &&
+            math.sum(correct_answer) != 192 && math.sum(correct_answer) != 196){
+                action_balence = 1
+              }
+            };
+
+            dummy_switch = [2,2,2,2]
+
+            miniblock = [j,j,j,j,j]
+            miniblock_type = [0,0,0,0,]
+            miniblock_trials = [0,1,2,3]
+
+            miniblock_final = miniblock_final.concat(miniblock)
+            miniblock_type_final = miniblock_type_final.concat(miniblock_type)
+            miniblock_trials_final = miniblock_trials_final.concat(miniblock_trials)
+            picture_final = picture_final.concat(picture)
+            category_final = category_final.concat(category)
+            category_switch_final = category_switch_final.concat(category_switch)
+            action_final = action_final.concat(action)
+            action_switch_final = action_switch_final.concat(action_switch)
+            prev_switch_final = prev_switch_final.concat(dummy_switch)
+            correct_answer_final = correct_answer_final.concat(correct_answer)
+
         };
+        if (blocksize[j] == 8){
 
-          //----------------------Probe---------------------//
-          //This while loop allows us to randomize the presentation
-          //order while keeping certain requirements strict, such
-          //as the action switch/repeat
-          probe_pic_order = 0
-          while(probe_pic_order == 0){
-            picture_probe = [random_img[0+(j*4+(picorder*blocklength))],random_img[1+(j*4+(picorder*blocklength))],
-            random_img[2+(j*4+(picorder*blocklength))],random_img[3+(j*4+(picorder*blocklength))]]
-            shuffle(picture_probe)
+            //----------------------Prime 1-------------------//
+            //-----------------------------------------------//
+            picture = [random_img[0+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[1+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[2+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[3+(j*4+(picorder*(blocksize.length*4)))]]
 
-            category_probe = [category[picture.indexOf(picture_probe[0])],
-                              category[picture.indexOf(picture_probe[1])],
-                              category[picture.indexOf(picture_probe[2])],
-                              category[picture.indexOf(picture_probe[3])]]
+            //----------------------Category---------------------//
+            category_balence = 0
+            while (category_balence == 0){
+              category = []
+              for (var g=0;g<4;g++){
+                category.push(math.randomInt(0,2))
+              }
+              shuffle(category)
 
-            action_probe = [action[picture.indexOf(picture_probe[0])],
-                            action[picture.indexOf(picture_probe[1])],
-                            action[picture.indexOf(picture_probe[2])],
-                            action[picture.indexOf(picture_probe[3])]]
+              category_switch = []
+              for (var g=0;g<4;g++){
+                if(g == 0){category_switch.push(2)}
+                else{
+                  if(category[g] != category[g-1]){
+                    category_switch.push(0) //switch
+                  }
+                  if(category[g] == category[g-1]){
+                    category_switch.push(1) //repeat
+                  }
+                }
+              }
 
-            category_probe[picture_probe.indexOf(picture[0])] = Math.round(Math.random())
-            action_probe[picture_probe.indexOf(picture[0])] = Math.round(Math.random())
+              if(math.sum(category_switch) != 2 && math.sum(category_switch) != 5){
+                category_balence = 1
+              }
+            };
 
-            category_switch_probe = []
+            //----------------------Action---------------------//
+            action_balence = 0
+            while (action_balence == 0){
+
+              action = []
+              for (var g=0;g<4;g++){
+                action.push(math.randomInt(0,2))
+              }
+              shuffle(action)
+
+              action_switch = []
+              correct_answer = []
+              for (var g = 0; g < 4; g++){
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+              };
+
+              for (var g=0;g<4;g++){
+                if(g == 0){action_switch.push(2)}
+                else{
+                  if(correct_answer[g] != correct_answer[g-1]){
+                    action_switch.push(0) //switch
+                  }
+                  if(correct_answer[g] == correct_answer[g-1]){
+                    action_switch.push(1) //repeat
+                  }
+                }
+              }
+
+              if(math.sum(action_switch) != 2 && math.sum(action_switch) != 5  &&
+            math.sum(correct_answer) != 192 && math.sum(correct_answer) != 196){
+                action_balence = 1
+              }
+            };
+
+            //----------------------Probe---------------------//
+            //------------------------------------------------//
+            //This while loop allows us to randomize the presentation
+            //order while keeping certain requirements strict, such
+            //as the action switch/repeat
+            probe_pic_order = 0
+            while(probe_pic_order == 0){
+              picture_probe = [random_img[0+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[1+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[2+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[3+(j*4+(picorder*(blocksize.length*4)))]]
+              shuffle(picture_probe)
+
+              category_probe = [category[picture.indexOf(picture_probe[0])],
+                                category[picture.indexOf(picture_probe[1])],
+                                category[picture.indexOf(picture_probe[2])],
+                                category[picture.indexOf(picture_probe[3])]]
+
+              action_probe = [action[picture.indexOf(picture_probe[0])],
+                              action[picture.indexOf(picture_probe[1])],
+                              action[picture.indexOf(picture_probe[2])],
+                              action[picture.indexOf(picture_probe[3])]]
+
+              category_probe[picture_probe.indexOf(picture[0])] = math.randomInt(0,2)
+              action_probe[picture_probe.indexOf(picture[0])] = math.randomInt(0,2)
+
+              category_switch_probe = []
+              for (var g=0;g<4;g++){
+                if(g == 0){
+                  if(category[3] != category_probe[0]){
+                    category_switch_probe.push(0) //switch
+                  }
+                  if(category[3] == category_probe[0]){
+                    category_switch_probe.push(1) //repeat
+                  }
+                }
+                else{
+                  if(category_probe[g] != category_probe[g-1]){
+                    category_switch_probe.push(0) //switch
+                  }
+                  if(category_probe[g] == category_probe[g-1]){
+                    category_switch_probe.push(1) //repeat
+                  }
+                }
+              }
+
+              action_switch_probe = []
+              correct_answer_probe = []
+              for (var g = 0; g < 4; g++){
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+              };
+
+              for (var g=0;g<4;g++){
+                if(g == 0){
+                  if(correct_answer[3] != correct_answer_probe[0]){
+                    action_switch_probe.push(0) //switch
+                  }
+                  if(correct_answer[3] == correct_answer_probe[0]){
+                    action_switch_probe.push(1) //repeat
+                  }
+                }
+                else{
+                  if(correct_answer_probe[g] != correct_answer_probe[g-1]){
+                    action_switch_probe.push(0) //switch
+                  }
+                  if(correct_answer_probe[g] == correct_answer_probe[g-1]){
+                    action_switch_probe.push(1) //repeat
+                  }
+                }
+              }
+
+              //checking whether there are enough switch/repeats between prime and probe
+              primecatcheck = [0,0,0]
+              if(category_switch_probe[picture_probe.indexOf(random_img[1+(j*4+(picorder*blocklength))])] == category_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])]){
+                primecatcheck[0] = 1
+              }
+              if(category_switch_probe[picture_probe.indexOf(random_img[2+(j*4+(picorder*blocklength))])] == category_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])]){
+                primecatcheck[1] = 1
+              }
+              if(category_switch_probe[picture_probe.indexOf(random_img[3+(j*4+(picorder*blocklength))])] == category_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])]){
+                primecatcheck[2] = 1
+              }
+
+              if(picture_probe[0] != picture[3] &&
+                action_switch_probe[picture_probe.indexOf(random_img[1+(j*4+(picorder*blocklength))])] == action_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])] &&
+                action_switch_probe[picture_probe.indexOf(random_img[2+(j*4+(picorder*blocklength))])] == action_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])] &&
+                action_switch_probe[picture_probe.indexOf(random_img[3+(j*4+(picorder*blocklength))])] == action_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])] &&
+                math.sum(primecatcheck) < 3){
+                  probe_pic_order = 1
+                }
+            };
+
+            dummy_switch = [2,2,2,2]
+            prev_switch = []
+            prev_switch[picture_probe.indexOf(random_img[1+(j*4+(picorder*blocklength))])] = category_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])]
+            prev_switch[picture_probe.indexOf(random_img[2+(j*4+(picorder*blocklength))])] = category_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])]
+            prev_switch[picture_probe.indexOf(random_img[3+(j*4+(picorder*blocklength))])] = category_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])]
+            prev_switch[picture_probe.indexOf(random_img[0+(j*4+(picorder*blocklength))])] = 2
+
+            miniblock = [j,j,j,j,j,j,j,j]
+            miniblock_type = [0,0,0,0,1,1,1,1]
+            miniblock_trials = [0,1,2,3,4,5,6,7]
+
+            miniblock_final = miniblock_final.concat(miniblock)
+            miniblock_type_final = miniblock_type_final.concat(miniblock_type)
+            miniblock_trials_final = miniblock_trials_final.concat(miniblock_trials)
+            picture_final = picture_final.concat(picture.concat(picture_probe))
+            category_final = category_final.concat(category.concat(category_probe))
+            category_switch_final = category_switch_final.concat(category_switch.concat(category_switch_probe))
+            action_final = action_final.concat(action.concat(action_probe))
+            action_switch_final = action_switch_final.concat(action_switch.concat(action_switch_probe))
+            prev_switch_final = prev_switch_final.concat(dummy_switch.concat(prev_switch))
+            correct_answer_final = correct_answer_final.concat(correct_answer.concat(correct_answer_probe))
+
+        };
+        if (blocksize[j] == 12){
+
+            //----------------------Prime 1-------------------//
+            //-----------------------------------------------//
+            picture = [random_img[0+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[1+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[2+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[3+(j*4+(picorder*(blocksize.length*4)))]]
+
+            //----------------------Category---------------------//
+            category_balence = 0
+            while (category_balence == 0){
+              category = []
+              for (var g=0;g<4;g++){
+                category.push(math.randomInt(0,2))
+              }
+              shuffle(category)
+
+              category_switch = []
+              for (var g=0;g<4;g++){
+                if(g == 0){category_switch.push(2)}
+                else{
+                  if(category[g] != category[g-1]){
+                    category_switch.push(0) //switch
+                  }
+                  if(category[g] == category[g-1]){
+                    category_switch.push(1) //repeat
+                  }
+                }
+              }
+
+              if(math.sum(category_switch) != 2 && math.sum(category_switch) != 5){
+                category_balence = 1
+              }
+            };
+
+            //----------------------Action---------------------//
+            action_balence = 0
+            while (action_balence == 0){
+
+              action = []
+              for (var g=0;g<4;g++){
+                action.push(math.randomInt(0,2))
+              }
+              shuffle(action)
+
+              action_switch = []
+              correct_answer = []
+              for (var g = 0; g < 4; g++){
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+              };
+
+              for (var g=0;g<4;g++){
+                if(g == 0){action_switch.push(2)}
+                else{
+                  if(correct_answer[g] != correct_answer[g-1]){
+                    action_switch.push(0) //switch
+                  }
+                  if(correct_answer[g] == correct_answer[g-1]){
+                    action_switch.push(1) //repeat
+                  }
+                }
+              }
+
+              if(math.sum(action_switch) != 2 && math.sum(action_switch) != 5  &&
+            math.sum(correct_answer) != 192 && math.sum(correct_answer) != 196){
+                action_balence = 1
+              }
+          };
+
+          //----------------------Prime 2-------------------//
+          //-----------------------------------------------//
+          prime2_pic_order = 0
+          while(prime2_pic_order == 0){
+            picture_prime2 = [random_img[0+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[1+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[2+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[3+(j*4+(picorder*(blocksize.length*4)))]]
+            shuffle(picture_prime2)
+
+            category_prime2 = [category[picture.indexOf(picture_prime2[0])],
+                              category[picture.indexOf(picture_prime2[1])],
+                              category[picture.indexOf(picture_prime2[2])],
+                              category[picture.indexOf(picture_prime2[3])]]
+
+            action_prime2 = [action[picture.indexOf(picture_prime2[0])],
+                            action[picture.indexOf(picture_prime2[1])],
+                            action[picture.indexOf(picture_prime2[2])],
+                            action[picture.indexOf(picture_prime2[3])]]
+
+            category_prime2[picture_prime2.indexOf(picture[0])] = math.randomInt(0,2)
+            action_prime2[picture_prime2.indexOf(picture[0])] = math.randomInt(0,2)
+
+            category_switch_prime2 = []
             for (var g=0;g<4;g++){
               if(g == 0){
-                if(category[3] != category_probe[0]){
-                  category_switch_probe.push(0) //switch
+                if(category[3] != category_prime2[0]){
+                  category_switch_prime2.push(0) //switch
                 }
-                if(category[3] == category_probe[0]){
-                  category_switch_probe.push(1) //repeat
+                if(category[3] == category_prime2[0]){
+                  category_switch_prime2.push(1) //repeat
                 }
               }
               else{
-                if(category_probe[g] != category_probe[g-1]){
-                  category_switch_probe.push(0) //switch
+                if(category_prime2[g] != category_prime2[g-1]){
+                  category_switch_prime2.push(0) //switch
                 }
-                if(category_probe[g] == category_probe[g-1]){
-                  category_switch_probe.push(1) //repeat
+                if(category_prime2[g] == category_prime2[g-1]){
+                  category_switch_prime2.push(1) //repeat
                 }
               }
             }
 
-            action_switch_probe = []
-            correct_answer_probe = []
+            action_switch_prime2 = []
+            correct_answer_prime2 = []
             for (var g = 0; g < 4; g++){
-              if (category_probe[g] == 0 && action_probe[g] == 0 &&
-                correct_largesmall[picture_probe[g]] == 0 &&
-                correct_mechnon[picture_probe[g]] == 0){
-                  correct_answer_probe.push(48)
+              if (category_prime2[g] == 0 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(48)
                 }
-              if (category_probe[g] == 0 && action_probe[g] == 1 &&
-                correct_largesmall[picture_probe[g]] == 0 &&
-                correct_mechnon[picture_probe[g]] == 0){
-                  correct_answer_probe.push(49)
+              if (category_prime2[g] == 0 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(49)
                 }
-              if (category_probe[g] == 1 && action_probe[g] == 0 &&
-                correct_largesmall[picture_probe[g]] == 0 &&
-                correct_mechnon[picture_probe[g]] == 0){
-                  correct_answer_probe.push(48)
+              if (category_prime2[g] == 1 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(48)
                 }
-              if (category_probe[g] == 1 && action_probe[g] == 1 &&
-                correct_largesmall[picture_probe[g]] == 0 &&
-                correct_mechnon[picture_probe[g]] == 0){
-                  correct_answer_probe.push(49)
+              if (category_prime2[g] == 1 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(49)
                 }
-              if (category_probe[g] == 0 && action_probe[g] == 0 &&
-                correct_largesmall[picture_probe[g]] == 1 &&
-                correct_mechnon[picture_probe[g]] == 0){
-                  correct_answer_probe.push(49)
+              if (category_prime2[g] == 0 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(49)
                 }
-              if (category_probe[g] == 0 && action_probe[g] == 1 &&
-                correct_largesmall[picture_probe[g]] == 1 &&
-                correct_mechnon[picture_probe[g]] == 0){
-                  correct_answer_probe.push(48)
+              if (category_prime2[g] == 0 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(48)
                 }
-              if (category_probe[g] == 1 && action_probe[g] == 0 &&
-                correct_largesmall[picture_probe[g]] == 1 &&
-                correct_mechnon[picture_probe[g]] == 0){
-                  correct_answer_probe.push(48)
+              if (category_prime2[g] == 1 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(48)
                 }
-              if (category_probe[g] == 1 && action_probe[g] == 1 &&
-                correct_largesmall[picture_probe[g]] == 1 &&
-                correct_mechnon[picture_probe[g]] == 0){
-                  correct_answer_probe.push(49)
+              if (category_prime2[g] == 1 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(49)
                 }
-              if (category_probe[g] == 0 && action_probe[g] == 0 &&
-                correct_largesmall[picture_probe[g]] == 0 &&
-                correct_mechnon[picture_probe[g]] == 1){
-                  correct_answer_probe.push(48)
+              if (category_prime2[g] == 0 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(48)
                 }
-              if (category_probe[g] == 0 && action_probe[g] == 1 &&
-                correct_largesmall[picture_probe[g]] == 0 &&
-                correct_mechnon[picture_probe[g]] == 1){
-                  correct_answer_probe.push(49)
+              if (category_prime2[g] == 0 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(49)
                 }
-              if (category_probe[g] == 1 && action_probe[g] == 0 &&
-                correct_largesmall[picture_probe[g]] == 0 &&
-                correct_mechnon[picture_probe[g]] == 1){
-                  correct_answer_probe.push(49)
+              if (category_prime2[g] == 1 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(49)
                 }
-              if (category_probe[g] == 1 && action_probe[g] == 1 &&
-                correct_largesmall[picture_probe[g]] == 0 &&
-                correct_mechnon[picture_probe[g]] == 1){
-                  correct_answer_probe.push(48)
+              if (category_prime2[g] == 1 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(48)
                 }
-              if (category_probe[g] == 0 && action_probe[g] == 0 &&
-                correct_largesmall[picture_probe[g]] == 1 &&
-                correct_mechnon[picture_probe[g]] == 1){
-                  correct_answer_probe.push(49)
+              if (category_prime2[g] == 0 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(49)
                 }
-              if (category_probe[g] == 0 && action_probe[g] == 1 &&
-                correct_largesmall[picture_probe[g]] == 1 &&
-                correct_mechnon[picture_probe[g]] == 1){
-                  correct_answer_probe.push(48)
+              if (category_prime2[g] == 0 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(48)
                 }
-              if (category_probe[g] == 1 && action_probe[g] == 0 &&
-                correct_largesmall[picture_probe[g]] == 1 &&
-                correct_mechnon[picture_probe[g]] == 1){
-                  correct_answer_probe.push(49)
+              if (category_prime2[g] == 1 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(49)
                 }
-              if (category_probe[g] == 1 && action_probe[g] == 1 &&
-                correct_largesmall[picture_probe[g]] == 1 &&
-                correct_mechnon[picture_probe[g]] == 1){
-                  correct_answer_probe.push(48)
+              if (category_prime2[g] == 1 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(48)
                 }
             };
 
             for (var g=0;g<4;g++){
               if(g == 0){
-                if(correct_answer[3] != correct_answer_probe[0]){
-                  action_switch_probe.push(0) //switch
+                if(correct_answer[3] != correct_answer_prime2[0]){
+                  action_switch_prime2.push(0) //switch
                 }
-                if(correct_answer[3] == correct_answer_probe[0]){
-                  action_switch_probe.push(1) //repeat
+                if(correct_answer[3] == correct_answer_prime2[0]){
+                  action_switch_prime2.push(1) //repeat
                 }
               }
               else{
-                if(correct_answer_probe[g] != correct_answer_probe[g-1]){
-                  action_switch_probe.push(0) //switch
+                if(correct_answer_prime2[g] != correct_answer_prime2[g-1]){
+                  action_switch_prime2.push(0) //switch
                 }
-                if(correct_answer_probe[g] == correct_answer_probe[g-1]){
-                  action_switch_probe.push(1) //repeat
+                if(correct_answer_prime2[g] == correct_answer_prime2[g-1]){
+                  action_switch_prime2.push(1) //repeat
                 }
               }
             }
 
-            //checking whether there are enough switch/repeats between prime and probe
-            primecatcheck = [0,0,0]
-            if(category_switch_probe[picture_probe.indexOf(random_img[1+(j*4+(picorder*blocklength))])] ==  category_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])]){
-              primecatcheck[0] = 1
-            }
-            if(category_switch_probe[picture_probe.indexOf(random_img[2+(j*4+(picorder*blocklength))])] ==  category_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])]){
-              primecatcheck[1] = 1
-            }
-            if(category_switch_probe[picture_probe.indexOf(random_img[3+(j*4+(picorder*blocklength))])] ==  category_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])]){
-              primecatcheck[2] = 1
-            }
-
-            if(picture_probe[0] != picture[3] &&
-              action_switch_probe[picture_probe.indexOf(random_img[1+(j*4+(picorder*blocklength))])] ==  action_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])] &&
-              action_switch_probe[picture_probe.indexOf(random_img[2+(j*4+(picorder*blocklength))])] ==  action_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])] &&
-              action_switch_probe[picture_probe.indexOf(random_img[3+(j*4+(picorder*blocklength))])] ==  action_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])] &&
-              math.sum(primecatcheck) != 3 && math.sum(primecatcheck) != 0){
-                probe_pic_order = 1
+            if(picture_prime2[0] != picture[3] &&
+              category_switch_prime2[picture_prime2.indexOf(random_img[1+(j*4+(picorder*blocklength))])] ==  category_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])] &&
+              category_switch_prime2[picture_prime2.indexOf(random_img[2+(j*4+(picorder*blocklength))])] ==  category_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])] &&
+              category_switch_prime2[picture_prime2.indexOf(random_img[3+(j*4+(picorder*blocklength))])] ==  category_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])] &&
+              action_switch_prime2[picture_prime2.indexOf(random_img[1+(j*4+(picorder*blocklength))])] ==  action_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])] &&
+              action_switch_prime2[picture_prime2.indexOf(random_img[2+(j*4+(picorder*blocklength))])] ==  action_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])] &&
+              action_switch_prime2[picture_prime2.indexOf(random_img[3+(j*4+(picorder*blocklength))])] ==  action_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])]){
+                prime2_pic_order = 1
               }
           };
 
-          dummy_switch = [2,2,2,2]
-          prev_switch = []
-          prev_switch[picture_probe.indexOf(random_img[1+(j*4+(picorder*blocklength))])] = category_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])]
-          prev_switch[picture_probe.indexOf(random_img[2+(j*4+(picorder*blocklength))])] = category_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])]
-          prev_switch[picture_probe.indexOf(random_img[3+(j*4+(picorder*blocklength))])] = category_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])]
-          prev_switch[picture_probe.indexOf(random_img[0+(j*4+(picorder*blocklength))])] = 2
+            //----------------------Probe---------------------//
+            //------------------------------------------------//
+            //This while loop allows us to randomize the presentation
+            //order while keeping certain requirements strict, such
+            //as the action switch/repeat
+            probe_pic_order = 0
+            while(probe_pic_order == 0){
+              picture_probe = [random_img[0+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[1+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[2+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[3+(j*4+(picorder*(blocksize.length*4)))]]
+              shuffle(picture_probe)
 
-          miniblock = [j,j,j,j,j,j,j,j]
-          miniblock_type = [0,0,0,0,1,1,1,1]
-          miniblock_trials = [0,1,2,3,4,5,6,7]
+              category_probe = [category[picture.indexOf(picture_probe[0])],
+                                category[picture.indexOf(picture_probe[1])],
+                                category[picture.indexOf(picture_probe[2])],
+                                category[picture.indexOf(picture_probe[3])]]
 
-          miniblock_final = miniblock_final.concat(miniblock)
-          miniblock_type_final = miniblock_type_final.concat(miniblock_type)
-          miniblock_trials_final = miniblock_trials_final.concat(miniblock_trials)
-          picture_final = picture_final.concat(picture.concat(picture_probe))
-          category_final = category_final.concat(category.concat(category_probe))
-          category_switch_final = category_switch_final.concat(category_switch.concat(category_switch_probe))
-          action_final = action_final.concat(action.concat(action_probe))
-          action_switch_final = action_switch_final.concat(action_switch.concat(action_switch_probe))
-          prev_switch_final = prev_switch_final.concat(dummy_switch.concat(prev_switch))
-          correct_answer_final = correct_answer_final.concat(correct_answer.concat(correct_answer_probe))
+              action_probe = [action[picture.indexOf(picture_probe[0])],
+                              action[picture.indexOf(picture_probe[1])],
+                              action[picture.indexOf(picture_probe[2])],
+                              action[picture.indexOf(picture_probe[3])]]
 
+              category_probe[picture_probe.indexOf(picture[0])] = math.randomInt(0,2)
+              action_probe[picture_probe.indexOf(picture[0])] = math.randomInt(0,2)
+
+              category_switch_probe = []
+              for (var g=0;g<4;g++){
+                if(g == 0){
+                  if(category_prime2[3] != category_probe[0]){
+                    category_switch_probe.push(0) //switch
+                  }
+                  if(category_prime2[3] == category_probe[0]){
+                    category_switch_probe.push(1) //repeat
+                  }
+                }
+                else{
+                  if(category_probe[g] != category_probe[g-1]){
+                    category_switch_probe.push(0) //switch
+                  }
+                  if(category_probe[g] == category_probe[g-1]){
+                    category_switch_probe.push(1) //repeat
+                  }
+                }
+              }
+
+              action_switch_probe = []
+              correct_answer_probe = []
+              for (var g = 0; g < 4; g++){
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+              };
+
+              for (var g=0;g<4;g++){
+                if(g == 0){
+                  if(correct_answer_prime2[3] != correct_answer_probe[0]){
+                    action_switch_probe.push(0) //switch
+                  }
+                  if(correct_answer_prime2[3] == correct_answer_probe[0]){
+                    action_switch_probe.push(1) //repeat
+                  }
+                }
+                else{
+                  if(correct_answer_probe[g] != correct_answer_probe[g-1]){
+                    action_switch_probe.push(0) //switch
+                  }
+                  if(correct_answer_probe[g] == correct_answer_probe[g-1]){
+                    action_switch_probe.push(1) //repeat
+                  }
+                }
+              }
+
+              //checking whether there are enough switch/repeats between prime and probe
+              primecatcheck = [0,0,0]
+              if(category_switch_probe[picture_probe.indexOf(random_img[1+(j*4+(picorder*blocklength))])] == category_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])]){
+                primecatcheck[0] = 1
+              }
+              if(category_switch_probe[picture_probe.indexOf(random_img[2+(j*4+(picorder*blocklength))])] == category_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])]){
+                primecatcheck[1] = 1
+              }
+              if(category_switch_probe[picture_probe.indexOf(random_img[3+(j*4+(picorder*blocklength))])] == category_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])]){
+                primecatcheck[2] = 1
+              }
+
+              if(picture_probe[0] != picture[3] &&
+                action_switch_probe[picture_probe.indexOf(random_img[1+(j*4+(picorder*blocklength))])] == action_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])] &&
+                action_switch_probe[picture_probe.indexOf(random_img[2+(j*4+(picorder*blocklength))])] == action_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])] &&
+                action_switch_probe[picture_probe.indexOf(random_img[3+(j*4+(picorder*blocklength))])] == action_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])] &&
+                math.sum(primecatcheck) < 3){
+                  probe_pic_order = 1
+                }
+            };
+
+            dummy_switch = [2,2,2,2,2,2,2,2]
+            prev_switch = []
+            prev_switch[picture_probe.indexOf(random_img[1+(j*4+(picorder*blocklength))])] = category_switch[picture.indexOf(random_img[1+(j*4+(picorder*blocklength))])]
+            prev_switch[picture_probe.indexOf(random_img[2+(j*4+(picorder*blocklength))])] = category_switch[picture.indexOf(random_img[2+(j*4+(picorder*blocklength))])]
+            prev_switch[picture_probe.indexOf(random_img[3+(j*4+(picorder*blocklength))])] = category_switch[picture.indexOf(random_img[3+(j*4+(picorder*blocklength))])]
+            prev_switch[picture_probe.indexOf(random_img[0+(j*4+(picorder*blocklength))])] = 2
+
+            miniblock = [j,j,j,j,j,j,j,j,j,j,j,j]
+            miniblock_type = [0,0,0,0,0,0,0,0,1,1,1,1]
+            miniblock_trials = [0,1,2,3,4,5,6,7,8,9,10,11]
+
+            miniblock_final = miniblock_final.concat(miniblock)
+            miniblock_type_final = miniblock_type_final.concat(miniblock_type)
+            miniblock_trials_final = miniblock_trials_final.concat(miniblock_trials)
+            picture_final = picture_final.concat(picture.concat(picture_prime2.concat(picture_probe)))
+            category_final = category_final.concat(category.concat(category_prime2.concat(category_probe)))
+            category_switch_final = category_switch_final.concat(category_switch.concat(category_switch_prime2.concat(category_switch_probe)))
+            action_final = action_final.concat(action.concat(action_prime2.concat(action_probe)))
+            action_switch_final = action_switch_final.concat(action_switch.concat(action_switch_prime2.concat(action_switch_probe)))
+            prev_switch_final = prev_switch_final.concat(dummy_switch.concat(prev_switch))
+            correct_answer_final = correct_answer_final.concat(correct_answer.concat(correct_answer_prime2.concat(correct_answer_probe)))
+
+        };
+        if (blocksize[j] == 16){
+
+            //----------------------Prime 1-------------------//
+            //-----------------------------------------------//
+            picture = [random_img[0+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[1+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[2+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[3+(j*4+(picorder*(blocksize.length*4)))]]
+
+            //----------------------Category---------------------//
+            category_balence = 0
+            while (category_balence == 0){
+              category = []
+              for (var g=0;g<4;g++){
+                category.push(math.randomInt(0,2))
+              }
+              shuffle(category)
+
+              category_switch = []
+              for (var g=0;g<4;g++){
+                if(g == 0){category_switch.push(2)}
+                else{
+                  if(category[g] != category[g-1]){
+                    category_switch.push(0) //switch
+                  }
+                  if(category[g] == category[g-1]){
+                    category_switch.push(1) //repeat
+                  }
+                }
+              }
+
+              if(math.sum(category_switch) != 2 && math.sum(category_switch) != 5){
+                category_balence = 1
+              }
+            };
+
+            //----------------------Action---------------------//
+            action_balence = 0
+            while (action_balence == 0){
+
+              action = []
+              for (var g=0;g<4;g++){
+                action.push(math.randomInt(0,2))
+              }
+              shuffle(action)
+
+              action_switch = []
+              correct_answer = []
+              for (var g = 0; g < 4; g++){
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 0){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 0 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 0 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 0 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+                if (category[g] == 1 && action[g] == 0 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(49)
+                  }
+                if (category[g] == 1 && action[g] == 1 &&
+                  correct_largesmall[picture[g]] == 1 &&
+                  correct_mannon[picture[g]] == 1){
+                    correct_answer.push(48)
+                  }
+              };
+
+              for (var g=0;g<4;g++){
+                if(g == 0){action_switch.push(2)}
+                else{
+                  if(correct_answer[g] != correct_answer[g-1]){
+                    action_switch.push(0) //switch
+                  }
+                  if(correct_answer[g] == correct_answer[g-1]){
+                    action_switch.push(1) //repeat
+                  }
+                }
+              }
+
+              if(math.sum(action_switch) != 2 && math.sum(action_switch) != 5  &&
+            math.sum(correct_answer) != 192 && math.sum(correct_answer) != 196){
+                action_balence = 1
+              }
+          };
+
+          //----------------------Prime 2-------------------//
+          //-----------------------------------------------//
+          prime2_pic_order = 0
+          while(prime2_pic_order == 0){
+            picture_prime2 = [random_img[0+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[1+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[2+(j*4+(picorder*(blocksize.length*4)))],
+            random_img[3+(j*4+(picorder*(blocksize.length*4)))]]
+            shuffle(picture_prime2)
+
+            category_prime2 = [category[picture.indexOf(picture_prime2[0])],
+                              category[picture.indexOf(picture_prime2[1])],
+                              category[picture.indexOf(picture_prime2[2])],
+                              category[picture.indexOf(picture_prime2[3])]]
+
+            action_prime2 = [action[picture.indexOf(picture_prime2[0])],
+                            action[picture.indexOf(picture_prime2[1])],
+                            action[picture.indexOf(picture_prime2[2])],
+                            action[picture.indexOf(picture_prime2[3])]]
+
+            category_prime2[picture_prime2.indexOf(picture[0])] = math.randomInt(0,2)
+            action_prime2[picture_prime2.indexOf(picture[0])] = math.randomInt(0,2)
+
+            category_switch_prime2 = []
+            for (var g=0;g<4;g++){
+              if(g == 0){
+                if(category[3] != category_prime2[0]){
+                  category_switch_prime2.push(0) //switch
+                }
+                if(category[3] == category_prime2[0]){
+                  category_switch_prime2.push(1) //repeat
+                }
+              }
+              else{
+                if(category_prime2[g] != category_prime2[g-1]){
+                  category_switch_prime2.push(0) //switch
+                }
+                if(category_prime2[g] == category_prime2[g-1]){
+                  category_switch_prime2.push(1) //repeat
+                }
+              }
+            }
+
+            action_switch_prime2 = []
+            correct_answer_prime2 = []
+            for (var g = 0; g < 4; g++){
+              if (category_prime2[g] == 0 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(48)
+                }
+              if (category_prime2[g] == 0 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(49)
+                }
+              if (category_prime2[g] == 1 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(48)
+                }
+              if (category_prime2[g] == 1 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(49)
+                }
+              if (category_prime2[g] == 0 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(49)
+                }
+              if (category_prime2[g] == 0 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(48)
+                }
+              if (category_prime2[g] == 1 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(48)
+                }
+              if (category_prime2[g] == 1 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 0){
+                  correct_answer_prime2.push(49)
+                }
+              if (category_prime2[g] == 0 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(48)
+                }
+              if (category_prime2[g] == 0 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(49)
+                }
+              if (category_prime2[g] == 1 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(49)
+                }
+              if (category_prime2[g] == 1 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 0 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(48)
+                }
+              if (category_prime2[g] == 0 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(49)
+                }
+              if (category_prime2[g] == 0 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(48)
+                }
+              if (category_prime2[g] == 1 && action_prime2[g] == 0 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(49)
+                }
+              if (category_prime2[g] == 1 && action_prime2[g] == 1 &&
+                correct_largesmall[picture_prime2[g]] == 1 &&
+                correct_mannon[picture_prime2[g]] == 1){
+                  correct_answer_prime2.push(48)
+                }
+            };
+
+            for (var g=0;g<4;g++){
+              if(g == 0){
+                if(correct_answer[3] != correct_answer_prime2[0]){
+                  action_switch_prime2.push(0) //switch
+                }
+                if(correct_answer[3] == correct_answer_prime2[0]){
+                  action_switch_prime2.push(1) //repeat
+                }
+              }
+              else{
+                if(correct_answer_prime2[g] != correct_answer_prime2[g-1]){
+                  action_switch_prime2.push(0) //switch
+                }
+                if(correct_answer_prime2[g] == correct_answer_prime2[g-1]){
+                  action_switch_prime2.push(1) //repeat
+                }
+              }
+            }
+
+            if(picture_prime2[0] != picture[3] &&
+              category_switch_prime2[picture_prime2.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] ==  category_switch[picture.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] &&
+              category_switch_prime2[picture_prime2.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] ==  category_switch[picture.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] &&
+              category_switch_prime2[picture_prime2.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] ==  category_switch[picture.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] &&
+              action_switch_prime2[picture_prime2.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] ==  action_switch[picture.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] &&
+              action_switch_prime2[picture_prime2.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] ==  action_switch[picture.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] &&
+              action_switch_prime2[picture_prime2.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] ==  action_switch[picture.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])]){
+                prime2_pic_order = 1
+              }
+            };
+
+            //----------------------Prime 3-------------------//
+            //-----------------------------------------------//
+            prime3_pic_order = 0
+            while(prime3_pic_order == 0){
+              picture_prime3 = [random_img[0+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[1+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[2+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[3+(j*4+(picorder*(blocksize.length*4)))]]
+              shuffle(picture_prime3)
+
+              category_prime3 = [category[picture.indexOf(picture_prime3[0])],
+                                category[picture.indexOf(picture_prime3[1])],
+                                category[picture.indexOf(picture_prime3[2])],
+                                category[picture.indexOf(picture_prime3[3])]]
+
+              action_prime3 = [action[picture.indexOf(picture_prime3[0])],
+                              action[picture.indexOf(picture_prime3[1])],
+                              action[picture.indexOf(picture_prime3[2])],
+                              action[picture.indexOf(picture_prime3[3])]]
+
+              category_prime3[picture_prime2.indexOf(picture[0])] = math.randomInt(0,2)
+              action_prime3[picture_prime2.indexOf(picture[0])] = math.randomInt(0,2)
+
+              category_switch_prime3 = []
+              for (var g=0;g<4;g++){
+                if(g == 0){
+                  if(category_prime2[3] != category_prime3[0]){
+                    category_switch_prime3.push(0) //switch
+                  }
+                  if(category_prime2[3] == category_prime3[0]){
+                    category_switch_prime3.push(1) //repeat
+                  }
+                }
+                else{
+                  if(category_prime3[g] != category_prime3[g-1]){
+                    category_switch_prime3.push(0) //switch
+                  }
+                  if(category_prime3[g] == category_prime3[g-1]){
+                    category_switch_prime3.push(1) //repeat
+                  }
+                }
+              }
+
+              action_switch_prime3 = []
+              correct_answer_prime3 = []
+              for (var g = 0; g < 4; g++){
+                if (category_prime3[g] == 0 && action_prime3[g] == 0 &&
+                  correct_largesmall[picture_prime3[g]] == 0 &&
+                  correct_mannon[picture_prime3[g]] == 0){
+                    correct_answer_prime3.push(48)
+                  }
+                if (category_prime3[g] == 0 && action_prime3[g] == 1 &&
+                  correct_largesmall[picture_prime3[g]] == 0 &&
+                  correct_mannon[picture_prime3[g]] == 0){
+                    correct_answer_prime3.push(49)
+                  }
+                if (category_prime3[g] == 1 && action_prime3[g] == 0 &&
+                  correct_largesmall[picture_prime3[g]] == 0 &&
+                  correct_mannon[picture_prime3[g]] == 0){
+                    correct_answer_prime3.push(48)
+                  }
+                if (category_prime3[g] == 1 && action_prime3[g] == 1 &&
+                  correct_largesmall[picture_prime3[g]] == 0 &&
+                  correct_mannon[picture_prime3[g]] == 0){
+                    correct_answer_prime3.push(49)
+                  }
+                if (category_prime3[g] == 0 && action_prime3[g] == 0 &&
+                  correct_largesmall[picture_prime3[g]] == 1 &&
+                  correct_mannon[picture_prime3[g]] == 0){
+                    correct_answer_prime3.push(49)
+                  }
+                if (category_prime3[g] == 0 && action_prime3[g] == 1 &&
+                  correct_largesmall[picture_prime3[g]] == 1 &&
+                  correct_mannon[picture_prime3[g]] == 0){
+                    correct_answer_prime3.push(48)
+                  }
+                if (category_prime3[g] == 1 && action_prime3[g] == 0 &&
+                  correct_largesmall[picture_prime3[g]] == 1 &&
+                  correct_mannon[picture_prime3[g]] == 0){
+                    correct_answer_prime3.push(48)
+                  }
+                if (category_prime3[g] == 1 && action_prime3[g] == 1 &&
+                  correct_largesmall[picture_prime3[g]] == 1 &&
+                  correct_mannon[picture_prime3[g]] == 0){
+                    correct_answer_prime3.push(49)
+                  }
+                if (category_prime3[g] == 0 && action_prime3[g] == 0 &&
+                  correct_largesmall[picture_prime3[g]] == 0 &&
+                  correct_mannon[picture_prime3[g]] == 1){
+                    correct_answer_prime3.push(48)
+                  }
+                if (category_prime3[g] == 0 && action_prime3[g] == 1 &&
+                  correct_largesmall[picture_prime3[g]] == 0 &&
+                  correct_mannon[picture_prime3[g]] == 1){
+                    correct_answer_prime3.push(49)
+                  }
+                if (category_prime3[g] == 1 && action_prime3[g] == 0 &&
+                  correct_largesmall[picture_prime3[g]] == 0 &&
+                  correct_mannon[picture_prime3[g]] == 1){
+                    correct_answer_prime3.push(49)
+                  }
+                if (category_prime3[g] == 1 && action_prime3[g] == 1 &&
+                  correct_largesmall[picture_prime3[g]] == 0 &&
+                  correct_mannon[picture_prime3[g]] == 1){
+                    correct_answer_prime3.push(48)
+                  }
+                if (category_prime3[g] == 0 && action_prime3[g] == 0 &&
+                  correct_largesmall[picture_prime3[g]] == 1 &&
+                  correct_mannon[picture_prime3[g]] == 1){
+                    correct_answer_prime3.push(49)
+                  }
+                if (category_prime3[g] == 0 && action_prime3[g] == 1 &&
+                  correct_largesmall[picture_prime3[g]] == 1 &&
+                  correct_mannon[picture_prime3[g]] == 1){
+                    correct_answer_prime3.push(48)
+                  }
+                if (category_prime3[g] == 1 && action_prime3[g] == 0 &&
+                  correct_largesmall[picture_prime3[g]] == 1 &&
+                  correct_mannon[picture_prime3[g]] == 1){
+                    correct_answer_prime3.push(49)
+                  }
+                if (category_prime3[g] == 1 && action_prime3[g] == 1 &&
+                  correct_largesmall[picture_prime3[g]] == 1 &&
+                  correct_mannon[picture_prime3[g]] == 1){
+                    correct_answer_prime3.push(48)
+                  }
+              };
+
+              for (var g=0;g<4;g++){
+                if(g == 0){
+                  if(correct_answer_prime2[3] != correct_answer_prime3[0]){
+                    action_switch_prime3.push(0) //switch
+                  }
+                  if(correct_answer_prime2[3] == correct_answer_prime3[0]){
+                    action_switch_prime3.push(1) //repeat
+                  }
+                }
+                else{
+                  if(correct_answer_prime3[g] != correct_answer_prime3[g-1]){
+                    action_switch_prime3.push(0) //switch
+                  }
+                  if(correct_answer_prime3[g] == correct_answer_prime3[g-1]){
+                    action_switch_prime3.push(1) //repeat
+                  }
+                }
+              }
+
+              if(picture_prime3[0] != picture_prime2[3] &&
+                category_switch_prime3[picture_prime3.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] ==  category_switch[picture.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] &&
+                category_switch_prime3[picture_prime3.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] ==  category_switch[picture.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] &&
+                category_switch_prime3[picture_prime3.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] ==  category_switch[picture.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] &&
+                action_switch_prime3[picture_prime3.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] ==  action_switch[picture.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] &&
+                action_switch_prime3[picture_prime3.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] ==  action_switch[picture.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] &&
+                action_switch_prime3[picture_prime3.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] ==  action_switch[picture.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])]){
+                  prime3_pic_order = 1
+                }
+              };
+
+            //----------------------Probe---------------------//
+            //------------------------------------------------//
+            //This while loop allows us to randomize the presentation
+            //order while keeping certain requirements strict, such
+            //as the action switch/repeat
+            probe_pic_order = 0
+            while(probe_pic_order == 0){
+              picture_probe = [random_img[0+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[1+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[2+(j*4+(picorder*(blocksize.length*4)))],
+              random_img[3+(j*4+(picorder*(blocksize.length*4)))]]
+              shuffle(picture_probe)
+
+              category_probe = [category[picture.indexOf(picture_probe[0])],
+                                category[picture.indexOf(picture_probe[1])],
+                                category[picture.indexOf(picture_probe[2])],
+                                category[picture.indexOf(picture_probe[3])]]
+
+              action_probe = [action[picture.indexOf(picture_probe[0])],
+                              action[picture.indexOf(picture_probe[1])],
+                              action[picture.indexOf(picture_probe[2])],
+                              action[picture.indexOf(picture_probe[3])]]
+
+              category_probe[picture_probe.indexOf(picture[0])] = math.randomInt(0,2)
+              action_probe[picture_probe.indexOf(picture[0])] = math.randomInt(0,2)
+
+              category_switch_probe = []
+              for (var g=0;g<4;g++){
+                if(g == 0){
+                  if(category_prime3[3] != category_probe[0]){
+                    category_switch_probe.push(0) //switch
+                  }
+                  if(category_prime3[3] == category_probe[0]){
+                    category_switch_probe.push(1) //repeat
+                  }
+                }
+                else{
+                  if(category_probe[g] != category_probe[g-1]){
+                    category_switch_probe.push(0) //switch
+                  }
+                  if(category_probe[g] == category_probe[g-1]){
+                    category_switch_probe.push(1) //repeat
+                  }
+                }
+              }
+
+              action_switch_probe = []
+              correct_answer_probe = []
+              for (var g = 0; g < 4; g++){
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+              };
+
+              for (var g=0;g<4;g++){
+                if(g == 0){
+                  if(correct_answer_prime3[3] != correct_answer_probe[0]){
+                    action_switch_probe.push(0) //switch
+                  }
+                  if(correct_answer_prime3[3] == correct_answer_probe[0]){
+                    action_switch_probe.push(1) //repeat
+                  }
+                }
+                else{
+                  if(correct_answer_probe[g] != correct_answer_probe[g-1]){
+                    action_switch_probe.push(0) //switch
+                  }
+                  if(correct_answer_probe[g] == correct_answer_probe[g-1]){
+                    action_switch_probe.push(1) //repeat
+                  }
+                }
+              }
+
+              //checking whether there are enough switch/repeats between prime and probe
+              primecatcheck = [0,0,0]
+              if(category_switch_probe[picture_probe.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] == category_switch[picture.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])]){
+                primecatcheck[0] = 1
+              }
+              if(category_switch_probe[picture_probe.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] == category_switch[picture.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])]){
+                primecatcheck[1] = 1
+              }
+              if(category_switch_probe[picture_probe.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] == category_switch[picture.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])]){
+                primecatcheck[2] = 1
+              }
+
+              if(picture_probe[0] != picture[3] &&
+                action_switch_probe[picture_probe.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] == action_switch[picture.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] &&
+                action_switch_probe[picture_probe.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] == action_switch[picture.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] &&
+                action_switch_probe[picture_probe.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] == action_switch[picture.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] &&
+                math.sum(primecatcheck) < 3){
+                  probe_pic_order = 1
+                }
+            };
+
+            dummy_switch = [2,2,2,2,2,2,2,2,2,2,2,2]
+            prev_switch = []
+            prev_switch[picture_probe.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] = category_switch[picture.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])]
+            prev_switch[picture_probe.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] = category_switch[picture.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])]
+            prev_switch[picture_probe.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] = category_switch[picture.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])]
+            prev_switch[picture_probe.indexOf(random_img[0+(j*4+(picorder*(blocksize.length*4)))])] = 2
+
+            miniblock = [j,j,j,j,j,j,j,j,j,j,j,j,j,j,j,j]
+            miniblock_type = [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1]
+            miniblock_trials = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+
+            miniblock_final = miniblock_final.concat(miniblock)
+            miniblock_type_final = miniblock_type_final.concat(miniblock_type)
+            miniblock_trials_final = miniblock_trials_final.concat(miniblock_trials)
+            picture_final = picture_final.concat(picture.concat(picture_prime2.concat(picture_prime3.concat(picture_probe))))
+            category_final = category_final.concat(category.concat(category_prime2.concat(category_prime3.concat(category_probe))))
+            category_switch_final = category_switch_final.concat(category_switch.concat(category_switch_prime2.concat(category_switch_prime3.concat(category_switch_probe))))
+            action_final = action_final.concat(action.concat(action_prime2.concat(action_prime3.concat(action_probe))))
+            action_switch_final = action_switch_final.concat(action_switch.concat(action_switch_prime2.concat(action_switch_prime3.concat(action_switch_probe))))
+            prev_switch_final = prev_switch_final.concat(dummy_switch.concat(prev_switch))
+            correct_answer_final = correct_answer_final.concat(correct_answer.concat(correct_answer_prime2.concat(correct_answer_prime3.concat(correct_answer_probe))))
+
+        };
       };
 
       trialmatrix = [miniblock_final,miniblock_type_final,miniblock_trials_final,
@@ -463,8 +1796,6 @@
 
     };
 
-
-
     //#######################################################//
     //------------------INITIALIZING VARIABLES---------------//
     //#######################################################//
@@ -474,11 +1805,11 @@
     notfullscreen = 0;
     instructionson = 0;
     miniblockon = 0;
-    block = 0;
-     trialcount = 0;
+    block = -1;
+    trialcount = 0;
     var totalcount = 0;
     var instructioncount = 0;
-     stimscreencount = 0;
+    stimscreencount = 0;
 
     //variables that just need to be
     type = 0;
@@ -498,14 +1829,17 @@
     //#######################################################//
 
     //---------------------CUE SCREENS----------------------//
-    function cue_screen(task, config){
-      type = 0;
+    function image_screen(task, config, object){
+      d1 = new Date();
+      onset = d1.getTime() - runStart;
+      type = 1;
+      acc = 99;
       var c = document.getElementById("myCanvas");
       var ctx = c.getContext("2d");
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
 
       //sets up the text attributes
-      ctx.font="bold 50px Arial";
+      ctx.font="bold 70px Arial";
       ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
@@ -519,11 +1853,13 @@
         case 0:
         switch(config) {
           case 0:
-          ctx.fillText("L + S",myCanvas.width/2,myCanvas.height/2);
+          ctx.fillText("L",myCanvas.width/2-200,myCanvas.height/2);
+          ctx.fillText("S",myCanvas.width/2+200,myCanvas.height/2);
           break;
 
           case 1:
-          ctx.fillText("S + L",myCanvas.width/2,myCanvas.height/2);
+          ctx.fillText("S",myCanvas.width/2-200,myCanvas.height/2);
+          ctx.fillText("L",myCanvas.width/2+200,myCanvas.height/2);
           break;
         };
         break;
@@ -531,29 +1867,17 @@
         case 1:
         switch(config) {
           case 0:
-          ctx.fillText("M + N",myCanvas.width/2,myCanvas.height/2);
+          ctx.fillText("M",myCanvas.width/2-200,myCanvas.height/2);
+          ctx.fillText("N",myCanvas.width/2+200,myCanvas.height/2);
           break;
 
           case 1:
-          ctx.fillText("N + M",myCanvas.width/2,myCanvas.height/2);
+          ctx.fillText("N",myCanvas.width/2-200,myCanvas.height/2);
+          ctx.fillText("M",myCanvas.width/2+200,myCanvas.height/2);
           break;
         };
         break;
       };
-
-      //timeout variable
-      stimscreencount++;
-      timeoutCUE = setTimeout(isi_screen,CUEinterval);
-    };
-
-    //---------------------OBJECT SCREENS-------------------//
-    function object_screen(object){
-      d1 = new Date();
-      onset = d1.getTime() - runStart;
-      type = 1;
-      var c = document.getElementById("myCanvas");
-      var ctx = c.getContext("2d");
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
 
       //record presentation data
       data[logCounter] = ["SP:", block, i, onset, object, 9999, 9999,
@@ -566,16 +1890,16 @@
       ctx.drawImage(img[object], myCanvas.width/2-128, myCanvas.height/2-128);
 
       //timeout variable
-      timeoutOBJECT = setTimeout(record_noresponse,OBJECTinterval);
+      timeoutIMAGE = setTimeout(iti_screen,IMAGEinterval);
     };
 
+    //--------------------RECORD NO RESPONSE----------------//
     function record_noresponse(){
       data[logCounter] = ["SR:", block, i, 9999, 9999, 9999, 9999,
       trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
       trialmatrix[4][i],trialmatrix[5][i],trialmatrix[6][i],trialmatrix[7][i],
       trialmatrix[8][i],trialmatrix[9][i]];
       logCounter++;
-      iti_screen();
     }
 
     //-----------------------ITI SCREENS-------------------//
@@ -587,16 +1911,22 @@
 
       //sets up the text attributes
       ctx.font="bold 50px Arial";
-      ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
 
       //determines which feedback to give
       if (acc == 1) {
+        ctx.fillStyle="green";
         ctx.fillText("Correct",myCanvas.width/2,(myCanvas.height/2));
       }
       else if (acc == 0) {
+        ctx.fillStyle="red";
         ctx.fillText("Incorrect",myCanvas.width/2,(myCanvas.height/2));
+      }
+      else if (acc == 99) {
+        ctx.fillStyle="white";
+        ctx.fillText("Too Slow",myCanvas.width/2,(myCanvas.height/2));
+        record_noresponse()
       }
 
       //timeout variable
@@ -634,7 +1964,7 @@
         ctx.font="60px Arial";
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
         ctx.fillText(""+time, 450, 450);
-        timeoutcountdown = setTimeout(function(){countDown(time-1)},1000);
+        timeoutcountdown = setTimeout(function(){countDown(time-1)},750);
       }
       else
       {
@@ -659,25 +1989,25 @@
         ctx.font="bold 45px Arial";
         ctx.fillText("You will now begin the task.", (myCanvas.width/2), (myCanvas.height/2)-400);
         ctx.font="25px Arial";
-        ctx.fillText("You will complete "+numberofblocks+" blocks of trials, taking ~25min in total.", (myCanvas.width/2), (myCanvas.height/2)-350);
-        ctx.fillText("At the end of each block, you will be told your current accuracy.", (myCanvas.width/2), (myCanvas.height/2)-300);
+        ctx.fillText("You will complete "+numberofblocks+" blocks of trials, taking ~60min in total.", (myCanvas.width/2), (myCanvas.height/2)-350);
+        ctx.fillText("Throughout each block you will be told your current accuracy.", (myCanvas.width/2), (myCanvas.height/2)-300);
         ctx.fillText("Remember you need >75% accuracy in the task.", (myCanvas.width/2), (myCanvas.height/2)-250);
         ctx.fillText("Please answer as quickly and accurately as possible.", (myCanvas.width/2), (myCanvas.height/2)-200);
         ctx.fillText("__________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
         ctx.textAlign="left";
-        ctx.fillText("At the beginning of each trial, you will be presented with two letters that will", 0, (myCanvas.height/2)-150);
-        ctx.fillText("indicate what characteristics you will be using to judge the following picture and", (0.0), (myCanvas.height/2)-100);
-        ctx.fillText("which button you will press to indicate your response.", (0.0), (myCanvas.height/2)-50);
+        ctx.fillText("On each trial you will be presented with two letters on either side of a picture", 0, (myCanvas.height/2)-150);
+        ctx.fillText("that will indicate what characteristics you will be using to judge the picture on", (0.0), (myCanvas.height/2)-100);
+        ctx.fillText("and which button you will press to indicate your response.", (0.0), (myCanvas.height/2)-50);
 
 
         ctx.fillText("   -- M/N indicates mechanical (M) or non-mechanical (N).", (0.0), (myCanvas.height/2)-0);
         ctx.fillText("   -- L/S indicates large (L) or small (S).", (0.0), (myCanvas.height/2)+50);
 
         ctx.fillText("The order of the letters indicates the correct response key for each option.", (0.0), (myCanvas.height/2)+130);
-        ctx.fillText("    -- The letter on the left indicates you should press the '1' key", (0.0), (myCanvas.height/2)+180);
-        ctx.fillText("          (NOT using the numpad) to indicate that response.", 0, (myCanvas.height/2)+230);
-        ctx.fillText("    -- The letter on the right indicates you should press the '0' key", 0, (myCanvas.height/2)+280);
-        ctx.fillText("          (NOT using the numpad) to indicate that response.", 0, (myCanvas.height/2)+330);
+        ctx.fillText("    -- The letter to the left of the picture indicates you should", (0.0), (myCanvas.height/2)+180);
+        ctx.fillText("          press the '1' key (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+230);
+        ctx.fillText("    -- The letter to the right of the picture indicates you should", 0, (myCanvas.height/2)+280);
+        ctx.fillText("          press the '0' key (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+330);
 
         ctx.textAlign="center";
         ctx.fillText("Press any button to begin the task.", (myCanvas.width/2), (myCanvas.height/2)+420);
@@ -690,22 +2020,20 @@
         ctx.fillText("Please answer as quickly and accurately as possible.", (myCanvas.width/2), (myCanvas.height/2)-200);
         ctx.fillText("__________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
         ctx.textAlign="left";
-        ctx.fillText("At the beginning of each trial, you will be presented with two letters that will", 0, (myCanvas.height/2)-150);
-        ctx.fillText("indicate what characteristics you will be using to judge the following picture and", (0.0), (myCanvas.height/2)-100);
-        ctx.fillText("which button you will press to indicate your response.", (0.0), (myCanvas.height/2)-50);
-
+        ctx.fillText("On each trial you will be presented with two letters on either side of a picture", 0, (myCanvas.height/2)-150);
+        ctx.fillText("that will indicate what characteristics you will be using to judge the picture on", (0.0), (myCanvas.height/2)-100);
+        ctx.fillText("and which button you will press to indicate your response.", (0.0), (myCanvas.height/2)-50);
 
         ctx.fillText("   -- M/N indicates mechanical (M) or non-mechanical (N).", (0.0), (myCanvas.height/2)-0);
         ctx.fillText("   -- L/S indicates large (L) or small (S).", (0.0), (myCanvas.height/2)+50);
 
         ctx.fillText("The order of the letters indicates the correct response key for each option.", (0.0), (myCanvas.height/2)+130);
-        ctx.fillText("    -- The letter on the left indicates you should press the '1' key", (0.0), (myCanvas.height/2)+180);
-        ctx.fillText("          (NOT using the numpad) to indicate that response.", 0, (myCanvas.height/2)+230);
-        ctx.fillText("    -- The letter on the right indicates you should press the '0' key", 0, (myCanvas.height/2)+280);
-        ctx.fillText("          (NOT using the numpad) to indicate that response.", 0, (myCanvas.height/2)+330);
+        ctx.fillText("    -- The letter to the left of the picture indicates you should", (0.0), (myCanvas.height/2)+180);
+        ctx.fillText("          press the '1' key (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+230);
+        ctx.fillText("    -- The letter to the right of the picture indicates you should", 0, (myCanvas.height/2)+280);
+        ctx.fillText("          press the '0' key (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+330);
         ctx.textAlign="center";
         ctx.fillText("Press any button to begin the task.", (myCanvas.width/2), (myCanvas.height/2)+420);
-        block++;
       }
     };
 
@@ -773,22 +2101,17 @@
     function runTrial(){
         if (trialcount < blocklength*numberofblocks){
           if ((trialcount+instructionson == 0 || (trialcount+instructionson) % blocklength === 0)) {
-            instructionson = 1; i = 0; createTrialMatrix(block); instructions();}
+            instructionson = 1; i = 0; block++; createTrialMatrix(block); instructions();}
 
-          else if (((trialcount+miniblockon) % 8 === 0) && trialcount != 0) {
+          else if (trialmatrix[2][i] == 0 && i != 0 && miniblockon == 0) {
             miniblockon = 1; miniblockscreen();}
 
-            //Present the Cue
+            //Present the Cue and Object
             else if (stimscreencount == 0){checkSize();
-              if (checkwindowsize == 0) {cue_screen(trialmatrix[4][i],trialmatrix[6][i]);}
+              if (checkwindowsize == 0) {image_screen(trialmatrix[4][i],trialmatrix[6][i],trialmatrix[3][i]);}
               else if (checkwindowsize == 1) {nonfullscreen();}}
 
-            //Present the Object
-            else if (stimscreencount == 1){checkSize();
-              if (checkwindowsize == 0) {object_screen(trialmatrix[3][i])}
-              else if (checkwindowsize == 1) {nonfullscreen();}}
-
-            else if (stimscreencount == 2){
+            else if (stimscreencount == 1){
               stimscreencount = 0; i++; trialcount++; acctotalcount++; miniblockon = 0; instructionson = 0;
               runTrial();}
               }
@@ -808,7 +2131,7 @@
         //Detect events likes clicks or button presses
         $("body").keypress(function(event){
           //clearTimeout();
-          if (type == 1 || type == 2 || type == 3) {key = event.keyCode || event.charCode};
+          if (type == 1 || type == 2 || type == 3) {key = event.keyCode || event.which};
           //creates more data
           d1 = new Date();
           Ronset = d1.getTime()-runStart;
@@ -829,14 +2152,14 @@
 
         $("body").keyup(function(event){
           //clearTimeout();
-          if (type == 1 || type == 2 || type == 3) {key = event.keyCode || event.charCode};
+          if (type == 1 || type == 2 || type == 3) {key = event.keyCode || event.which};
           //creates more data
           if (type == 1) {
             data[logCounter] = ["SR:", block, i, Ronset, key, respTime, acc,
             trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
             trialmatrix[4][i],trialmatrix[5][i],trialmatrix[6][i],trialmatrix[7][i],
             trialmatrix[8][i],trialmatrix[9][i]];
-            logCounter++; clearTimeout(timeoutOBJECT); iti_screen();
+            logCounter++; clearTimeout(timeoutIMAGE); iti_screen();
           }
           else {jokes++;}
         });
@@ -877,8 +2200,8 @@
               <input type="hidden" id="workerId" name="workerId" value="">
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
-              <input type="hidden" id="demographics" name="demographics" value="SCSAswitch">
-              <input type="hidden" id="ExpName" name="ExpName" value="multWM">
+              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary1">
+              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary1">
             </form>
           </td>
         </tr>

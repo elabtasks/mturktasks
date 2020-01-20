@@ -3,7 +3,6 @@
 <head>
   <link rel="stylesheet" href="Task.css" type="text/css" charset="utf-8">
   <script type="text/javascript" src="jquery-3.2.1.js"></script>
-  <script type="text/javascript" src="images.js"></script>
   <script type="text/javascript">
 
   /*function gup(name, tmpURL)
@@ -27,7 +26,7 @@
     var ctx = c.getContext("2d");
     var i = 0;
 
-    var fileName = ['practice_pics/LM55.jpg']
+    var fileName = ['examplepics/example1.png','examplepics/example2.png','examplepics/example3.png','examplepics/example4.png','examplepics/example5.png']
 		var img = new Array(fileName.length);
 		var imgCount = 0;
 
@@ -54,26 +53,54 @@
         ctx.fillStyle="white";
         ctx.textBaseline="left";
         ctx.textAlign="left";
-        ctx.fillText("Today you will be completing a simple task.", (myCanvas.width)-900, (myCanvas.height/2)-320);
-        ctx.fillText("__________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-300);
+        ctx.fillText("Today you will be completing a simple task.", (myCanvas.width)-900, (myCanvas.height/2)-400);
+        ctx.fillText("__________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-380);
 
-        ctx.fillText("At the beginning of each trial, you will be presented with two letters that will", 0, (myCanvas.height/2)-250);
-        ctx.fillText("indicate what characteristics you will be using to judge the following picture and", (0.0), (myCanvas.height/2)-200);
-        ctx.fillText("which button you will press to indicate your response.", (0.0), (myCanvas.height/2)-150);
+        ctx.fillText("On each trial, you will be presented with a picture that will have one letter on", 0, (myCanvas.height/2)-330);
+        ctx.fillText("its left, and one letter on its right. These letters will indicate how you should", (0.0), (myCanvas.height/2)-300);
+        ctx.fillText("respond to each picture you see. ", (0.0), (myCanvas.height/2)-270);
 
+        ctx.fillText("For each picture, you will either see the letters M and N, OR the letters L and S.", (0.0), (myCanvas.height/2)-220);
 
-        ctx.fillText("   -- M/N indicates mechanical (M) or non-mechanical (N).", (0.0), (myCanvas.height/2)-100);
-        ctx.fillText("   -- L/S indicates large (L) or small (S).", (0.0), (myCanvas.height/2)-50);
+        ctx.fillText("Importantly, when you see the letters M and N, the letter M might appear on ", (0.0), (myCanvas.height/2)-170);
+        ctx.fillText("the left of the picture, in which case the N will appear on the right of the ", (0.0), (myCanvas.height/2)-140);
+        ctx.fillText("picture. Or, the letter M might appear on the right of the picture, in which case ", (0.0), (myCanvas.height/2)-110);
+        ctx.fillText("the letter N will appear on the left of the picture.", (0.0), (myCanvas.height/2)-80);
 
-        ctx.fillText("The order of the letters when presented indicates the response key options.", (0.0), (myCanvas.height/2)+50);
-        ctx.fillText("    -- The letter on the left indicates you should press the '1' key", (0.0), (myCanvas.height/2)+100);
-        ctx.fillText("          (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+150);
-        ctx.fillText("    -- The letter on the right indicates you should press the '0' key", 0, (myCanvas.height/2)+200);
-        ctx.fillText("          (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+250);
+        ctx.fillText("Likewise, when you see the letters L and S, the letter L might appear on the left ", 0, (myCanvas.height/2)-30);
+        ctx.fillText("of the picture, in which case the S will appear on the right of the picture. Or, ", 0, (myCanvas.height/2)-0);
+        ctx.fillText("the letter L might appear on the right of the picture, in which case the letter S ", 0, (myCanvas.height/2)+30);
+        ctx.fillText("will appear on the left of the picture.", (0.0), (myCanvas.height/2)+60);
 
-        ctx.fillText("Press the button below for more details on the task.", (myCanvas.width)-900, (myCanvas.height/2)+400);
+        ctx.beginPath();
+        ctx.rect(250, (myCanvas.height/2)+110, 100,100);
+        ctx.rect(550, (myCanvas.height/2)+110, 100,100);
+        ctx.rect(250, (myCanvas.height/2)+250, 100,100);
+        ctx.rect(550, (myCanvas.height/2)+250, 100,100);
+        ctx.strokeStyle  = 'white'
+        ctx.lineWidth = 5
+        ctx.stroke();
 
+        ctx.fillText("or", 440, (myCanvas.height/2)+170);
+        ctx.fillText("or", 440, (myCanvas.height/2)+310);
 
+        ctx.fillText("M", 200, (myCanvas.height/2)+160);
+        ctx.fillText("N", 380, (myCanvas.height/2)+160);
+        ctx.fillText("N", 500, (myCanvas.height/2)+160);
+        ctx.fillText("M", 680, (myCanvas.height/2)+160);
+
+        ctx.fillText("S", 200, (myCanvas.height/2)+300);
+        ctx.fillText("L", 380, (myCanvas.height/2)+300);
+        ctx.fillText("L", 500, (myCanvas.height/2)+300);
+        ctx.fillText("S", 680, (myCanvas.height/2)+300);
+
+        ctx.fillText("IMAGE", 260, (myCanvas.height/2)+170);
+        ctx.fillText("IMAGE", 560, (myCanvas.height/2)+310);
+        ctx.fillText("IMAGE", 260, (myCanvas.height/2)+310);
+        ctx.fillText("IMAGE", 560, (myCanvas.height/2)+170);
+
+        ctx.textAlign="center";
+        ctx.fillText("Press the button below for more details on the task.", (myCanvas.width)/2, (myCanvas.height/2)+400);
       }
       else if (i == 1){
         $("#backButton").show();
@@ -83,20 +110,27 @@
         ctx.fillStyle="white";
         ctx.textBaseline="middle";
         ctx.textAlign="left";
-        ctx.fillText("The categories 'Large vs. Small' and 'Mechanical vs. Non-Mechanical'", (myCanvas.width/2)-450, (myCanvas.height/2)-400);
-        ctx.fillText("are defined as the following.", (myCanvas.width/2)-450, (myCanvas.height/2)-350);
-        ctx.fillText("Large vs. Small:", (myCanvas.width/2)-450, (myCanvas.height/2)-250);
-        ctx.fillText(" - A 'Large' object is one that, in real life, could NOT fit in to a shoebox.", (myCanvas.width/2)-450, (myCanvas.height/2)-200);
-        ctx.fillText(" - A 'Small' object is one that, in real life, could fit in to a shoebox.", (myCanvas.width/2)-450, (myCanvas.height/2)-150);
-        ctx.fillText("Mechanical vs. Non-Mechanical:", (myCanvas.width/2)-450, (myCanvas.height/2)-50);
-        ctx.fillText(" - A 'Mechanical' object is one that has any type of mechanism (i.e. multiple", (myCanvas.width/2)-450, (myCanvas.height/2)-0);
-        ctx.fillText("        parts that move/work together).", (myCanvas.width/2)-450, (myCanvas.height/2)+50);
+        ctx.fillText("The letters M/N and S/L have important meanings that you need to be aware of:", (myCanvas.width/2)-450, (myCanvas.height/2)-400);
 
-        ctx.fillText(" - A 'Non-Mechanical' object is one that has no mechanism (i.e. a fork or", (myCanvas.width/2)-450, (myCanvas.height/2)+100);
-        ctx.fillText("        a dining room chair).", (myCanvas.width/2)-450, (myCanvas.height/2)+150);
+        ctx.fillText("The letter “M” stands for “mechanical,” whereas the letter “N” stands for ", (myCanvas.width/2)-450, (myCanvas.height/2)-350);
+        ctx.fillText("“non-mechanical.”", (myCanvas.width/2)-450, (myCanvas.height/2)-320);
 
-        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2)-450, (myCanvas.height/2)+300);
-        ctx.fillText("to the previous instructions.", (myCanvas.width/2)-450, (myCanvas.height/2)+350);
+        ctx.fillText("The letter “L” stands for “large,” whereas the letter “S” stands for “small.”", (myCanvas.width/2)-450, (myCanvas.height/2)-270);
+
+        ctx.fillText("If you see the letters M and N beside a picture, your job is to determine ", (myCanvas.width/2)-450, (myCanvas.height/2)-220);
+        ctx.fillText("whether the object shown in the picture is mechanical or non-mechanical. A ", (myCanvas.width/2)-450, (myCanvas.height/2)-190);
+        ctx.fillText("'mechanical' object is one that has any type of mechanism or moving parts (e.g. ", (myCanvas.width/2)-450, (myCanvas.height/2)-160);
+        ctx.fillText("a car or a clock). A ‘non-Mechanical' object is one that has no mechanism or ", (myCanvas.width/2)-450, (myCanvas.height/2)-130);
+        ctx.fillText("moving parts (e.g. a fork or a dining room chair).", (myCanvas.width/2)-450, (myCanvas.height/2)-100);
+
+        ctx.fillText("Alternatively, if you see the letters L and S beside a picture, your job is to ", (myCanvas.width/2)-450, (myCanvas.height/2)-50);
+        ctx.fillText("determine whether the object shown in the picture is large or small. A 'large' ", (myCanvas.width/2)-450, (myCanvas.height/2)-20);
+        ctx.fillText("object is one that, in real life, could NOT fit in to a shoebox. A 'Small' object is ", (myCanvas.width/2)-450, (myCanvas.height/2)+10);
+        ctx.fillText("one that, in real life, could fit in to a shoebox.", (myCanvas.width/2)-450, (myCanvas.height/2)+40);
+
+        ctx.textAlign="center";
+        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
+        ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
 
       }
       else if (i == 2){
@@ -106,45 +140,58 @@
         ctx.font="25px Arial";
         ctx.fillStyle="white";
         ctx.textBaseline="middle";
+        ctx.textAlign="left";
+        ctx.fillText("If, for example, you are shown a picture of a car (i.e., a mechanical object), ", 0, (myCanvas.height/2)-400);
+        ctx.fillText("AND you see the letters M and N on either side of the picture, then your job is ", 0, (myCanvas.height/2)-370);
+        ctx.fillText("to indicate whether this object is mechanical or not. In this case, because a car ", 0, (myCanvas.height/2)-340);
+        ctx.fillText("is mechanical, you would want to make a response that corresponds to the ", 0, (myCanvas.height/2)-310);
+        ctx.fillText("letter “M” (since the car is mechanical) not “N.” ", 0, (myCanvas.height/2)-280);
+
+        ctx.fillText("In this “car” example, if the M appears to the left side of the picture, then to ", 0, (myCanvas.height/2)-230);
+        ctx.fillText("make a correct response, you would hit the 1 key on the top of your keyboard ", 0, (myCanvas.height/2)-200);
+        ctx.fillText("(notice that, on the top of your keyboard, the 1 key is off to the left, just like ", 0, (myCanvas.height/2)-170);
+        ctx.fillText("the M is to the left of the picture in this example). On the other hand, if the M ", 0, (myCanvas.height/2)-140);
+        ctx.fillText("appears to the right side of the picture, you would hit the 0 key on the top of ", 0, (myCanvas.height/2)-110);
+        ctx.fillText("your keyboard (notice that, on the top of your keyboard, the 0 key is off to the ", 0, (myCanvas.height/2)-80);
+        ctx.fillText("right, just like the M is to the right of the picture in this example). ", 0, (myCanvas.height/2)-50);
+
+        ctx.drawImage(img[0], myCanvas.width/2-450, myCanvas.height/2+5);
+
+        ctx.drawImage(img[1], myCanvas.width/2, myCanvas.height/2+5);
+
         ctx.textAlign="center";
-        ctx.fillText("Below is an example of the initial letters you might see.", (myCanvas.width/2), (myCanvas.height/2)-400);
-        ctx.fillText("This would indicate to judge the subsequent picture on whether it was", (myCanvas.width/2), (myCanvas.height/2)-300);
-        ctx.fillText("large or small. The '1' key (on the left) would indicate 'Small'", (myCanvas.width/2), (myCanvas.height/2)-250);
-        ctx.fillText("and the '0' key (on the right) would indicate 'Large'.", (myCanvas.width/2), (myCanvas.height/2)-200);
-
-        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
-        ctx.font="35px Arial";
-        ctx.fillText("S + L",myCanvas.width/2,myCanvas.height/2);
-        ctx.font="25px Arial";
-        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
-        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+300);
-        ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+350);
-
-      }
-      else if (i == 3){
-        $("#backButton").show();
-
-        ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-        ctx.font="25px Arial";
-        ctx.fillStyle="white";
-        ctx.textBaseline="middle";
-        ctx.textAlign="center";
-        ctx.fillText("Below is an example of a picture you would need to respond to.", (myCanvas.width/2), (myCanvas.height/2)-400);
-        ctx.fillText("You would use the letters presented previously (here 'S + L')", (myCanvas.width/2), (myCanvas.height/2)-350);
-        ctx.fillText("to judge whether this picture is of something 'large' or 'small'", (myCanvas.width/2), (myCanvas.height/2)-300);
-        ctx.fillText("(i.e. fits inside a shoebox or not).", (myCanvas.width/2), (myCanvas.height/2)-250);
-
-        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-230);
-        ctx.drawImage(img[0], myCanvas.width/2-128, myCanvas.height/2-128);
-        ctx.fillStyle="white";
-        ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+180);
-        ctx.fillText("Here the image is of something large, so given the previously cued", (myCanvas.width/2), (myCanvas.height/2)+220);
-        ctx.fillText("letters, you would press the '0' (right) key.", (myCanvas.width/2), (myCanvas.height/2)+270);
-
-        ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
+        ctx.fillText("Use the buttons below to see the next instructions or go back",(myCanvas.width/2), (myCanvas.height/2)+350);
         ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
-
       }
+    else if (i == 3){
+      $("#backButton").show();
+
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="25px Arial";
+      ctx.fillStyle="white";
+      ctx.textBaseline="middle";
+      ctx.textAlign="left";
+      ctx.fillText("Sometimes, instead of being shown pictures of mechanical objects, you will be ", 0, (myCanvas.height/2)-400);
+      ctx.fillText("shown pictures of non-mechanical objects. For instance, you may be shown a ", 0, (myCanvas.height/2)-370);
+      ctx.fillText("picture of a fork. In these cases, you will want to make a response that ", 0, (myCanvas.height/2)-340);
+      ctx.fillText("corresponds to the letter “N” (since a fork is NOT mechanical). In this “fork” ", 0, (myCanvas.height/2)-310);
+      ctx.fillText("example, if the N appears to the left side of the picture, then to make a correct ", 0, (myCanvas.height/2)-280);
+
+      ctx.fillText("response, you would hit the 1 key on the top of your keyboard (on the top of ", 0, (myCanvas.height/2)-250);
+      ctx.fillText("your keyboard, the 1 key is off to the left, just like the N is to the left of the ", 0, (myCanvas.height/2)-220);
+      ctx.fillText("picture in this example). On the other hand, if the N appears to the right side of ", 0, (myCanvas.height/2)-190);
+      ctx.fillText("the picture, you would hit the 0 key on the top of your keyboard (on the top of ", 0, (myCanvas.height/2)-160);
+      ctx.fillText("your keyboard, the 0 key is off to the right, just like the N is to the right of the ", 0, (myCanvas.height/2)-130);
+      ctx.fillText("picture in this example). ", 0, (myCanvas.height/2)-100);
+
+      ctx.drawImage(img[2], myCanvas.width/2-450, myCanvas.height/2+5);
+
+      ctx.drawImage(img[3], myCanvas.width/2, myCanvas.height/2+5);
+
+      ctx.textAlign="center";
+      ctx.fillText("Use the buttons below to see the next instructions or go back",(myCanvas.width/2), (myCanvas.height/2)+350);
+      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
+    }
     else if (i == 4){
       $("#backButton").show();
 
@@ -152,22 +199,33 @@
       ctx.font="25px Arial";
       ctx.fillStyle="white";
       ctx.textBaseline="middle";
-      ctx.textAlign="center";
-      ctx.fillText("You could also see other letters, such as 'M + N', inidicating", (myCanvas.width/2), (myCanvas.height/2)-400);
-      ctx.fillText("that you should judge the following picture on whether it is mechanical", (myCanvas.width/2), (myCanvas.height/2)-350);
-      ctx.fillText("or non-mechanical. ", (myCanvas.width/2), (myCanvas.height/2)-300);
-      ctx.fillText("Below, the presented letters would indicate to press the '1' key (left)", (myCanvas.width/2), (myCanvas.height/2)-250);
-      ctx.fillText("for 'mechanical' and the '0' key (right) for 'non-mechanical'.", (myCanvas.width/2), (myCanvas.height/2)-200);
+      ctx.textAlign="left";
+      ctx.fillText("As mentioned earlier, sometimes, instead of seeing the letters M/N beside the ", 0, (myCanvas.height/2)-430);
+      ctx.fillText("picture, you will see the letters L/S. In these cases, your job is to indicate ", 0, (myCanvas.height/2)-400);
+      ctx.fillText("whether the object shown in the picture is large or small. As a reminder, a ", 0, (myCanvas.height/2)-370);
+      ctx.fillText("'large' object is one that, in real life, could NOT fit in to a shoebox. A 'Small' ", 0, (myCanvas.height/2)-340);
+      ctx.fillText("object is one that, in real life, could fit in to a shoebox.", 0, (myCanvas.height/2)-310);
 
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
-      ctx.font="35px Arial";
-      ctx.fillText("M + N",myCanvas.width/2,myCanvas.height/2);
-      ctx.font="25px Arial";
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
-      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+300);
-      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+350);
+      ctx.fillText("To make your response, you will follow the same instructions as before, but ", 0, (myCanvas.height/2)-260);
+      ctx.fillText("this time, rather than map your response (0 or 1) onto the M or N, you will map ", 0, (myCanvas.height/2)-230);
+      ctx.fillText("your 0 or 1 response onto the S or L. So, if you are shown a picture of a small ", 0, (myCanvas.height/2)-200);
+      ctx.fillText("object (e.g., a watch), and the S is on the left side of the picture, then you ", 0, (myCanvas.height/2)-170);
+      ctx.fillText("would press 1. Alternatively, if you are shown a picture of a small object and ", 0, (myCanvas.height/2)-140);
+      ctx.fillText("the S is on the right side of the picture, then you would press 0. ", 0, (myCanvas.height/2)-110);
+
+      ctx.fillText("If, on the other hand, you are shown a picture of a large object (e.g., a house) ", 0, (myCanvas.height/2)-60);
+      ctx.fillText("and the L is on the left side of the picture, then you would press 1. ", 0, (myCanvas.height/2)-30);
+      ctx.fillText("Alternatively, if you are shown a picture of a large object and the L is on the ", 0, (myCanvas.height/2)-0);
+      ctx.fillText("right side of the picture, then you would press 0. ", 0, (myCanvas.height/2)+30);
+
+      ctx.drawImage(img[4], myCanvas.width/2-250, myCanvas.height/2+50);
+
+      ctx.textAlign="center";
+      ctx.fillText("Use the buttons below to see the next instructions or go back",(myCanvas.width/2), (myCanvas.height/2)+400);
+      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+430);
     }
     else if (i == 5){
+      $("#startButton").hide();
       $("#backButton").show();
 
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
@@ -175,64 +233,16 @@
       ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
-      ctx.fillText("If you were to see this picture after seeing the", (myCanvas.width/2), (myCanvas.height/2)-400);
-      ctx.fillText("letters 'M + N', you would judge whether this picture is of ", (myCanvas.width/2), (myCanvas.height/2)-350);
-      ctx.fillText("something 'mechanical' or 'non-mechanical'.", (myCanvas.width/2), (myCanvas.height/2)-300);
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-280);
-      ctx.drawImage(img[0], myCanvas.width/2-128, myCanvas.height/2-128);
-      ctx.fillStyle="white";
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+180);
-      ctx.fillText("Here the image is of something 'mechanical', so given the previously cued", (myCanvas.width/2), (myCanvas.height/2)+220);
-      ctx.fillText("letters, you would press the '1' (left) key.", (myCanvas.width/2), (myCanvas.height/2)+270);
 
-      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
-      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
-    }
-    else if (i == 6){
-      $("#backButton").show();
+      ctx.fillText("This is the end of the instructions. Please use the buttons below to go back ", (myCanvas.width/2), (myCanvas.height/2));
+      ctx.fillText("to review the instructions if you have any questions, or to continue on to", (myCanvas.width/2), (myCanvas.height/2)+50);
+      ctx.fillText("the practice task.", (myCanvas.width/2), (myCanvas.height/2)+100);
 
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
-      ctx.fillText("If you saw the letters 'N + M', this would mean still that you", (myCanvas.width/2), (myCanvas.height/2)-400);
-      ctx.fillText("should judge the following picture on whether it is mechanical", (myCanvas.width/2), (myCanvas.height/2)-350);
-      ctx.fillText("or non-mechanical. ", (myCanvas.width/2), (myCanvas.height/2)-300);
-      ctx.fillText("However, you would press the '1' key (left)", (myCanvas.width/2), (myCanvas.height/2)-250);
-      ctx.fillText("for 'non-mechanical' and the '0' key (right) for 'mechanical'.", (myCanvas.width/2), (myCanvas.height/2)-200);
-
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
-      ctx.font="35px Arial";
-      ctx.fillText("N + M",myCanvas.width/2,myCanvas.height/2);
-      ctx.font="25px Arial";
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+260);
-      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+300);
-      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+350);
-    }
-    else if (i == 7){
-      $("#backButton").show();
-
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
-      ctx.fillText("Hence, here, you would press", (myCanvas.width/2), (myCanvas.height/2)-400);
-      ctx.fillText("the '0' key to indicate that the below image", (myCanvas.width/2), (myCanvas.height/2)-350);
-      ctx.fillText("was something 'mechanical'.", (myCanvas.width/2), (myCanvas.height/2)-300);
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-280);
-      ctx.drawImage(img[0], myCanvas.width/2-128, myCanvas.height/2-128);
-      ctx.fillStyle="white";
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)+180);
-
-      ctx.fillText("Use the buttons below to complete a practice task or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
-      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
     }
     }
 
     function runTrial(){
-      if (i < 8){
+      if (i < 6){
         blockinstruction1();
       }
       else {
@@ -265,7 +275,7 @@ $("#backButton").click(function(){i--; runTrial();});
                     <input type="hidden" id="workerId" name="workerId" value="">
                     <input type="hidden" id="hitId" name="hitId" value="">
                     <input type="hidden" id="RTs" name="RTs" value="">
-                    <input type="hidden" id="ExpName" name="ExpName" value="SCSAswitch">
+                    <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary1">
                     <p style="font-family: Arial; color: white; font-size:24px"></p>
                   </td>
                 </tr>
