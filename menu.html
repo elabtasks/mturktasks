@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="Task.css" type="text/css" charset="utf-8">
-	<script type="text/javascript" src="jquery-3.2.1.js"></script>
+	<link rel="stylesheet" href="NEXT.css" type="text/css" charset="utf-8">
+	<script type="text/javascript" src="jquery-3.1.1.js"></script>
 	<script type="text/javascript">
-	curStage = 0;
+	var curStage = 0;
 	function basicPopup(url)
 	{
 		popupWindow = window.open(url, "popupWindow");
@@ -33,28 +33,19 @@
 		case 0:
 		$("#myButton").show();
 		$("#submit").hide();
-		$("#redo").hide();
-			$("#instruction").text("Click button to fill out demographic survey. DO NOT CLOSE THIS SCREEN.");
+			$("#instruction").text("Click button to fill out demographic survey");
 			break;
 		case 1:
 			$("#myButton").show();
-			$("#redo").hide();
-				$("#instruction").text("Click button to see task instructions. DO NOT CLOSE THIS SCREEN.");
+				$("#instruction").text("Click button to see task instructions");
 				break;
 		case 2:
 		$("#myButton").show();
-		$("#redo").hide();
-			$("#instruction").text("Click button to start practice task. DO NOT CLOSE THIS SCREEN.");
+			$("#instruction").text("Click button to start main task");
 			break;
 		case 3:
-		$("#myButton").show();
-		$("#redo").show();
-			$("#instruction").text("Click 'Continue' button to start main task. Or click 'Redo' to practice again. DO NOT CLOSE THIS SCREEN.");
-			break;
-		case 4:
 			$("#instruction").hide();
 			$("#myButton").hide();
-			$("#redo").hide();
 			$("#mturk_form").show();
 			break;
 		}
@@ -65,21 +56,15 @@
 		$("#instructions").hide();
 		$("#myButton").hide();
 
-		/*document.getElementById("assignmentId").value = gup("assignmentId", document.referrer);
-		document.getElementById("workerId").value = gup("workerId", document.referrer);
-		document.getElementById("hitId").value = gup("hitId", document.referrer);
+		document.getElementById("assignmentId").value = gup("assignmentId", "123");
+		document.getElementById("workerId").value = gup("workerId", "123");
+		document.getElementById("hitId").value = gup("hitId", "123");
 
-		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")*/
-		document.getElementById("assignmentId").value = 123;
-		document.getElementById("workerId").value = 123;
-		document.getElementById("hitId").value = 123;
-
-		if (document.getElementById("assignmentId").value == "" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")
+		if (document.getElementById("assignmentId").value == "123" || document.getElementById("assignmentId").value == "ASSIGNMENT_ID_NOT_AVAILABLE")
 		{
 			$("#instruction").text("Accept HIT first");
 			$("#instruction").show();
 			$("#myButton").hide();
-			$("#redo").hide();
 		}
 		else
 		{
@@ -93,17 +78,11 @@
 				case 1:
 					basicPopup("Instructions.html");
 					break;
-				case 2:
-					basicPopup("Task_Practice.html");
-					break;
-				case 3:
-					basicPopup("Task.html");
-					break;
+					case 2:
+						basicPopup("NEXT.html");
+						break;
 				}
 			});
-			$("#redo").click(function(){
-					basicPopup("Task_Practice.html");
-					});
 		}
 	});
 
@@ -112,27 +91,19 @@
 		<table>
 			<tr>
 				<td>
-					<p id="instruction" style="font-family: arial; font-size: 40px; color: white;">Click the button to fill out demographics</p>
-					<button id="myButton"> Continue </button>
-					<button id="redo"> Redo </button>
-						<form id="mturk_form" method="POST" action="http://152.3.33.14/AMTSubmit/dataHandler.php">
-							<!-- <form id="mturk_form" method="POST" action="https://workersandbox.mturk.com/mturk/externalSubmit"> -->
+					<p id="instruction" style="font-family: arial; font-size: 40px; color: black;">Click the button to fill out demographics</p>
+					<button id="myButton"> Click </button>
+						<form id="mturk_form" method="POST" action="http://152.3.33.45/AMTSubmit/dataHandler.php">
+							<form id="mturk_form" method="POST" action="https://workersandbox.mturk.com/mturk/externalSubmit">
 							<!-- <form id="mturk_form" method="POST" action="https://wwww.mturk.com/mturk/externalSubmit"> -->
-							<input type="hidden" id="assignmentId" name="assignmentId" value="">
+							<input type="hidden" id="assignmentId" name="assignmentId" value="123">
 							<input type="hidden" id="workerId" name="workerId" value="">
 							<input type="hidden" id="hitId" name="hitId" value="">
 							<input type="hidden" id="RTs" name="RTs" value="">
-							<input type="hidden" id="demographics" name="demographics" value="OSCon_boundary1">
-							<input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary1">
-							<p style="font-family: Arial; color: white; font-size:24px">Click button to submit</p>
-							<p style="font-family: Arial; color: white; font-size:12px">“Thank you for participating in this study aimed to understand
-								different aspects of memory and attention. In this particular study, we were looking to see if the response mapping we
-								instructed biased your judgement of the image. For example, we would expect that when the response mappings were different
-								trial to trial, that it would be harder to classify an image.
-								Thus your responses are invaluable
-								for us because we are looking to see if memory influence attention. At this time we haven’t been able to make any
-								formal conclusions as we are just collecting data and haven’t analyzed the data yet! But, if you want to know more, feel
-								free to contact me at any time at psw13@duke.edu or tobias.egner@duke.edu. Again, thanks so much for your participation!”</p>
+							<input type="hidden" id="demographics" name="demographics" value="NEXT">
+							<input type="hidden" id="ExpName" name="ExpName" value="NEXT">
+							<p style="font-family: Arial; color: black; font-size:24px">Click button to submit</p>
+							<p style="font-family: Arial; color: black; font-size:12px">“Thank you for participating in this study aimed to understand different aspects of memory and attention. In this particular study, we were looking to see if you responded more quickly to words in the first task of every block that were not overlapping in response dimensions with the prospective task. A congruent item in the first task of each block was when the correct response button was compatible with the correct response button for the prospective task, an incongruent item was when they were not compatible. There was not such a dichotomy in the prospective task of each block. Thus your responses are invaluable for us because we are looking to see how overlapping stimulus dimensions versus stimulus-response associations in both the first and prospective task were differentially impacted. At this time we haven’t been able to make any formal conclusions as we are just collecting data and haven’t analyzed the data yet! But, if you want to know more, feel free to contact me at any time at peter.whitehead@duke.edu or tobias.egner@duke.edu. Again, thanks so much for your participation!”</p>
 							<input id="submitButton" type="submit" name="Finish" value="Submit">
 							</form>
 				</td>
