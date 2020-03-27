@@ -24,8 +24,8 @@
     var ISIinterval = 500
 
     //---------------------TRIAL COUNTS--------------------//
-    var numberofblocks = 1; //8;
-    var blocklength = 100; //100;
+    var numberofblocks = 8;
+    var blocklength = 100;
     var posttestorder = 0;
 
     //----------------------SHUFFLE FUNCTION------------------//
@@ -827,25 +827,25 @@
               stimscreencount = 0; i++; trialcount++; acctotalcount++; miniblockon = 0; instructionson = 0;
               runTrial();}
               }
-            if (trialcount >= blocklength*numberofblocks && posttestorder < 2) {
-              if (posttestorder == 0){
-                posttest0();
-              }
-              else if (posttestorder == 1){
-                posttest1();
-              }
+          else if (trialcount >= blocklength*numberofblocks && posttestorder < 2) {
+            if (posttestorder == 0){
+              posttest0();
             }
-            else {
-              //alert(data.join(";"));
-              $("#info").css("color","white");
-              //$("#info").show();
-              $("#info").text(data.join(";"));
-              //$("#mturk_form").show();
-              $("#RTs", opener.window.document).val(data.join(";"));
-              opener.updateMainMenu(4);
-              JavaScript:window.close();
+            else if (posttestorder == 1){
+              posttest1();
             }
-          };
+          }
+          else {
+            //alert(data.join(";"));
+            $("#info").css("color","white");
+            //$("#info").show();
+            $("#info").text(data.join(";"));
+            //$("#mturk_form").show();
+            $("#RTs", opener.window.document).val(data.join(";"));
+            opener.updateMainMenu(4);
+            JavaScript:window.close();
+          }
+        };
 
 
         //Detect events likes clicks or button presses
@@ -925,8 +925,8 @@
               <input type="hidden" id="workerId" name="workerId" value="">
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
-              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary2">
-              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary2">
+              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary3">
+              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary3">
             </form>
           </td>
         </tr>
