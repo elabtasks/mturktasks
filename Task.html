@@ -25,7 +25,7 @@
     //---------------------TRIAL COUNTS--------------------//
     var trivialengthprime = 160
     var trivialengthprobe = 240
-    var interveningtask   = 50
+    var interveningtask   = 30
     var nummindwandering  = 20
     var numattentionchecks = 10
 
@@ -53,7 +53,7 @@
      triviaitems = facts
 
     random_item = []
-    for (var g=0;g< triviaitems.length;g++) {
+    for (var g=0;g< (triviaitems.length)-numattentionchecks;g++) {
       random_item.push(g);
     }
 
@@ -202,8 +202,6 @@
       trialmatrix[0][i],trialmatrix[1][i]];
       logCounter++;
 
-      //timeout variable
-      timeoutIMAGE = setTimeout(iti_screen,ITEMinterval);
     };
 
     //---------------------TRIVIA SCREENS--------------------//
@@ -601,7 +599,7 @@
             iti_screen();
           }
         }
-        else if (type == 4) {
+        else if (type == 5) {
           if(key == 49 || key == 50){
             data[logCounter] = ["ITR:", i, Ronset, key, respTime, 9999,
             trialmatrix[0][i],trialmatrix[1][i]];
