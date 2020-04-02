@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="Task.css" type="text/css" charset="utf-8">
   <script type="text/javascript" src="jquery-3.2.1.js"></script>
   <script type="text/javascript" src="math.js"></script>
-  <script type="text/javascript" src="trivia.js"></script>
+  <script type="text/javascript" src="images.js"></script>
   <script type="text/javascript">
 
 
@@ -19,15 +19,14 @@
     //#######################################################//
 
     //------------------------TIMINGS-----------------------//
-    var ITEMinterval = 7000
-    var ITIinterval = 1000
+    var IMAGEinterval = 2000
+    var ITIinterval = 500
+    var ISIinterval = 500
 
     //---------------------TRIAL COUNTS--------------------//
-    var trivialengthprime = 160
-    var trivialengthprobe = 240
-    var interveningtask   = 30
-    var nummindwandering  = 20
-    var numattentionchecks = 10
+    var numberofblocks = 8;
+    var blocklength = 100;
+    var posttestorder = 0;
 
     //----------------------SHUFFLE FUNCTION------------------//
     //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
@@ -42,36 +41,53 @@
         return array;
       };
 
-    function getRandomInt(max) {
-      return Math.floor(Math.random() * Math.floor(max));
-    }
-
     //#######################################################//
-    //-----------------------LOAD TRIVIA---------------------//
+    //-----------------------LOAD IMAGES---------------------//
     //#######################################################//
 
-     triviaitems = facts
+    var fileName = listimagenames
+		var img = new Array(fileName.length);
+		var imgCount = 0;
 
-    random_item = []
-    for (var g=0;g< (triviaitems.length)-numattentionchecks;g++) {
-      random_item.push(g);
+		function loadImage()
+		{
+      document.getElementById("myCanvas").style.cursor = "pointer";
+      $("#startButton").hide();
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.fillStyle="white";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+      ctx.font="bold 45px Arial";
+      ctx.fillText("The task is loading. Please wait.", (myCanvas.width/2), (myCanvas.height/2)-400);
+      ctx.fillText(Math.round((imgCount/fileName.length)*100)+"%", (myCanvas.width/2), (myCanvas.height/2));
+
+
+      if (imgCount < fileName.length)
+			{
+				img[imgCount] = new Image();
+				img[imgCount].src=fileName[imgCount];
+				img[imgCount].onload=loadImage;
+				imgCount++;
+			}
+      else{
+        runTrial();
+      }
+		}
+
+    random_img = []
+    for (var g=0;g< fileName.length;g++) {
+      random_img.push(g);
     }
 
-    shuffle(random_item)
-
-    random_item_probe = []
-    for (var g=0;g< (triviaitems.length)+numattentionchecks;g++) {
-      random_item_probe.push(g);
-    }
-
-    shuffle(random_item_probe)
+    shuffle(random_img)
 
 
     //#######################################################//
     //----------------------TRIAL MATRIX---------------------//
     //#######################################################//
 
-    function createTrialMatrix(){
+    function createTrialMatrix(picorder){
+      toolong = 0;
       trialmatrix = []
 
       //Code that lets me print out the trial matrix to a file
@@ -83,61 +99,365 @@
         a.click();
       }*/
 
-      //--------------------MW Interval------------------------------//
-      mindwanderinginterval = [5,6,7,8,9,10,5,6,7,8,9,10,5,6,7,8,9,10,7,8]
-      shuffle(mindwanderinginterval)
+      //----------------------Initial Variables---------------------//
+      miniblock_final = []
+      miniblock_type_final = []
+      miniblock_trials_final = []
+      picture_final = []
+      category_final = []
+      category_switch_final = []
+      action_final = []
+      action_switch_final = []
+      prev_switch_final = []
+      correct_answer_final = []
 
-      mindwanderingplaces = []
-      for (var g=0; g < mindwanderinginterval.length; g++){
-        mindwanderingplaces.push(math.sum(mindwanderinginterval.slice(-1*(g+1))))
-      }
+      //----------------------MiniBlock Loop---------------------//
+      //This should create enough miniblocks to fit the given blocklength
+      for (var j = 0; j < 1; j++){
 
-      //--------------------Trial Types------------------------------//
-      trialtype = []
-      triviafact = []
-
-      h = -1
-      for (var g=0;g< (interveningtask+trivialengthprime+trivialengthprobe+nummindwandering+3);g++){
-        if (g == 0){
-          trialtype.push(0)
-          triviafact.push(9999)
-        }
-        if (g > 0 & g < trivialengthprime+nummindwandering){
-          if (mindwanderingplaces.includes(g-1)){
-            trialtype.push(99)
-            triviafact.push(9999)
+          //----------------------Prime 1-------------------//
+          //-----------------------------------------------//
+          picture = []
+          for (var g=0;g<blocklength/2;g++){
+            picture.push(random_img[g+(picorder*(blocklength/2))])
           }
-          else{
-            h++;
-            trialtype.push(1)
-            triviafact.push(random_item[h])
-          }
-        }
-        if (g == trivialengthprime+nummindwandering){
-          trialtype.push(2)
-          triviafact.push(9999)
-        }
-        if (g > trivialengthprime+nummindwandering & g < trivialengthprime+nummindwandering+interveningtask){
-          trialtype.push(3)
-          triviafact.push(9999)
-        }
-        if (g == trivialengthprime+nummindwandering+interveningtask){
-          trialtype.push(4)
-          triviafact.push(9999)
-          shuffle(random_item)
-        }
-        if (g > trivialengthprime+nummindwandering+interveningtask){
-          h++;
-          trialtype.push(5)
-          triviafact.push(random_item[h])
-        }
-      }
+          shuffle(picture)
 
-      trialmatrix = [trialtype,triviafact]
+          //----------------------Category---------------------//
+          category_balence = 0
+          while (category_balence == 0 & toolong < 1000000){
+            toolong++;
+            category = []
+            for (var g=0;g<blocklength/2;g++){
+              category.push(math.randomInt(0,2))
+            }
+            shuffle(category)
+
+            category_switch = []
+            for (var g=0;g<blocklength/2;g++){
+              if(g == 0){category_switch.push(2)}
+              else{
+                if(category[g] != category[g-1]){
+                  category_switch.push(0) //switch
+                }
+                if(category[g] == category[g-1]){
+                  category_switch.push(1) //repeat
+                }
+              }
+            }
+
+            if(math.sum(category_switch) > 24 && math.sum(category_switch) < 29){
+              category_balence = 1
+            }
+          };
+
+          //----------------------Action---------------------//
+          action_balence = 0
+          while (action_balence == 0 & toolong < 1000000){
+            toolong++;
+            action = []
+            for (var g=0;g<blocklength/2;g++){
+              action.push(math.randomInt(0,2))
+            }
+            shuffle(action)
+
+            action_switch = []
+            correct_answer = []
+            for (var g = 0; g < blocklength/2; g++){
+              if (category[g] == 0 && action[g] == 0 &&
+                correct_largesmall[picture[g]] == 0 &&
+                correct_mannon[picture[g]] == 0){
+                  correct_answer.push(48)
+                }
+              if (category[g] == 0 && action[g] == 1 &&
+                correct_largesmall[picture[g]] == 0 &&
+                correct_mannon[picture[g]] == 0){
+                  correct_answer.push(49)
+                }
+              if (category[g] == 1 && action[g] == 0 &&
+                correct_largesmall[picture[g]] == 0 &&
+                correct_mannon[picture[g]] == 0){
+                  correct_answer.push(48)
+                }
+              if (category[g] == 1 && action[g] == 1 &&
+                correct_largesmall[picture[g]] == 0 &&
+                correct_mannon[picture[g]] == 0){
+                  correct_answer.push(49)
+                }
+              if (category[g] == 0 && action[g] == 0 &&
+                correct_largesmall[picture[g]] == 1 &&
+                correct_mannon[picture[g]] == 0){
+                  correct_answer.push(49)
+                }
+              if (category[g] == 0 && action[g] == 1 &&
+                correct_largesmall[picture[g]] == 1 &&
+                correct_mannon[picture[g]] == 0){
+                  correct_answer.push(48)
+                }
+              if (category[g] == 1 && action[g] == 0 &&
+                correct_largesmall[picture[g]] == 1 &&
+                correct_mannon[picture[g]] == 0){
+                  correct_answer.push(48)
+                }
+              if (category[g] == 1 && action[g] == 1 &&
+                correct_largesmall[picture[g]] == 1 &&
+                correct_mannon[picture[g]] == 0){
+                  correct_answer.push(49)
+                }
+              if (category[g] == 0 && action[g] == 0 &&
+                correct_largesmall[picture[g]] == 0 &&
+                correct_mannon[picture[g]] == 1){
+                  correct_answer.push(48)
+                }
+              if (category[g] == 0 && action[g] == 1 &&
+                correct_largesmall[picture[g]] == 0 &&
+                correct_mannon[picture[g]] == 1){
+                  correct_answer.push(49)
+                }
+              if (category[g] == 1 && action[g] == 0 &&
+                correct_largesmall[picture[g]] == 0 &&
+                correct_mannon[picture[g]] == 1){
+                  correct_answer.push(49)
+                }
+              if (category[g] == 1 && action[g] == 1 &&
+                correct_largesmall[picture[g]] == 0 &&
+                correct_mannon[picture[g]] == 1){
+                  correct_answer.push(48)
+                }
+              if (category[g] == 0 && action[g] == 0 &&
+                correct_largesmall[picture[g]] == 1 &&
+                correct_mannon[picture[g]] == 1){
+                  correct_answer.push(49)
+                }
+              if (category[g] == 0 && action[g] == 1 &&
+                correct_largesmall[picture[g]] == 1 &&
+                correct_mannon[picture[g]] == 1){
+                  correct_answer.push(48)
+                }
+              if (category[g] == 1 && action[g] == 0 &&
+                correct_largesmall[picture[g]] == 1 &&
+                correct_mannon[picture[g]] == 1){
+                  correct_answer.push(49)
+                }
+              if (category[g] == 1 && action[g] == 1 &&
+                correct_largesmall[picture[g]] == 1 &&
+                correct_mannon[picture[g]] == 1){
+                  correct_answer.push(48)
+                }
+            };
+
+            for (var g=0;g<blocklength/2;g++){
+              if(g == 0){action_switch.push(2)}
+              else{
+                if(correct_answer[g] != correct_answer[g-1]){
+                  action_switch.push(0) //switch
+                }
+                if(correct_answer[g] == correct_answer[g-1]){
+                  action_switch.push(1) //repeat
+                }
+              }
+            }
+
+            if(math.sum(action_switch) > 24 && math.sum(action_switch) < 29  &&
+          math.sum(correct_answer) > 2422 && math.sum(correct_answer) < 2428){
+              action_balence = 1
+            }
+          };
+
+          //----------------------Probe---------------------//
+          //------------------------------------------------//
+          //This while loop allows us to randomize the presentation
+          //order while keeping certain requirements strict, such
+          //as the action switch/repeat
+            probe_pic_order = 0
+            while(probe_pic_order == 0 & toolong < 1000000){
+              toolong++;
+
+              picture_probe = []
+              for (var g=0;g<blocklength/2;g++){
+                picture_probe.push(picture[(blocklength/2)-g-1])
+              }
+              //shuffle(picture_probe)
+
+              category_probe = []
+              for (var g=0;g<blocklength/2;g++){
+                category_probe.push(category[picture.indexOf(picture_probe[g])])
+              }
+
+              action_probe = []
+              for (var g=0;g<blocklength/2;g++){
+                action_probe.push(action[picture.indexOf(picture_probe[g])])
+              }
+
+              category_probe[picture_probe.indexOf(picture[0])] = math.randomInt(0,2)
+              action_probe[picture_probe.indexOf(picture[0])] = math.randomInt(0,2)
+
+              category_switch_probe = []
+              for (var g=0;g<blocklength/2;g++){
+                if(g == 0){
+                  if(category[99] != category_probe[0]){
+                    category_switch_probe.push(0) //switch
+                  }
+                  if(category[99] == category_probe[0]){
+                    category_switch_probe.push(1) //repeat
+                  }
+                }
+                else{
+                  if(category_probe[g] != category_probe[g-1]){
+                    category_switch_probe.push(0) //switch
+                  }
+                  if(category_probe[g] == category_probe[g-1]){
+                    category_switch_probe.push(1) //repeat
+                  }
+                }
+              }
+
+              action_switch_probe = []
+              correct_answer_probe = []
+              for (var g = 0; g <blocklength/2; g++){
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 0){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 0 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 0 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 0 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(49)
+                  }
+                if (category_probe[g] == 1 && action_probe[g] == 1 &&
+                  correct_largesmall[picture_probe[g]] == 1 &&
+                  correct_mannon[picture_probe[g]] == 1){
+                    correct_answer_probe.push(48)
+                  }
+              };
+
+              for (var g=0;g<blocklength/2;g++){
+                if(g == 0){
+                  if(correct_answer[99] != correct_answer_probe[0]){
+                    action_switch_probe.push(0) //switch
+                  }
+                  if(correct_answer[99] == correct_answer_probe[0]){
+                    action_switch_probe.push(1) //repeat
+                  }
+                }
+                else{
+                  if(correct_answer_probe[g] != correct_answer_probe[g-1]){
+                    action_switch_probe.push(0) //switch
+                  }
+                  if(correct_answer_probe[g] == correct_answer_probe[g-1]){
+                    action_switch_probe.push(1) //repeat
+                  }
+                }
+              }
+
+              //checking whether there are enough switch/repeats between prime and probe
+              /*primecatcheck = [0,0,0]
+              if(category_switch_probe[picture_probe.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] == category_switch[picture.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])]){
+                primecatcheck[0] = 1
+              }
+              if(category_switch_probe[picture_probe.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] == category_switch[picture.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])]){
+                primecatcheck[1] = 1
+              }
+              if(category_switch_probe[picture_probe.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] == category_switch[picture.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])]){
+                primecatcheck[2] = 1
+              }*/
+
+              if(picture_probe[0] != picture[8]){
+                  probe_pic_order = 1
+                }
+            };
+
+            if (toolong < 100000){
+
+              miniblock_trials = []
+              for (g=0; g < blocklength; g++){
+                miniblock_trials.push(g)
+              }
+
+              miniblock_trials_final = miniblock_trials_final.concat(miniblock_trials)
+              picture_final = picture_final.concat(picture.concat(picture_probe))
+              category_final = category_final.concat(category.concat(category_probe))
+              category_switch_final = category_switch_final.concat(category_switch.concat(category_switch_probe))
+              action_final = action_final.concat(action.concat(action_probe))
+              action_switch_final = action_switch_final.concat(action_switch.concat(action_switch_probe))
+              correct_answer_final = correct_answer_final.concat(correct_answer.concat(correct_answer_probe))
+            };
+
+        };
+
+      trialmatrix = [miniblock_trials_final,
+                    picture_final,category_final,category_switch_final,action_final,
+                    action_switch_final,correct_answer_final]
 
       //Code that prints out the trial matrix to a file
       //download(trialmatrix, 'json.txt', 'text/plain');
-      runTrial();
+
     };
 
     //#######################################################//
@@ -172,92 +492,8 @@
     //------------------EXPERIMENT SCREENS-------------------//
     //#######################################################//
 
-    //---------------ADDING TASK SCREENS--------------------//
-    function interveningtask_screen(){
-      d1 = new Date();
-      onset = d1.getTime() - runStart;
-      type = 5;
-      acc = 99;
-      var c = document.getElementById("myCanvas");
-      var ctx = c.getContext("2d");
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-
-      //sets up the text attributes
-      ctx.font="bold 20px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
-
-      randomnum1 = getRandomInt(100)
-      randomnum2 = getRandomInt(100)
-      randomnum3 = getRandomInt(100)
-      randomnum4 = getRandomInt(100)
-
-      ctx.fillText("("+randomnum1+" + "+randomnum2+") > ("+randomnum3+" - "+randomnum4+")",myCanvas.width/2,myCanvas.height/2);
-      ctx.fillText("Press 1 if the above mathematical statement is true.",myCanvas.width/2,(myCanvas.height/2)+200);
-      ctx.fillText("Press 2 if the above mathematical statement is false.",myCanvas.width/2,(myCanvas.height/2)+250);
-
-      //record presentation data
-      data[logCounter] = ["ITP:", i, randomnum1, randomnum2, randomnum3, randomnum4,
-      trialmatrix[0][i],trialmatrix[1][i]];
-      logCounter++;
-
-    };
-
-    //---------------------TRIVIA SCREENS--------------------//
-    function trivia_prime(config){
-      d1 = new Date();
-      onset = d1.getTime() - runStart;
-      type = 1;
-      acc = 99;
-      var c = document.getElementById("myCanvas");
-      var ctx = c.getContext("2d");
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-
-      //sets up the text attributes
-      ctx.font="bold 20px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
-
-      ctx.fillText(triviaitems[config],myCanvas.width/2,myCanvas.height/2);
-
-      //record presentation data
-      data[logCounter] = ["PRP:", i, onset, triviaitems[config], config, 9999,
-      trialmatrix[0][i],trialmatrix[1][i]];
-      logCounter++;
-
-      //timeout variable
-      timeoutIMAGE = setTimeout(iti_screen,ITEMinterval);
-    };
-
-    //------------------------MW SCREENS--------------------//
-    function mindwandering(){
-      d1 = new Date();
-      onset = d1.getTime() - runStart;
-      type = 4;
-      $("#startButton").hide();
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
-
-      ctx.fillText("Just prior to the onset of this screen, I was:", (myCanvas.width/2), (myCanvas.height/2)-50);
-      ctx.fillText("(5) Focused on the task.", (myCanvas.width/2), (myCanvas.height/2));
-      ctx.fillText("(6) Not focused on the task, but I WAS trying to focus on it.", (myCanvas.width/2), (myCanvas.height/2)+50);
-      ctx.fillText("(7) Not focused on the task, and I WASN'T trying to focus on it.", (myCanvas.width/2), (myCanvas.height/2)+100);
-
-      ctx.fillText("Please press the corresponding number to indiciate your choice.", (myCanvas.width/2), (myCanvas.height/2)+200);
-
-      //record presentation data
-      data[logCounter] = ["MWP:", i, onset, 9999, 9999, 9999,
-      trialmatrix[0][i],trialmatrix[1][i]];
-      logCounter++;
-    };
-
-    //------------------TRIVIA PROBE SCREENS-----------------//
-    function trivia_probe(config){
+    //---------------------CUE SCREENS----------------------//
+    function image_screen(task, config, object){
       d1 = new Date();
       onset = d1.getTime() - runStart;
       type = 1;
@@ -272,42 +508,59 @@
       ctx.textBaseline="middle";
       ctx.textAlign="center";
 
-      ctx.fillText(triviaitems[config],myCanvas.width/2,myCanvas.height/2);
+      //draws task cue based on:
+      //trial matrix specifying the task (large vs. small; mechanical vs. non)
+      //trial matrix specifying the configuration (which response configuration)
+      //task: 0 = large vs small, 1 = mechanical vs non
+      //config: 0 = L+S, M+N; 1 = S+L, N+M
+      switch(task){
+        case 0:
+        switch(config) {
+          case 0:
+          ctx.fillText("L",myCanvas.width/2-200,myCanvas.height/2);
+          ctx.fillText("S",myCanvas.width/2+200,myCanvas.height/2);
+          break;
 
-      ctx.font="bold 15px Arial";
+          case 1:
+          ctx.fillText("S",myCanvas.width/2-200,myCanvas.height/2);
+          ctx.fillText("L",myCanvas.width/2+200,myCanvas.height/2);
+          break;
+        };
+        break;
 
-      ctx.fillText("1",(myCanvas.width/2)-325,(myCanvas.height/2)+100);
-      ctx.fillText("Definitely False",(myCanvas.width/2)-325,(myCanvas.height/2)+120);
+        case 1:
+        switch(config) {
+          case 0:
+          ctx.fillText("M",myCanvas.width/2-200,myCanvas.height/2);
+          ctx.fillText("N",myCanvas.width/2+200,myCanvas.height/2);
+          break;
 
-      ctx.fillText("2",(myCanvas.width/2)-195,(myCanvas.height/2)+100);
-      ctx.fillText("---------------",(myCanvas.width/2)-195,(myCanvas.height/2)+120);
-
-      ctx.fillText("3",(myCanvas.width/2)-65,(myCanvas.height/2)+100);
-      ctx.fillText("---------------",(myCanvas.width/2)-65,(myCanvas.height/2)+120);
-
-      ctx.fillText("4",(myCanvas.width/2)+65,(myCanvas.height/2)+100);
-      ctx.fillText("---------------",(myCanvas.width/2)+65,(myCanvas.height/2)+120);
-
-      ctx.fillText("5",(myCanvas.width/2)+195,(myCanvas.height/2)+100);
-      ctx.fillText("---------------",(myCanvas.width/2)+195,(myCanvas.height/2)+120);
-
-      ctx.fillText("6",(myCanvas.width/2)+325,(myCanvas.height/2)+100);
-      ctx.fillText("Definitely True",(myCanvas.width/2)+325,(myCanvas.height/2)+120);
+          case 1:
+          ctx.fillText("N",myCanvas.width/2-200,myCanvas.height/2);
+          ctx.fillText("M",myCanvas.width/2+200,myCanvas.height/2);
+          break;
+        };
+        break;
+      };
 
       //record presentation data
-      data[logCounter] = ["PP:", i, onset, triviaitems[config], config, 9999,
-      trialmatrix[0][i],trialmatrix[1][i]];
+      data[logCounter] = ["SP:", block, i, onset, object, 9999, 9999,
+      trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
+      trialmatrix[4][i],trialmatrix[5][i],trialmatrix[6][i]];
       logCounter++;
 
+      //draw image
+      ctx.drawImage(img[object], myCanvas.width/2-128, myCanvas.height/2-128);
+
       //timeout variable
-      //timeoutIMAGE = setTimeout(iti_screen,ITEMinterval);
+      timeoutIMAGE = setTimeout(iti_screen,IMAGEinterval);
     };
 
     //--------------------RECORD NO RESPONSE----------------//
     function record_noresponse(){
-
-      data[logCounter] = ["SR:", 9999, 9999, 9999, 9999,
-      trialmatrix[0][i],trialmatrix[1][i]];
+      data[logCounter] = ["SR:", block, i, 9999, 9999, 9999, 9999,
+      trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
+      trialmatrix[4][i],trialmatrix[5][i],trialmatrix[6][i]];
       logCounter++;
     }
 
@@ -319,14 +572,68 @@
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
 
       //sets up the text attributes
-      ctx.font="bold 30px Arial";
+      ctx.font="bold 50px Arial";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
+
+      //determines which feedback to give
+      if (acc == 1) {
+        ctx.fillStyle="green";
+        ctx.fillText("Correct",myCanvas.width/2,(myCanvas.height/2));
+      }
+      else if (acc == 0) {
+        ctx.fillStyle="red";
+        ctx.fillText("Incorrect",myCanvas.width/2,(myCanvas.height/2));
+      }
+      else if (acc == 99) {
+        ctx.fillStyle="white";
+        ctx.fillText("Too Slow",myCanvas.width/2,(myCanvas.height/2));
+        record_noresponse()
+      }
+
+      //timeout variable
+      stimscreencount++;
+      timeoutITI = setTimeout(isi_screen,ITIinterval);
+    };
+
+    function iti_screen_post(){
+      type = 0;
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+
+      //sets up the text attributes
+      ctx.font="bold 50px Arial";
+      ctx.fillStyle="white";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+
+      //draws fixation point
       ctx.fillText("*",myCanvas.width/2,(myCanvas.height/2));
 
       //timeout variable
-      i++;
-      timeoutITI = setTimeout(runTrial,ITIinterval);
+      stimscreencount++;
+      timeoutITI = setTimeout(isi_screen,ITIinterval);
+    };
+
+    //-----------------------ISI SCREENS-------------------//
+    function isi_screen(){
+      type = 0;
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+
+      //sets up the text attributes
+      ctx.font="bold 50px Arial";
+      ctx.fillStyle="white";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+
+      //draws fixation point
+      ctx.fillText("*",myCanvas.width/2,(myCanvas.height/2));
+
+      //timeout variable
+      timeoutISI = setTimeout(runTrial,ISIinterval);
     };
 
     //-------------------COUNTDOWN SCREENS----------------//
@@ -343,14 +650,14 @@
       }
       else
       {
-        iti_screen();
+        runTrial();
       }
     };
 
     //#######################################################//
     //-----------------INSTRUCTION SCREENS-------------------//
     //#######################################################//
-    function instructions1(){
+    function instructions(){
       type = 3;
       document.getElementById("myCanvas").style.cursor = "pointer";
       $("#startButton").hide();
@@ -360,128 +667,64 @@
       ctx.textBaseline="middle";
       ctx.textAlign="center";
 
-      ctx.font="bold 45px Arial";
-      ctx.fillText("You will now begin the task.", (myCanvas.width/2), (myCanvas.height/2)-400);
-      ctx.font="25px Arial";
-      ctx.fillText("You will complete blocks of trials, taking ~60min in total.", (myCanvas.width/2), (myCanvas.height/2)-350);
-      ctx.fillText("__________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)-340);
-      ctx.textAlign="left";
-      ctx.fillText("In the first section of the experiment today, please read each statement", 0, (myCanvas.height/2)-300);
-      ctx.fillText("carefully, and do your best to pay attention for the full duration of the study.", (0.0), (myCanvas.height/2)-250);
-      ctx.fillText("Sometimes you might be asked if you were paying attention. Please answer", (0.0), (myCanvas.height/2)-200);
-      ctx.fillText("honestly.", (0.0), (myCanvas.height/2)-150);
+      if (instructioncount == 0){
+        ctx.font="bold 45px Arial";
+        ctx.fillText("You will now begin the task.", (myCanvas.width/2), (myCanvas.height/2)-400);
+        ctx.font="25px Arial";
+        ctx.fillText("You will complete "+numberofblocks+" blocks of trials, taking ~45min in total.", (myCanvas.width/2), (myCanvas.height/2)-350);
+        ctx.fillText("Throughout each block you will be told your current accuracy.", (myCanvas.width/2), (myCanvas.height/2)-300);
+        ctx.fillText("Remember you need >75% accuracy in the task.", (myCanvas.width/2), (myCanvas.height/2)-250);
+        ctx.fillText("Please answer as quickly and accurately as possible.", (myCanvas.width/2), (myCanvas.height/2)-200);
+        ctx.fillText("__________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
+        ctx.textAlign="left";
+        ctx.fillText("On each trial you will be presented with two letters on either side of a picture", 0, (myCanvas.height/2)-150);
+        ctx.fillText("that will indicate what characteristics you will be using to judge the picture on", (0.0), (myCanvas.height/2)-100);
+        ctx.fillText("and which button you will press to indicate your response.", (0.0), (myCanvas.height/2)-50);
 
 
-      ctx.fillText("In the second section, please rate the mathematical statements as to", (0.0), (myCanvas.height/2)-50);
-      ctx.fillText("whether they are true or false.", (0.0), (myCanvas.height/2)-0);
+        ctx.fillText("   -- M/N indicates mechanical (M) or non-mechanical (N).", (0.0), (myCanvas.height/2)-0);
+        ctx.fillText("   -- L/S indicates large (L) or small (S).", (0.0), (myCanvas.height/2)+50);
 
-      ctx.fillText("In the third section, please rate the likelihood that many different ", (0.0), (myCanvas.height/2)+100);
-      ctx.fillText("statements are true. Sometimes you might be asked if you were paying", (0.0), (myCanvas.height/2)+150);
-      ctx.fillText("attention. Please answer honestly.", 0, (myCanvas.height/2)+200);
+        ctx.fillText("The order of the letters indicates the correct response key for each option.", (0.0), (myCanvas.height/2)+130);
+        ctx.fillText("    -- The letter to the left of the picture indicates you should", (0.0), (myCanvas.height/2)+180);
+        ctx.fillText("          press the '1' key (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+230);
+        ctx.fillText("    -- The letter to the right of the picture indicates you should", 0, (myCanvas.height/2)+280);
+        ctx.fillText("          press the '0' key (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+330);
 
-      ctx.fillText("More instructions will be given before each section.", 0, (myCanvas.height/2)+300);
+        ctx.textAlign="center";
+        ctx.fillText("Press any button to begin the task.", (myCanvas.width/2), (myCanvas.height/2)+420);
+      }
 
-      ctx.textAlign="center";
-      ctx.fillText("Press any button to begin the task.", (myCanvas.width/2), (myCanvas.height/2)+420);
-    };
+      if (instructioncount > 0){
+        ctx.fillText("This is a short break. Your accuracy is: " +Math.round((acccount/acctotalcount)*100)+" %", (myCanvas.width/2), (myCanvas.height/2)-400);
+        ctx.fillText("You have completed " +(block)+" of "+ numberofblocks + " blocks.", (myCanvas.width/2), (myCanvas.height/2)-360);
+        ctx.fillText("Remember you need >75% accuracy in the task.", (myCanvas.width/2), (myCanvas.height/2)-320);
+        ctx.fillText("Please answer as quickly and accurately as possible.", (myCanvas.width/2), (myCanvas.height/2)-200);
+        ctx.fillText("__________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)-180);
+        ctx.textAlign="left";
+        ctx.fillText("On each trial you will be presented with two letters on either side of a picture", 0, (myCanvas.height/2)-150);
+        ctx.fillText("that will indicate what characteristics you will be using to judge the picture on", (0.0), (myCanvas.height/2)-100);
+        ctx.fillText("and which button you will press to indicate your response.", (0.0), (myCanvas.height/2)-50);
 
-    function instructions2(){
-      type = 3;
-      document.getElementById("myCanvas").style.cursor = "pointer";
-      $("#startButton").hide();
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
+        ctx.fillText("   -- M/N indicates mechanical (M) or non-mechanical (N).", (0.0), (myCanvas.height/2)-0);
+        ctx.fillText("   -- L/S indicates large (L) or small (S).", (0.0), (myCanvas.height/2)+50);
 
-      ctx.font="bold 45px Arial";
-      ctx.fillText("You will start the 2nd section.", (myCanvas.width/2), (myCanvas.height/2)-400);
-      ctx.font="25px Arial";
-      ctx.fillText("__________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)-340);
-      ctx.textAlign="left";
-      ctx.fillText("In the following trials, please rate whether the mathematical statement", 0, (myCanvas.height/2)-300);
-      ctx.fillText("shown is true or false. ", (0.0), (myCanvas.height/2)-250);
-
-
-      ctx.fillText("For example, you might see:", (0.0), (myCanvas.height/2)-150);
-      ctx.fillText("(52 + 41) > (63 - 8)", (0.0), (myCanvas.height/2)-100);
-
-      ctx.fillText("If this is a true statement, press 1.", (0.0), (myCanvas.height/2));
-      ctx.fillText("If this is a false statement, press 2.", (0.0), (myCanvas.height/2)+50);
-
-      ctx.textAlign="center";
-      ctx.fillText("Press any button to resume the task.", (myCanvas.width/2), (myCanvas.height/2)+420);
-    };
-
-    function instructions3(){
-      type = 3;
-      document.getElementById("myCanvas").style.cursor = "pointer";
-      $("#startButton").hide();
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
-
-      ctx.font="bold 45px Arial";
-      ctx.fillText("You will now start the 3rd section.", (myCanvas.width/2), (myCanvas.height/2)-400);
-      ctx.font="25px Arial";
-      ctx.fillText("__________________________________________________________________________________", (myCanvas.width/2), (myCanvas.height/2)-380);
-      ctx.textAlign="left";
-      ctx.fillText("On the following pages, you will rate the likelihood that many different ", 0, (myCanvas.height/2)-350);
-      ctx.fillText("statements are true. You can select any number on a scale from 1 ", (0.0), (myCanvas.height/2)-310);
-      ctx.fillText("(definitely false) to 6 (definitely true). 1 and 6 are the opposing ", (0.0), (myCanvas.height/2)-270);
-      ctx.fillText("extremes on the scale. You can select any number from 1 to 6 in ", (0.0), (myCanvas.height/2)-230);
-      ctx.fillText("accordance with your view.", (0.0), (myCanvas.height/2)-190);
-
-
-      ctx.fillText("For example, you might see statements like the one below, and you will ", (0.0), (myCanvas.height/2)-90);
-      ctx.fillText("rate the likelihood that each statement is true on the scale provided:", (0.0), (myCanvas.height/2)-50);
-      ctx.textAlign="center";
-      ctx.fillText("The capital of Malaysia is Kuala Lumpur. ", (myCanvas.width/2), (myCanvas.height/2)+40);
-
-      ctx.font="bold 15px Arial";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
-
-      ctx.fillText("1",(myCanvas.width/2)-325,(myCanvas.height/2)+100);
-      ctx.fillText("Definitely False",(myCanvas.width/2)-325,(myCanvas.height/2)+120);
-
-      ctx.fillText("2",(myCanvas.width/2)-195,(myCanvas.height/2)+100);
-      ctx.fillText("---------------",(myCanvas.width/2)-195,(myCanvas.height/2)+120);
-
-      ctx.fillText("3",(myCanvas.width/2)-65,(myCanvas.height/2)+100);
-      ctx.fillText("---------------",(myCanvas.width/2)-65,(myCanvas.height/2)+120);
-
-      ctx.fillText("4",(myCanvas.width/2)+65,(myCanvas.height/2)+100);
-      ctx.fillText("---------------",(myCanvas.width/2)+65,(myCanvas.height/2)+120);
-
-      ctx.fillText("5",(myCanvas.width/2)+195,(myCanvas.height/2)+100);
-      ctx.fillText("---------------",(myCanvas.width/2)+195,(myCanvas.height/2)+120);
-
-      ctx.fillText("6",(myCanvas.width/2)+325,(myCanvas.height/2)+100);
-      ctx.fillText("Definitely True",(myCanvas.width/2)+325,(myCanvas.height/2)+120);
-
-      ctx.font="25px Arial";
-      ctx.textAlign="left";
-      ctx.fillText("Please make a rating for the example above.", 0, (myCanvas.height/2)+200);
-
-      ctx.fillText("Please just do your best on the task. Please do not use any outside ", 0, (myCanvas.height/2)+260);
-      ctx.fillText("resources (for example: Google or a friend) to make your ratings. If you ", 0, (myCanvas.height/2)+300);
-      ctx.fillText("don't know the answer, do your best to guess. There is no penalty for ", 0, (myCanvas.height/2)+340);
-      ctx.fillText("guessing.", 0, (myCanvas.height/2)+380);
-
-      ctx.textAlign="center";
-      ctx.fillText("Press any button to resume the task.", (myCanvas.width/2), (myCanvas.height/2)+425);
+        ctx.fillText("The order of the letters indicates the correct response key for each option.", (0.0), (myCanvas.height/2)+130);
+        ctx.fillText("    -- The letter to the left of the picture indicates you should", (0.0), (myCanvas.height/2)+180);
+        ctx.fillText("          press the '1' key (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+230);
+        ctx.fillText("    -- The letter to the right of the picture indicates you should", 0, (myCanvas.height/2)+280);
+        ctx.fillText("          press the '0' key (NOT using the numpad) to select that response.", 0, (myCanvas.height/2)+330);
+        ctx.textAlign="center";
+        ctx.fillText("Press any button to begin the task.", (myCanvas.width/2), (myCanvas.height/2)+420);
+      }
     };
 
     //#######################################################//
-    //------------------MINIBLOCK SCREENS--------------------//
+    //------------------POSTTEST- SCREENS--------------------//
     //#######################################################//
 
-    function miniblockscreen(){
-      type = 3;
+    function posttest0(){
+      type = 4;
       $("#startButton").hide();
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
       ctx.font="25px Arial";
@@ -489,10 +732,29 @@
       ctx.textBaseline="middle";
       ctx.textAlign="center";
 
-      ctx.fillText("You are "+Math.round((i/blocklength)*100)+"% through this block.", (myCanvas.width/2), (myCanvas.height/2)-50);
-      ctx.fillText("Your accuracy is "+Math.round((acccount/acctotalcount)*100)+"%.", (myCanvas.width/2), (myCanvas.height/2));
-      ctx.fillText("Remember you need >75% accuracy to be paid.", (myCanvas.width/2), (myCanvas.height/2)+50);
-      ctx.fillText("Press any key to continue.", (myCanvas.width/2), (myCanvas.height/2)+100);
+      ctx.fillText("Did you notice any pattern or regularity in the order of the images?", (myCanvas.width/2), (myCanvas.height/2)-50);
+      ctx.fillText("Press '1' if 'Yes, you did notice a regularity.'", (myCanvas.width/2), (myCanvas.height/2)+50);
+      ctx.fillText("Press '0' if 'No, you did not notice any regularities.'", (myCanvas.width/2), (myCanvas.height/2)+100);
+    };
+
+    function posttest1(){
+      type = 4;
+      $("#startButton").hide();
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="25px Arial";
+      ctx.fillStyle="white";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+
+      ctx.fillText("If you did notice a pattern or regularity in the order of the images,", (myCanvas.width/2), (myCanvas.height/2)-100);
+      ctx.fillText("if the pattern was:", (myCanvas.width/2), (myCanvas.height/2)-50);
+      ctx.fillText("image was a 'large' item every 5 trials, press '1'.", (myCanvas.width/2), (myCanvas.height/2)+50);
+      ctx.fillText("images repeated in reverse order after 50 trials, press '2'.", (myCanvas.width/2), (myCanvas.height/2)+100);
+      ctx.fillText("images repeated in reverse order after 10 trials, press '3'.", (myCanvas.width/2), (myCanvas.height/2)+150);
+      ctx.fillText("images never repeated, press '4'.", (myCanvas.width/2), (myCanvas.height/2)+200);
+      ctx.fillText("you did not notice a pattern, press '5'.", (myCanvas.width/2), (myCanvas.height/2)+250);
+      ctx.fillText("you identified a pattern not listed above, press '6'.", (myCanvas.width/2), (myCanvas.height/2)+300);
+
     };
 
     //#######################################################//
@@ -538,76 +800,94 @@
     //-----------------------RUN EXPERIMENT------------------//
     //#######################################################//
     function runTrial(){
-        if (trialcount < trialmatrix[0].length){
-          if (trialmatrix[0][i] == 0){
-            instructions1();
-          }
-          if (trialmatrix[0][i] == 1){
-            trivia_prime(trialmatrix[1][i]);
-          }
-          if (trialmatrix[0][i] == 2){
-            instructions2();
-          }
-          if (trialmatrix[0][i] == 3){
-            interveningtask_screen();
-          }
-          if (trialmatrix[0][i] == 4){
-            instructions3();
-          }
-          if (trialmatrix[0][i] == 5){
-            trivia_probe(trialmatrix[1][i]);
-          }
-          if (trialmatrix[0][i] == 99){
-            mindwandering();
-          }
-        }
-        else {
-          //alert(data.join(";"));
-          $("#info").css("color","white");
-          //$("#info").show();
-          $("#info").text(data.join(";"));
-          //$("#mturk_form").show();
-          $("#RTs", opener.window.document).val(data.join(";"));
-          opener.updateMainMenu(4);
-          JavaScript:window.close();
-        }
-      };
+        if (trialcount < blocklength*numberofblocks){
+          if ((trialcount+instructionson == 0 || (trialcount+instructionson) % blocklength === 0)) {
+            instructionson = 1; i = 0; block++; checktrialmatrix = 0;
+            curiousgeorge = 0
+            while (checktrialmatrix == 0){
+              curiousgeorge++;
+              createTrialMatrix(block)
+              if(toolong < 99999 &
+              trialmatrix[6].length == 100 &
+              trialmatrix[5].length == 100 &
+              trialmatrix[4].length == 100 &
+              trialmatrix[3].length == 100 &
+              trialmatrix[2].length == 100 &
+              trialmatrix[1].length == 100 &
+              trialmatrix[0].length == 100) {checktrialmatrix = 1}
+            }
+            instructions();}
 
-      $("body").keypress(function(event){
-        //clearTimeout();
-        if (type == 1 || type == 2 || type == 3 || type == 4 || type == 5) {key = event.keyCode || event.which};
-        //creates more data
-        d1 = new Date();
-        Ronset = d1.getTime()-runStart;
-        respTime = Ronset-onset;
-        acc = 0;
-        if (type == 0 || type == 1 || type == 2) {jokes++;}
-        else if (type == 1) {
-          if(key == 49 ||key == 50 ||key == 51 ||key == 52 ||key == 53 ||key == 54){
-            data[logCounter] = ["PR:", i, Ronset, key, respTime, 9999,
-            trialmatrix[0][i],trialmatrix[1][i]];
-            logCounter++;
-            iti_screen();
+            //Present the Cue and Object
+            else if (stimscreencount == 0){checkSize();
+              if (checkwindowsize == 0) {image_screen(trialmatrix[2][i],trialmatrix[4][i],trialmatrix[1][i]);}
+              else if (checkwindowsize == 1) {nonfullscreen();}}
+
+            else if (stimscreencount == 1){
+              stimscreencount = 0; i++; trialcount++; acctotalcount++; miniblockon = 0; instructionson = 0;
+              runTrial();}
+              }
+          else if (trialcount >= blocklength*numberofblocks && posttestorder < 2) {
+            if (posttestorder == 0){
+              posttest0();
+            }
+            else if (posttestorder == 1){
+              posttest1();
+            }
           }
-        }
-        else if (type == 3) {document.getElementById("myCanvas").style.cursor = "none"; countDown(3);}
-        else if (type == 4) {
-          if(key == 53 || key == 54 || key == 55){
-            data[logCounter] = ["MWR:", i, Ronset, key, respTime, 9999,
-            trialmatrix[0][i],trialmatrix[1][i]];
-            logCounter++;
-            iti_screen();
+          else {
+            //alert(data.join(";"));
+            $("#info").css("color","white");
+            //$("#info").show();
+            $("#info").text(data.join(";"));
+            //$("#mturk_form").show();
+            $("#RTs", opener.window.document).val(data.join(";"));
+            opener.updateMainMenu(4);
+            JavaScript:window.close();
           }
-        }
-        else if (type == 5) {
-          if(key == 49 || key == 50){
-            data[logCounter] = ["ITR:", i, Ronset, key, respTime, 9999,
-            trialmatrix[0][i],trialmatrix[1][i]];
-            logCounter++;
-            iti_screen();
+        };
+
+
+        //Detect events likes clicks or button presses
+        $("body").keypress(function(event){
+          //clearTimeout();
+          if (type == 1 || type == 2 || type == 3) {key = event.keyCode || event.which};
+          //creates more data
+          d1 = new Date();
+          Ronset = d1.getTime()-runStart;
+          respTime = Ronset-onset;
+          acc = 0;
+          if (type == 0) {jokes++;}
+          else if (type == 1) {
+            if(key == 48 && trialmatrix[6][i] == 48){
+              acc = 1; acccount++;
+            }
+            if(key == 49 && trialmatrix[6][i] == 49){
+              acc = 1; acccount++;
+            }
           }
-        }
-      });
+          else if (type == 2) {checkSize(); if (checkwindowsize == 0 && notfullscreen == 1) {countDown(3);} else {jokes++;}}
+          else if (type == 3) {instructioncount++; document.getElementById("myCanvas").style.cursor = "none"; countDown(3);}
+        });
+
+        $("body").keyup(function(event){
+          //clearTimeout();
+          if (type == 1 || type == 2 || type == 4) {key = event.keyCode || event.which};
+          //creates more data
+          if (type == 1) {
+            data[logCounter] = ["SR:", block, i, Ronset, key, respTime, acc,
+            trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
+            trialmatrix[4][i],trialmatrix[5][i],trialmatrix[6][i]];
+            logCounter++; clearTimeout(timeoutIMAGE); iti_screen();
+          }
+          if (type == 4) {
+            data[logCounter] = ["PT:", block, i, Ronset, key, respTime, acc,
+            trialmatrix[0][0],trialmatrix[1][0],trialmatrix[2][0],trialmatrix[3][0],
+            trialmatrix[4][0],trialmatrix[5][0],trialmatrix[6][0]];
+            logCounter++; posttestorder++; iti_screen_post();
+          }
+          else {jokes++;}
+        });
 
         //Start stuff
         $("#info").hide();
@@ -616,7 +896,7 @@
         $("#mturk_form").hide();
         d1 = new Date();
         runStart = d1.getTime();
-        createTrialMatrix();
+        loadImage();
 
       });
 
@@ -645,8 +925,8 @@
               <input type="hidden" id="workerId" name="workerId" value="">
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
-              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary1">
-              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary1">
+              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary3">
+              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary3">
             </form>
           </td>
         </tr>
