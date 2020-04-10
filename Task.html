@@ -273,7 +273,10 @@
             while(probe_pic_order == 0 & toolong < 1000000){
               toolong++;
 
-              picture_probe = picture
+              picture_probe = []
+              for (var g=0;g<blocklength/2;g++){
+                picture_probe.push(random_img[g+(picorder*(blocklength/2))])
+              }
               shuffle(picture_probe)
 
               category_probe = []
