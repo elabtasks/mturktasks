@@ -273,11 +273,8 @@
             while(probe_pic_order == 0 & toolong < 1000000){
               toolong++;
 
-              picture_probe = []
-              for (var g=0;g<blocklength/2;g++){
-                picture_probe.push(picture[(blocklength/2)-g-1])
-              }
-              //shuffle(picture_probe)
+              picture_probe = picture
+              shuffle(picture_probe)
 
               category_probe = []
               for (var g=0;g<blocklength/2;g++){
@@ -827,14 +824,6 @@
               stimscreencount = 0; i++; trialcount++; acctotalcount++; miniblockon = 0; instructionson = 0;
               runTrial();}
               }
-          else if (trialcount >= blocklength*numberofblocks && posttestorder < 2) {
-            if (posttestorder == 0){
-              posttest0();
-            }
-            else if (posttestorder == 1){
-              posttest1();
-            }
-          }
           else {
             //alert(data.join(";"));
             $("#info").css("color","white");
@@ -925,8 +914,8 @@
               <input type="hidden" id="workerId" name="workerId" value="">
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
-              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary3">
-              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary3">
+              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary4">
+              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary4">
             </form>
           </td>
         </tr>
