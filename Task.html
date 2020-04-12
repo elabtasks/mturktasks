@@ -30,7 +30,6 @@
 
     //----------------------SHUFFLE FUNCTION------------------//
     //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-
     function shuffle(array) {
       for (var i = array.length - 1; i > 0; i--) {
           var j = Math.floor(Math.random() * (i + 1));
@@ -553,7 +552,7 @@
       ctx.drawImage(img[object], myCanvas.width/2-128, myCanvas.height/2-128);
 
       //timeout variable
-      timeoutIMAGE = setTimeout(iti_screen,IMAGEinterval);
+      timeoutIMAGE = setTimeout(record_noresponse,IMAGEinterval);
     };
 
     //--------------------RECORD NO RESPONSE----------------//
@@ -562,6 +561,7 @@
       trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
       trialmatrix[4][i],trialmatrix[5][i],trialmatrix[6][i]];
       logCounter++;
+      iti_screen();
     }
 
     //-----------------------ITI SCREENS-------------------//
@@ -588,7 +588,7 @@
       else if (acc == 99) {
         ctx.fillStyle="white";
         ctx.fillText("Too Slow",myCanvas.width/2,(myCanvas.height/2));
-        record_noresponse()
+        //record_noresponse()
       }
 
       //timeout variable
