@@ -719,43 +719,21 @@
       }
     };
 
-    //#######################################################//
-    //------------------POSTTEST- SCREENS--------------------//
-    //#######################################################//
-
-    function posttest0(){
+    function minibreakscreen(){
       type = 4;
+      document.getElementById("myCanvas").style.cursor = "pointer";
       $("#startButton").hide();
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
       ctx.font="25px Arial";
       ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
-
-      ctx.fillText("Did you notice any pattern or regularity in the order of the images?", (myCanvas.width/2), (myCanvas.height/2)-50);
-      ctx.fillText("Press '1' if 'Yes, you did notice a regularity.'", (myCanvas.width/2), (myCanvas.height/2)+50);
-      ctx.fillText("Press '0' if 'No, you did not notice any regularities.'", (myCanvas.width/2), (myCanvas.height/2)+100);
-    };
-
-    function posttest1(){
-      type = 4;
-      $("#startButton").hide();
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="bold 45px Arial";
       ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
+      ctx.fillText("This is a short break. Your accuracy is: " +Math.round((acccount/acctotalcount)*100)+" %", (myCanvas.width/2), (myCanvas.height/2)-200);
+      ctx.fillText("When you are ready, press any key to continue.", (myCanvas.width/2), (myCanvas.height/2)-100);
 
-      ctx.fillText("If you did notice a pattern or regularity in the order of the images,", (myCanvas.width/2), (myCanvas.height/2)-100);
-      ctx.fillText("if the pattern was:", (myCanvas.width/2), (myCanvas.height/2)-50);
-      ctx.fillText("image was a 'large' item every 5 trials, press '1'.", (myCanvas.width/2), (myCanvas.height/2)+50);
-      ctx.fillText("images repeated in reverse order after 50 trials, press '2'.", (myCanvas.width/2), (myCanvas.height/2)+100);
-      ctx.fillText("images repeated in reverse order after 10 trials, press '3'.", (myCanvas.width/2), (myCanvas.height/2)+150);
-      ctx.fillText("images never repeated, press '4'.", (myCanvas.width/2), (myCanvas.height/2)+200);
-      ctx.fillText("you did not notice a pattern, press '5'.", (myCanvas.width/2), (myCanvas.height/2)+250);
-      ctx.fillText("you identified a pattern not listed above, press '6'.", (myCanvas.width/2), (myCanvas.height/2)+300);
-
-    };
+    }
 
     //#######################################################//
     //-----------------------ERROR SCREENS-------------------//
@@ -818,6 +796,11 @@
             }
             instructions();}
 
+            //midblockbreak
+            else if (stimscreencount == 3){
+              minibreakscreen();
+            }
+
             //Present the Cue and Object
             else if (stimscreencount == 0){checkSize();
               if (checkwindowsize == 0) {image_screen(trialmatrix[2][i],trialmatrix[4][i],trialmatrix[1][i]);}
@@ -825,8 +808,13 @@
 
             else if (stimscreencount == 1){
               stimscreencount = 0; i++; trialcount++; acctotalcount++; miniblockon = 0; instructionson = 0;
-              runTrial();}
+
+              if (i == 2 || i == 50 || i == 75){
+                stimscreencount = 3;
               }
+
+              runTrial();}
+          }
           else {
             //alert(data.join(";"));
             $("#info").css("color","white");
@@ -860,23 +848,18 @@
           }
           else if (type == 2) {checkSize(); if (checkwindowsize == 0 && notfullscreen == 1) {countDown(3);} else {jokes++;}}
           else if (type == 3) {instructioncount++; document.getElementById("myCanvas").style.cursor = "none"; countDown(3);}
+          else if (type == 4) {stimscreencount = 0; document.getElementById("myCanvas").style.cursor = "none"; countDown(3);}
         });
 
         $("body").keyup(function(event){
           //clearTimeout();
-          if (type == 1 || type == 2 || type == 4) {key = event.keyCode || event.which};
+          if (type == 1) {key = event.keyCode || event.which};
           //creates more data
           if (type == 1) {
             data[logCounter] = ["SR:", block, i, Ronset, key, respTime, acc,
             trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
             trialmatrix[4][i],trialmatrix[5][i],trialmatrix[6][i]];
             logCounter++; clearTimeout(timeoutIMAGE); iti_screen();
-          }
-          if (type == 4) {
-            data[logCounter] = ["PT:", block, i, Ronset, key, respTime, acc,
-            trialmatrix[0][0],trialmatrix[1][0],trialmatrix[2][0],trialmatrix[3][0],
-            trialmatrix[4][0],trialmatrix[5][0],trialmatrix[6][0]];
-            logCounter++; posttestorder++; iti_screen_post();
           }
           else {jokes++;}
         });
@@ -917,8 +900,8 @@
               <input type="hidden" id="workerId" name="workerId" value="">
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
-              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary4">
-              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary4">
+              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary5">
+              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary5">
             </form>
           </td>
         </tr>
