@@ -24,8 +24,8 @@
     var ISIinterval = 500
 
     //---------------------TRIAL COUNTS--------------------//
-    var numberofblocks = 8;
-    var blocklength = 100;
+    var numberofblocks = 18;
+    var blocklength = 44;
     var posttestorder = 0;
 
     //----------------------SHUFFLE FUNCTION------------------//
@@ -145,7 +145,7 @@
               }
             }
 
-            if(math.sum(category_switch) > 24 && math.sum(category_switch) < 29){
+            if(math.sum(category_switch) > 11 && math.sum(category_switch) < 14){
               category_balence = 1
             }
           };
@@ -257,8 +257,8 @@
               }
             }
 
-            if(math.sum(action_switch) > 24 && math.sum(action_switch) < 29  &&
-          math.sum(correct_answer) > 2422 && math.sum(correct_answer) < 2428){
+            if(math.sum(action_switch) > 11 && math.sum(action_switch) < 14  &&
+          math.sum(correct_answer) > 1018 && math.sum(correct_answer) < 1116){
               action_balence = 1
             }
           };
@@ -427,7 +427,7 @@
                 primecatcheck[2] = 1
               }*/
 
-              if(picture_probe[0] != picture[8]){
+              if(picture_probe[0] != picture[21]){
                   probe_pic_order = 1
                 }
             };
@@ -786,13 +786,13 @@
               curiousgeorge++;
               createTrialMatrix(block)
               if(toolong < 99999 &
-              trialmatrix[6].length == 100 &
-              trialmatrix[5].length == 100 &
-              trialmatrix[4].length == 100 &
-              trialmatrix[3].length == 100 &
-              trialmatrix[2].length == 100 &
-              trialmatrix[1].length == 100 &
-              trialmatrix[0].length == 100) {checktrialmatrix = 1}
+              trialmatrix[6].length == blocklength &
+              trialmatrix[5].length == blocklength &
+              trialmatrix[4].length == blocklength &
+              trialmatrix[3].length == blocklength &
+              trialmatrix[2].length == blocklength &
+              trialmatrix[1].length == blocklength &
+              trialmatrix[0].length == blocklength) {checktrialmatrix = 1}
             }
             instructions();}
 
@@ -808,10 +808,6 @@
 
             else if (stimscreencount == 1){
               stimscreencount = 0; i++; trialcount++; acctotalcount++; miniblockon = 0; instructionson = 0;
-
-              if (i == 25 || i == 50 || i == 75){
-                stimscreencount = 3;
-              }
 
               runTrial();}
           }
@@ -900,8 +896,8 @@
               <input type="hidden" id="workerId" name="workerId" value="">
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
-              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary5">
-              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary5">
+              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary6">
+              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary6">
             </form>
           </td>
         </tr>
