@@ -24,12 +24,13 @@
     var ISIinterval = 500
 
     //---------------------TRIAL COUNTS--------------------//
-    var numberofblocks = 18;
-    var blocklength = 44;
+    var numberofblocks = 8;
+    var blocklength = 100;
     var posttestorder = 0;
 
     //----------------------SHUFFLE FUNCTION------------------//
     //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+
     function shuffle(array) {
       for (var i = array.length - 1; i > 0; i--) {
           var j = Math.floor(Math.random() * (i + 1));
@@ -145,7 +146,7 @@
               }
             }
 
-            if(math.sum(category_switch) > 11 && math.sum(category_switch) < 14){
+            if(math.sum(category_switch) > 24 && math.sum(category_switch) < 29){
               category_balence = 1
             }
           };
@@ -257,8 +258,8 @@
               }
             }
 
-            if(math.sum(action_switch) > 11 && math.sum(action_switch) < 14  &&
-          math.sum(correct_answer) > 1018 && math.sum(correct_answer) < 1116){
+            if(math.sum(action_switch) > 24 && math.sum(action_switch) < 29  &&
+          math.sum(correct_answer) > 2422 && math.sum(correct_answer) < 2428){
               action_balence = 1
             }
           };
@@ -272,11 +273,37 @@
             while(probe_pic_order == 0 & toolong < 1000000){
               toolong++;
 
-              picture_probe = []
-              for (var g=0;g<blocklength/2;g++){
-                picture_probe.push(random_img[g+(picorder*(blocklength/2))])
+              picture_probe1 = []
+              for (var g=0;g<10;g++){
+                picture_probe1.push(picture[(blocklength/2)-g-1])
               }
-              shuffle(picture_probe)
+              shuffle(picture_probe1)
+
+              picture_probe2 = []
+              for (var g=10;g<20;g++){
+                picture_probe2.push(picture[(blocklength/2)-g-1])
+              }
+              shuffle(picture_probe2)
+
+              picture_probe3 = []
+              for (var g=20;g<30;g++){
+                picture_probe3.push(picture[(blocklength/2)-g-1])
+              }
+              shuffle(picture_probe3)
+
+              picture_probe4 = []
+              for (var g=30;g<40;g++){
+                picture_probe4.push(picture[(blocklength/2)-g-1])
+              }
+              shuffle(picture_probe4)
+
+              picture_probe5 = []
+              for (var g=40;g<50;g++){
+                picture_probe5.push(picture[(blocklength/2)-g-1])
+              }
+              shuffle(picture_probe5)
+
+              picture_probe = picture_probe1.concat(picture_probe2.concat(picture_probe3.concat(picture_probe4.concat(picture_probe5))))
 
               category_probe = []
               for (var g=0;g<blocklength/2;g++){
@@ -427,7 +454,7 @@
                 primecatcheck[2] = 1
               }*/
 
-              if(picture_probe[0] != picture[21]){
+              if(picture_probe[0] != picture[8]){
                   probe_pic_order = 1
                 }
             };
@@ -552,7 +579,7 @@
       ctx.drawImage(img[object], myCanvas.width/2-128, myCanvas.height/2-128);
 
       //timeout variable
-      timeoutIMAGE = setTimeout(record_noresponse,IMAGEinterval);
+      timeoutIMAGE = setTimeout(iti_screen,IMAGEinterval);
     };
 
     //--------------------RECORD NO RESPONSE----------------//
@@ -561,7 +588,6 @@
       trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
       trialmatrix[4][i],trialmatrix[5][i],trialmatrix[6][i]];
       logCounter++;
-      iti_screen();
     }
 
     //-----------------------ITI SCREENS-------------------//
@@ -588,7 +614,7 @@
       else if (acc == 99) {
         ctx.fillStyle="white";
         ctx.fillText("Too Slow",myCanvas.width/2,(myCanvas.height/2));
-        //record_noresponse()
+        record_noresponse()
       }
 
       //timeout variable
@@ -719,21 +745,43 @@
       }
     };
 
-    function minibreakscreen(){
+    //#######################################################//
+    //------------------POSTTEST- SCREENS--------------------//
+    //#######################################################//
+
+    function posttest0(){
       type = 4;
-      document.getElementById("myCanvas").style.cursor = "pointer";
       $("#startButton").hide();
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
       ctx.font="25px Arial";
       ctx.fillStyle="white";
       ctx.textBaseline="middle";
       ctx.textAlign="center";
-      ctx.font="bold 45px Arial";
-      ctx.font="25px Arial";
-      ctx.fillText("This is a short break. Your accuracy is: " +Math.round((acccount/acctotalcount)*100)+" %", (myCanvas.width/2), (myCanvas.height/2)-200);
-      ctx.fillText("When you are ready, press any key to continue.", (myCanvas.width/2), (myCanvas.height/2)-100);
 
-    }
+      ctx.fillText("Did you notice any pattern or regularity in the order of the images?", (myCanvas.width/2), (myCanvas.height/2)-50);
+      ctx.fillText("Press '1' if 'Yes, you did notice a regularity.'", (myCanvas.width/2), (myCanvas.height/2)+50);
+      ctx.fillText("Press '0' if 'No, you did not notice any regularities.'", (myCanvas.width/2), (myCanvas.height/2)+100);
+    };
+
+    function posttest1(){
+      type = 4;
+      $("#startButton").hide();
+      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+      ctx.font="25px Arial";
+      ctx.fillStyle="white";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+
+      ctx.fillText("If you did notice a pattern or regularity in the order of the images,", (myCanvas.width/2), (myCanvas.height/2)-100);
+      ctx.fillText("if the pattern was:", (myCanvas.width/2), (myCanvas.height/2)-50);
+      ctx.fillText("image was a 'large' item every 5 trials, press '1'.", (myCanvas.width/2), (myCanvas.height/2)+50);
+      ctx.fillText("images repeated in reverse order after 50 trials, press '2'.", (myCanvas.width/2), (myCanvas.height/2)+100);
+      ctx.fillText("images repeated in reverse order after 10 trials, press '3'.", (myCanvas.width/2), (myCanvas.height/2)+150);
+      ctx.fillText("images never repeated, press '4'.", (myCanvas.width/2), (myCanvas.height/2)+200);
+      ctx.fillText("you did not notice a pattern, press '5'.", (myCanvas.width/2), (myCanvas.height/2)+250);
+      ctx.fillText("you identified a pattern not listed above, press '6'.", (myCanvas.width/2), (myCanvas.height/2)+300);
+
+    };
 
     //#######################################################//
     //-----------------------ERROR SCREENS-------------------//
@@ -786,20 +834,15 @@
               curiousgeorge++;
               createTrialMatrix(block)
               if(toolong < 99999 &
-              trialmatrix[6].length == blocklength &
-              trialmatrix[5].length == blocklength &
-              trialmatrix[4].length == blocklength &
-              trialmatrix[3].length == blocklength &
-              trialmatrix[2].length == blocklength &
-              trialmatrix[1].length == blocklength &
-              trialmatrix[0].length == blocklength) {checktrialmatrix = 1}
+              trialmatrix[6].length == 100 &
+              trialmatrix[5].length == 100 &
+              trialmatrix[4].length == 100 &
+              trialmatrix[3].length == 100 &
+              trialmatrix[2].length == 100 &
+              trialmatrix[1].length == 100 &
+              trialmatrix[0].length == 100) {checktrialmatrix = 1}
             }
             instructions();}
-
-            //midblockbreak
-            else if (stimscreencount == 3){
-              minibreakscreen();
-            }
 
             //Present the Cue and Object
             else if (stimscreencount == 0){checkSize();
@@ -808,9 +851,8 @@
 
             else if (stimscreencount == 1){
               stimscreencount = 0; i++; trialcount++; acctotalcount++; miniblockon = 0; instructionson = 0;
-
               runTrial();}
-          }
+              }
           else {
             //alert(data.join(";"));
             $("#info").css("color","white");
@@ -844,18 +886,23 @@
           }
           else if (type == 2) {checkSize(); if (checkwindowsize == 0 && notfullscreen == 1) {countDown(3);} else {jokes++;}}
           else if (type == 3) {instructioncount++; document.getElementById("myCanvas").style.cursor = "none"; countDown(3);}
-          else if (type == 4) {stimscreencount = 0; document.getElementById("myCanvas").style.cursor = "none"; countDown(3);}
         });
 
         $("body").keyup(function(event){
           //clearTimeout();
-          if (type == 1) {key = event.keyCode || event.which};
+          if (type == 1 || type == 2 || type == 4) {key = event.keyCode || event.which};
           //creates more data
           if (type == 1) {
             data[logCounter] = ["SR:", block, i, Ronset, key, respTime, acc,
             trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
             trialmatrix[4][i],trialmatrix[5][i],trialmatrix[6][i]];
             logCounter++; clearTimeout(timeoutIMAGE); iti_screen();
+          }
+          if (type == 4) {
+            data[logCounter] = ["PT:", block, i, Ronset, key, respTime, acc,
+            trialmatrix[0][0],trialmatrix[1][0],trialmatrix[2][0],trialmatrix[3][0],
+            trialmatrix[4][0],trialmatrix[5][0],trialmatrix[6][0]];
+            logCounter++; posttestorder++; iti_screen_post();
           }
           else {jokes++;}
         });
@@ -896,8 +943,8 @@
               <input type="hidden" id="workerId" name="workerId" value="">
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
-              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary6">
-              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary6">
+              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary_binned">
+              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary_binned">
             </form>
           </td>
         </tr>
