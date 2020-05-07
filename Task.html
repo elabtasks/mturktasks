@@ -579,7 +579,7 @@
       ctx.drawImage(img[object], myCanvas.width/2-128, myCanvas.height/2-128);
 
       //timeout variable
-      timeoutIMAGE = setTimeout(iti_screen,IMAGEinterval);
+      //timeoutIMAGE = setTimeout(iti_screen,IMAGEinterval);
     };
 
     //--------------------RECORD NO RESPONSE----------------//
@@ -893,10 +893,12 @@
           if (type == 1 || type == 2 || type == 4) {key = event.keyCode || event.which};
           //creates more data
           if (type == 1) {
+            if(key == 48 || key == 49) {
             data[logCounter] = ["SR:", block, i, Ronset, key, respTime, acc,
             trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
             trialmatrix[4][i],trialmatrix[5][i],trialmatrix[6][i]];
-            logCounter++; clearTimeout(timeoutIMAGE); iti_screen();
+            logCounter++; iti_screen();
+          }
           }
           if (type == 4) {
             data[logCounter] = ["PT:", block, i, Ronset, key, respTime, acc,
