@@ -41,6 +41,26 @@
         return array;
       };
 
+    function shuffletri(obj1, obj2, obj3) {
+      var index = obj1.length;
+      var rnd, tmp1, tmp2, tmp3;
+
+      while (index) {
+        rnd = Math.floor(Math.random() * index);
+        index -= 1;
+        tmp1 = obj1[index];
+        tmp2 = obj2[index];
+        tmp3 = obj3[index];
+        obj1[index] = obj1[rnd];
+        obj2[index] = obj2[rnd];
+        obj3[index] = obj3[rnd];
+        obj1[rnd] = tmp1;
+        obj2[rnd] = tmp2;
+        obj3[rnd] = tmp3;
+      }
+    }
+
+
     //#######################################################//
     //-----------------------LOAD IMAGES---------------------//
     //#######################################################//
@@ -113,19 +133,156 @@
 
       //----------------------MiniBlock Loop---------------------//
       //This should create enough miniblocks to fit the given blocklength
-      for (var j = 0; j < 1; j++){
+      for (var j = 0; j < 5; j++){
 
-          //----------------------Prime 1-------------------//
-          //-----------------------------------------------//
-          picture_prime1 = []
-          for (var g=0;g<10;g++){
-            picture_prime1.push(random_img[g+(picorder*(blocklength/3))])
-            picture_prime1.push(random_img[g+(picorder*(blocklength/3))])
-          }
+          //----------------------Prime - 1st Block---------------------//
+          category_balence = 0
+          while (category_balence == 0){
+            toolong++;
 
-          shuffle1 = 1
-          while (shuffle1 == 1){
-            shuffle(picture_prime1)
+            picture_prime1 = []
+            for (var g=0;g<10;g++){
+              picture_prime1.push(random_img[g+(picorder*(blocklength/3))+(j*10)])
+              picture_prime1.push(random_img[g+(picorder*(blocklength/3))+(j*10)])
+            }
+
+            category1 = []
+            for (var g=0;g<10;g++){
+              tempcat = math.randomInt(0,2)
+              category1.push(tempcat)
+              category1.push(tempcat)
+            }
+
+            action1 = []
+            for (var g=0;g<10;g++){
+              tempact = math.randomInt(0,2)
+              action1.push(tempact)
+              action1.push(tempact)
+            }
+
+            shuffletri(picture_prime1, category1, action1);
+
+            //now assign category switch
+            category_switch1 = []
+            for (var g=0;g<20;g++){
+              if(g == 0){category_switch1.push(2)}
+              else{
+                if(category1[g] != category1[g-1]){
+                  category_switch1.push(0) //switch
+                }
+                if(category1[g] == category1[g-1]){
+                  category_switch1.push(1) //repeat
+                }
+              }
+            }
+
+            //now assign action switch
+            action_switch1 = []
+            correct_answer1 = []
+            for (var g = 0; g < 20; g++){
+              if (category1[g] == 0 && action1[g] == 0 &&
+                correct_largesmall[picture_prime1[g]] == 0 &&
+                correct_mannon[picture_prime1[g]] == 0){
+                  correct_answer1.push(48)
+                }
+              if (category1[g] == 0 && action1[g] == 1 &&
+                correct_largesmall[picture_prime1[g]] == 0 &&
+                correct_mannon[picture_prime1[g]] == 0){
+                  correct_answer1.push(49)
+                }
+              if (category1[g] == 1 && action1[g] == 0 &&
+                correct_largesmall[picture_prime1[g]] == 0 &&
+                correct_mannon[picture_prime1[g]] == 0){
+                  correct_answer1.push(48)
+                }
+              if (category1[g] == 1 && action1[g] == 1 &&
+                correct_largesmall[picture_prime1[g]] == 0 &&
+                correct_mannon[picture_prime1[g]] == 0){
+                  correct_answer1.push(49)
+                }
+              if (category1[g] == 0 && action1[g] == 0 &&
+                correct_largesmall[picture_prime1[g]] == 1 &&
+                correct_mannon[picture_prime1[g]] == 0){
+                  correct_answer1.push(49)
+                }
+              if (category1[g] == 0 && action1[g] == 1 &&
+                correct_largesmall[picture_prime1[g]] == 1 &&
+                correct_mannon[picture_prime1[g]] == 0){
+                  correct_answer1.push(48)
+                }
+              if (category1[g] == 1 && action1[g] == 0 &&
+                correct_largesmall[picture_prime1[g]] == 1 &&
+                correct_mannon[picture_prime1[g]] == 0){
+                  correct_answer1.push(48)
+                }
+              if (category1[g] == 1 && action1[g] == 1 &&
+                correct_largesmall[picture_prime1[g]] == 1 &&
+                correct_mannon[picture_prime1[g]] == 0){
+                  correct_answer1.push(49)
+                }
+              if (category1[g] == 0 && action1[g] == 0 &&
+                correct_largesmall[picture_prime1[g]] == 0 &&
+                correct_mannon[picture_prime1[g]] == 1){
+                  correct_answer1.push(48)
+                }
+              if (category1[g] == 0 && action1[g] == 1 &&
+                correct_largesmall[picture_prime1[g]] == 0 &&
+                correct_mannon[picture_prime1[g]] == 1){
+                  correct_answer1.push(49)
+                }
+              if (category1[g] == 1 && action1[g] == 0 &&
+                correct_largesmall[picture_prime1[g]] == 0 &&
+                correct_mannon[picture_prime1[g]] == 1){
+                  correct_answer1.push(49)
+                }
+              if (category1[g] == 1 && action1[g] == 1 &&
+                correct_largesmall[picture_prime1[g]] == 0 &&
+                correct_mannon[picture_prime1[g]] == 1){
+                  correct_answer1.push(48)
+                }
+              if (category1[g] == 0 && action1[g] == 0 &&
+                correct_largesmall[picture_prime1[g]] == 1 &&
+                correct_mannon[picture_prime1[g]] == 1){
+                  correct_answer1.push(49)
+                }
+              if (category1[g] == 0 && action1[g] == 1 &&
+                correct_largesmall[picture_prime1[g]] == 1 &&
+                correct_mannon[picture_prime1[g]] == 1){
+                  correct_answer1.push(48)
+                }
+              if (category1[g] == 1 && action1[g] == 0 &&
+                correct_largesmall[picture_prime1[g]] == 1 &&
+                correct_mannon[picture_prime1[g]] == 1){
+                  correct_answer1.push(49)
+                }
+              if (category1[g] == 1 && action1[g] == 1 &&
+                correct_largesmall[picture_prime1[g]] == 1 &&
+                correct_mannon[picture_prime1[g]] == 1){
+                  correct_answer1.push(48)
+                }
+            };
+
+            for (var g=0;g<20;g++){
+              if(g == 0){action_switch1.push(2)}
+              else{
+                if(correct_answer1[g] != correct_answer1[g-1]){
+                  action_switch1.push(0) //switch
+                }
+                if(correct_answer1[g] == correct_answer1[g-1]){
+                  action_switch1.push(1) //repeat
+                }
+              }
+            }
+
+            matchingcheck = [0]
+            for (var g=0;g<20;g++){
+              if(picture_prime1.indexOf(picture_prime1[g]) > 0){
+                if(category_switch1[picture_prime1.indexOf(picture_prime1[g])] != category_switch1[picture_prime1.lastIndexOf(picture_prime1[g])]
+              ){
+                    matchingcheck.push(1)
+                  }
+              }
+            }
 
             stop = [0]
             for (var g=1; g <20; g++){
@@ -134,466 +291,233 @@
               }
             }
 
-            if (math.sum(stop) == 0){
-              shuffle1 = 0
-            }
-          }
-
-          picture_prime2 = []
-          for (var g=10;g<20;g++){
-            picture_prime2.push(random_img[g+(picorder*(blocklength/3))])
-            picture_prime2.push(random_img[g+(picorder*(blocklength/3))])
-          }
-
-          shuffle2 = 1
-          while (shuffle2 == 1){
-            shuffle(picture_prime2)
-
-            stop2 = [0]
-            for (var g=1; g <20; g++){
-              if (picture_prime2[g] == picture_prime2[g-1]){
-                stop2.push(1)
-              }
-            }
-
-            if (math.sum(stop2) == 0){
-              shuffle2 = 0
-            }
-          }
-
-          picture_prime3 = []
-          for (var g=20;g<30;g++){
-            picture_prime3.push(random_img[g+(picorder*(blocklength/3))])
-            picture_prime3.push(random_img[g+(picorder*(blocklength/3))])
-          }
-
-          shuffle3 = 1
-          while (shuffle3 == 1){
-            shuffle(picture_prime3)
-
-            stop3 = [0]
-            for (var g=1; g <20; g++){
-              if (picture_prime3[g] == picture_prime3[g-1]){
-                stop3.push(1)
-              }
-            }
-
-            if (math.sum(stop3) == 0){
-              shuffle3 = 0
-            }
-          }
-
-          picture_prime4 = []
-          for (var g=30;g<40;g++){
-            picture_prime4.push(random_img[g+(picorder*(blocklength/3))])
-            picture_prime4.push(random_img[g+(picorder*(blocklength/3))])
-          }
-
-          shuffle4 = 1
-          while (shuffle4 == 1){
-            shuffle(picture_prime4)
-
-            stop4 = [0]
-            for (var g=1; g <20; g++){
-              if (picture_prime4[g] == picture_prime4[g-1]){
-                stop4.push(1)
-              }
-            }
-
-            if (math.sum(stop4) == 0){
-              shuffle4 = 0
-            }
-          }
-
-          picture_prime5 = []
-          for (var g=40;g<50;g++){
-            picture_prime5.push(random_img[g+(picorder*(blocklength/3))])
-            picture_prime5.push(random_img[g+(picorder*(blocklength/3))])
-          }
-
-          shuffle5 = 1
-          while (shuffle5 == 1){
-            shuffle(picture_prime5)
-
-            stop5 = [0]
-            for (var g=1; g <20; g++){
-              if (picture_prime5[g] == picture_prime5[g-1]){
-                stop5.push(1)
-              }
-            }
-
-            if (math.sum(stop5) == 0){
-              shuffle5 = 0
-            }
-          }
-
-          picture = []
-          picture = picture_prime1.concat(picture_prime2.concat(picture_prime3.concat(picture_prime4.concat(picture_prime5))))
-
-
-
-          //----------------------Category---------------------//
-          category_balence = 0
-          while (category_balence == 0 & toolong < 1000000){
-            toolong++;
-            category = []
-            for (var g=0;g<100;g++){
-              category.push(math.randomInt(0,2))
-            }
-            shuffle(category)
-
-            category_switch = []
-            for (var g=0;g<100;g++){
-              if(g == 0){category_switch.push(2)}
-              else{
-                if(category[g] != category[g-1]){
-                  category_switch.push(0) //switch
-                }
-                if(category[g] == category[g-1]){
-                  category_switch.push(1) //repeat
-                }
-              }
-            }
-
-            if(math.sum(category_switch) > 47 && math.sum(category_switch) < 57){
+            if(math.sum(category_switch1) > 6 && math.sum(category_switch1) < 13 &&
+            math.sum(action_switch1) > 6 && math.sum(action_switch1) < 13 &&
+            math.sum(correct_answer1) > 960 && math.sum(correct_answer1) < 980 &&
+              math.sum(matchingcheck) == 0  && math.sum(stop) == 0){
               category_balence = 1
-            }
-          };
-
-          //----------------------Action---------------------//
-          action_balence = 0
-          while (action_balence == 0 & toolong < 1000000){
-            toolong++;
-            action = []
-            for (var g=0;g<100;g++){
-              action.push(math.randomInt(0,2))
-            }
-            shuffle(action)
-
-            action_switch = []
-            correct_answer = []
-            for (var g = 0; g < 100; g++){
-              if (category[g] == 0 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mannon[picture[g]] == 0){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 0 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mannon[picture[g]] == 0){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 1 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mannon[picture[g]] == 0){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 1 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mannon[picture[g]] == 0){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 0 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mannon[picture[g]] == 0){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 0 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mannon[picture[g]] == 0){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 1 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mannon[picture[g]] == 0){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 1 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mannon[picture[g]] == 0){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 0 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mannon[picture[g]] == 1){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 0 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mannon[picture[g]] == 1){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 1 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mannon[picture[g]] == 1){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 1 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 0 &&
-                correct_mannon[picture[g]] == 1){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 0 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mannon[picture[g]] == 1){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 0 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mannon[picture[g]] == 1){
-                  correct_answer.push(48)
-                }
-              if (category[g] == 1 && action[g] == 0 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mannon[picture[g]] == 1){
-                  correct_answer.push(49)
-                }
-              if (category[g] == 1 && action[g] == 1 &&
-                correct_largesmall[picture[g]] == 1 &&
-                correct_mannon[picture[g]] == 1){
-                  correct_answer.push(48)
-                }
+              }
             };
 
-            for (var g=0;g<100;g++){
-              if(g == 0){action_switch.push(2)}
-              else{
-                if(correct_answer[g] != correct_answer[g-1]){
-                  action_switch.push(0) //switch
-                }
-                if(correct_answer[g] == correct_answer[g-1]){
-                  action_switch.push(1) //repeat
-                }
-              }
-            }
 
-            if(math.sum(action_switch) > 47 && math.sum(action_switch) < 57  &&
-          math.sum(correct_answer) > 4800 && math.sum(correct_answer) < 4900){
-              action_balence = 1
-            }
-          };
 
-          //----------------------Probe---------------------//
-          //------------------------------------------------//
-          //This while loop allows us to randomize the presentation
-          //order while keeping certain requirements strict, such
-          //as the action switch/repeat
-            probe_pic_order = 0
-            while(probe_pic_order == 0 & toolong < 1000000){
-              toolong++;
 
-              picture_probe1 = []
-              for (var g=0;g<10;g++){
-                picture_probe1.push(picture[(blocklength/3)-g-1])
-              }
-              shuffle(picture_probe1)
-
-              picture_probe2 = []
-              for (var g=10;g<20;g++){
-                picture_probe2.push(picture[(blocklength/3)-g-1])
-              }
-              shuffle(picture_probe2)
-
-              picture_probe3 = []
-              for (var g=20;g<30;g++){
-                picture_probe3.push(picture[(blocklength/3)-g-1])
-              }
-              shuffle(picture_probe3)
-
-              picture_probe4 = []
-              for (var g=30;g<40;g++){
-                picture_probe4.push(picture[(blocklength/3)-g-1])
-              }
-              shuffle(picture_probe4)
-
-              picture_probe5 = []
-              for (var g=40;g<50;g++){
-                picture_probe5.push(picture[(blocklength/3)-g-1])
-              }
-              shuffle(picture_probe5)
-
-              picture_probe = picture_probe1.concat(picture_probe2.concat(picture_probe3.concat(picture_probe4.concat(picture_probe5))))
-
-              category_probe = []
-              for (var g=0;g<blocklength/3;g++){
-                category_probe.push(category[picture.indexOf(picture_probe[g])])
-              }
-
-              action_probe = []
-              for (var g=0;g<blocklength/3;g++){
-                action_probe.push(action[picture.indexOf(picture_probe[g])])
-              }
-
-              category_probe[picture_probe.indexOf(picture[0])] = math.randomInt(0,2)
-              action_probe[picture_probe.indexOf(picture[0])] = math.randomInt(0,2)
-
-              category_switch_probe = []
-              for (var g=0;g<blocklength/3;g++){
-                if(g == 0){
-                  if(category[99] != category_probe[0]){
-                    category_switch_probe.push(0) //switch
-                  }
-                  if(category[99] == category_probe[0]){
-                    category_switch_probe.push(1) //repeat
-                  }
-                }
-                else{
-                  if(category_probe[g] != category_probe[g-1]){
-                    category_switch_probe.push(0) //switch
-                  }
-                  if(category_probe[g] == category_probe[g-1]){
-                    category_switch_probe.push(1) //repeat
-                  }
-                }
-              }
-
-              action_switch_probe = []
-              correct_answer_probe = []
-              for (var g = 0; g <blocklength/3; g++){
-                if (category_probe[g] == 0 && action_probe[g] == 0 &&
-                  correct_largesmall[picture_probe[g]] == 0 &&
-                  correct_mannon[picture_probe[g]] == 0){
-                    correct_answer_probe.push(48)
-                  }
-                if (category_probe[g] == 0 && action_probe[g] == 1 &&
-                  correct_largesmall[picture_probe[g]] == 0 &&
-                  correct_mannon[picture_probe[g]] == 0){
-                    correct_answer_probe.push(49)
-                  }
-                if (category_probe[g] == 1 && action_probe[g] == 0 &&
-                  correct_largesmall[picture_probe[g]] == 0 &&
-                  correct_mannon[picture_probe[g]] == 0){
-                    correct_answer_probe.push(48)
-                  }
-                if (category_probe[g] == 1 && action_probe[g] == 1 &&
-                  correct_largesmall[picture_probe[g]] == 0 &&
-                  correct_mannon[picture_probe[g]] == 0){
-                    correct_answer_probe.push(49)
-                  }
-                if (category_probe[g] == 0 && action_probe[g] == 0 &&
-                  correct_largesmall[picture_probe[g]] == 1 &&
-                  correct_mannon[picture_probe[g]] == 0){
-                    correct_answer_probe.push(49)
-                  }
-                if (category_probe[g] == 0 && action_probe[g] == 1 &&
-                  correct_largesmall[picture_probe[g]] == 1 &&
-                  correct_mannon[picture_probe[g]] == 0){
-                    correct_answer_probe.push(48)
-                  }
-                if (category_probe[g] == 1 && action_probe[g] == 0 &&
-                  correct_largesmall[picture_probe[g]] == 1 &&
-                  correct_mannon[picture_probe[g]] == 0){
-                    correct_answer_probe.push(48)
-                  }
-                if (category_probe[g] == 1 && action_probe[g] == 1 &&
-                  correct_largesmall[picture_probe[g]] == 1 &&
-                  correct_mannon[picture_probe[g]] == 0){
-                    correct_answer_probe.push(49)
-                  }
-                if (category_probe[g] == 0 && action_probe[g] == 0 &&
-                  correct_largesmall[picture_probe[g]] == 0 &&
-                  correct_mannon[picture_probe[g]] == 1){
-                    correct_answer_probe.push(48)
-                  }
-                if (category_probe[g] == 0 && action_probe[g] == 1 &&
-                  correct_largesmall[picture_probe[g]] == 0 &&
-                  correct_mannon[picture_probe[g]] == 1){
-                    correct_answer_probe.push(49)
-                  }
-                if (category_probe[g] == 1 && action_probe[g] == 0 &&
-                  correct_largesmall[picture_probe[g]] == 0 &&
-                  correct_mannon[picture_probe[g]] == 1){
-                    correct_answer_probe.push(49)
-                  }
-                if (category_probe[g] == 1 && action_probe[g] == 1 &&
-                  correct_largesmall[picture_probe[g]] == 0 &&
-                  correct_mannon[picture_probe[g]] == 1){
-                    correct_answer_probe.push(48)
-                  }
-                if (category_probe[g] == 0 && action_probe[g] == 0 &&
-                  correct_largesmall[picture_probe[g]] == 1 &&
-                  correct_mannon[picture_probe[g]] == 1){
-                    correct_answer_probe.push(49)
-                  }
-                if (category_probe[g] == 0 && action_probe[g] == 1 &&
-                  correct_largesmall[picture_probe[g]] == 1 &&
-                  correct_mannon[picture_probe[g]] == 1){
-                    correct_answer_probe.push(48)
-                  }
-                if (category_probe[g] == 1 && action_probe[g] == 0 &&
-                  correct_largesmall[picture_probe[g]] == 1 &&
-                  correct_mannon[picture_probe[g]] == 1){
-                    correct_answer_probe.push(49)
-                  }
-                if (category_probe[g] == 1 && action_probe[g] == 1 &&
-                  correct_largesmall[picture_probe[g]] == 1 &&
-                  correct_mannon[picture_probe[g]] == 1){
-                    correct_answer_probe.push(48)
-                  }
-              };
-
-              for (var g=0;g<blocklength/3;g++){
-                if(g == 0){
-                  if(correct_answer[99] != correct_answer_probe[0]){
-                    action_switch_probe.push(0) //switch
-                  }
-                  if(correct_answer[99] == correct_answer_probe[0]){
-                    action_switch_probe.push(1) //repeat
-                  }
-                }
-                else{
-                  if(correct_answer_probe[g] != correct_answer_probe[g-1]){
-                    action_switch_probe.push(0) //switch
-                  }
-                  if(correct_answer_probe[g] == correct_answer_probe[g-1]){
-                    action_switch_probe.push(1) //repeat
-                  }
-                }
-              }
-
-              //checking whether there are enough switch/repeats between prime and probe
-              /*primecatcheck = [0,0,0]
-              if(category_switch_probe[picture_probe.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])] == category_switch[picture.indexOf(random_img[1+(j*4+(picorder*(blocksize.length*4)))])]){
-                primecatcheck[0] = 1
-              }
-              if(category_switch_probe[picture_probe.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])] == category_switch[picture.indexOf(random_img[2+(j*4+(picorder*(blocksize.length*4)))])]){
-                primecatcheck[1] = 1
-              }
-              if(category_switch_probe[picture_probe.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])] == category_switch[picture.indexOf(random_img[3+(j*4+(picorder*(blocksize.length*4)))])]){
-                primecatcheck[2] = 1
-              }*/
-
-              if(picture_probe[0] != picture[99]){
-                  probe_pic_order = 1
-                }
-            };
-
-            if (toolong < 100000){
-
-              miniblock_trials = []
-              for (g=0; g < blocklength; g++){
-                miniblock_trials.push(g)
-              }
-
-              miniblock_trials_final = miniblock_trials_final.concat(miniblock_trials)
-              picture_final = picture_final.concat(picture.concat(picture_probe))
-              category_final = category_final.concat(category.concat(category_probe))
-              category_switch_final = category_switch_final.concat(category_switch.concat(category_switch_probe))
-              action_final = action_final.concat(action.concat(action_probe))
-              action_switch_final = action_switch_final.concat(action_switch.concat(action_switch_probe))
-              correct_answer_final = correct_answer_final.concat(correct_answer.concat(correct_answer_probe))
-            };
+          picture_final = picture_final.concat(picture_prime1)
+          category_final = category_final.concat(category1)
+          category_switch_final = category_switch_final.concat(category_switch1)
+          action_final = action_final.concat(action1)
+          action_switch_final = action_switch_final.concat(action_switch1)
+          correct_answer_final = correct_answer_final.concat(correct_answer1)
 
         };
+
+      //---------Probe for block-----------------//
+      for (j = 0; j < 1; j++){
+      probe_pic_order = 0
+      while(probe_pic_order == 0 & toolong < 1000000){
+        toolong++;
+
+        picture_probe5 = []
+        for (var g=0;g<10;g++){
+          picture_probe5.push(random_img[g+(picorder*(blocklength/3))])
+        }
+        shuffle(picture_probe5)
+
+        picture_probe4 = []
+        for (var g=10;g<20;g++){
+          picture_probe4.push(random_img[g+(picorder*(blocklength/3))])
+        }
+        shuffle(picture_probe4)
+
+        picture_probe3 = []
+        for (var g=20;g<30;g++){
+          picture_probe3.push(random_img[g+(picorder*(blocklength/3))])
+        }
+        shuffle(picture_probe3)
+
+        picture_probe2 = []
+        for (var g=30;g<40;g++){
+          picture_probe2.push(random_img[g+(picorder*(blocklength/3))])
+        }
+        shuffle(picture_probe2)
+
+        picture_probe1 = []
+        for (var g=40;g<50;g++){
+          picture_probe1.push(random_img[g+(picorder*(blocklength/3))])
+        }
+        shuffle(picture_probe1)
+
+        picture_probe = picture_probe1.concat(picture_probe2.concat(picture_probe3.concat(picture_probe4.concat(picture_probe5))))
+
+        category_probe = []
+        for (var g=0;g<blocklength/3;g++){
+          category_probe.push(category_final[picture_final.indexOf(picture_probe[g])])
+        }
+
+        action_probe = []
+        for (var g=0;g<blocklength/3;g++){
+          action_probe.push(action_final[picture_final.indexOf(picture_probe[g])])
+        }
+
+        category_probe[picture_probe.indexOf(picture_final[0])] = math.randomInt(0,2)
+        action_probe[picture_probe.indexOf(picture_final[0])] = math.randomInt(0,2)
+
+        category_switch_probe = []
+        for (var g=0;g<blocklength/3;g++){
+          if(g == 0){
+            if(category_final[99] != category_probe[0]){
+              category_switch_probe.push(0) //switch
+            }
+            if(category_final[99] == category_probe[0]){
+              category_switch_probe.push(1) //repeat
+            }
+          }
+          else{
+            if(category_probe[g] != category_probe[g-1]){
+              category_switch_probe.push(0) //switch
+            }
+            if(category_probe[g] == category_probe[g-1]){
+              category_switch_probe.push(1) //repeat
+            }
+          }
+        }
+
+        action_switch_probe = []
+        correct_answer_probe = []
+        for (var g = 0; g <blocklength/3; g++){
+          if (category_probe[g] == 0 && action_probe[g] == 0 &&
+            correct_largesmall[picture_probe[g]] == 0 &&
+            correct_mannon[picture_probe[g]] == 0){
+              correct_answer_probe.push(48)
+            }
+          if (category_probe[g] == 0 && action_probe[g] == 1 &&
+            correct_largesmall[picture_probe[g]] == 0 &&
+            correct_mannon[picture_probe[g]] == 0){
+              correct_answer_probe.push(49)
+            }
+          if (category_probe[g] == 1 && action_probe[g] == 0 &&
+            correct_largesmall[picture_probe[g]] == 0 &&
+            correct_mannon[picture_probe[g]] == 0){
+              correct_answer_probe.push(48)
+            }
+          if (category_probe[g] == 1 && action_probe[g] == 1 &&
+            correct_largesmall[picture_probe[g]] == 0 &&
+            correct_mannon[picture_probe[g]] == 0){
+              correct_answer_probe.push(49)
+            }
+          if (category_probe[g] == 0 && action_probe[g] == 0 &&
+            correct_largesmall[picture_probe[g]] == 1 &&
+            correct_mannon[picture_probe[g]] == 0){
+              correct_answer_probe.push(49)
+            }
+          if (category_probe[g] == 0 && action_probe[g] == 1 &&
+            correct_largesmall[picture_probe[g]] == 1 &&
+            correct_mannon[picture_probe[g]] == 0){
+              correct_answer_probe.push(48)
+            }
+          if (category_probe[g] == 1 && action_probe[g] == 0 &&
+            correct_largesmall[picture_probe[g]] == 1 &&
+            correct_mannon[picture_probe[g]] == 0){
+              correct_answer_probe.push(48)
+            }
+          if (category_probe[g] == 1 && action_probe[g] == 1 &&
+            correct_largesmall[picture_probe[g]] == 1 &&
+            correct_mannon[picture_probe[g]] == 0){
+              correct_answer_probe.push(49)
+            }
+          if (category_probe[g] == 0 && action_probe[g] == 0 &&
+            correct_largesmall[picture_probe[g]] == 0 &&
+            correct_mannon[picture_probe[g]] == 1){
+              correct_answer_probe.push(48)
+            }
+          if (category_probe[g] == 0 && action_probe[g] == 1 &&
+            correct_largesmall[picture_probe[g]] == 0 &&
+            correct_mannon[picture_probe[g]] == 1){
+              correct_answer_probe.push(49)
+            }
+          if (category_probe[g] == 1 && action_probe[g] == 0 &&
+            correct_largesmall[picture_probe[g]] == 0 &&
+            correct_mannon[picture_probe[g]] == 1){
+              correct_answer_probe.push(49)
+            }
+          if (category_probe[g] == 1 && action_probe[g] == 1 &&
+            correct_largesmall[picture_probe[g]] == 0 &&
+            correct_mannon[picture_probe[g]] == 1){
+              correct_answer_probe.push(48)
+            }
+          if (category_probe[g] == 0 && action_probe[g] == 0 &&
+            correct_largesmall[picture_probe[g]] == 1 &&
+            correct_mannon[picture_probe[g]] == 1){
+              correct_answer_probe.push(49)
+            }
+          if (category_probe[g] == 0 && action_probe[g] == 1 &&
+            correct_largesmall[picture_probe[g]] == 1 &&
+            correct_mannon[picture_probe[g]] == 1){
+              correct_answer_probe.push(48)
+            }
+          if (category_probe[g] == 1 && action_probe[g] == 0 &&
+            correct_largesmall[picture_probe[g]] == 1 &&
+            correct_mannon[picture_probe[g]] == 1){
+              correct_answer_probe.push(49)
+            }
+          if (category_probe[g] == 1 && action_probe[g] == 1 &&
+            correct_largesmall[picture_probe[g]] == 1 &&
+            correct_mannon[picture_probe[g]] == 1){
+              correct_answer_probe.push(48)
+            }
+        };
+
+        for (var g=0;g<blocklength/3;g++){
+          if(g == 0){
+            if(correct_answer_final[99] != correct_answer_probe[0]){
+              action_switch_probe.push(0) //switch
+            }
+            if(correct_answer_final[99] == correct_answer_probe[0]){
+              action_switch_probe.push(1) //repeat
+            }
+          }
+          else{
+            if(correct_answer_probe[g] != correct_answer_probe[g-1]){
+              action_switch_probe.push(0) //switch
+            }
+            if(correct_answer_probe[g] == correct_answer_probe[g-1]){
+              action_switch_probe.push(1) //repeat
+            }
+          }
+        }
+
+        if(picture_probe[0] != picture_final[99]){
+            probe_pic_order = 1
+          }
+
+      };
+
+      //put the concat of trial matrix here
+      miniblock_trials = []
+      for (g=0; g < blocklength; g++){
+        miniblock_trials.push(g)
+      }
+
+      miniblock_trials_final = miniblock_trials_final.concat(miniblock_trials)
+      picture_final = picture_final.concat(picture_probe)
+      category_final = category_final.concat(category_probe)
+      category_switch_final = category_switch_final.concat(category_switch_probe)
+      action_final = action_final.concat(action_probe)
+      action_switch_final = action_switch_final.concat(action_switch_probe)
+      correct_answer_final = correct_answer_final.concat(correct_answer_probe)
+      };
 
       trialmatrix = [miniblock_trials_final,
                     picture_final,category_final,category_switch_final,action_final,
                     action_switch_final,correct_answer_final]
+      };
+
+
 
       //Code that prints out the trial matrix to a file
       //download(trialmatrix, 'json.txt', 'text/plain');
 
-    };
+
 
     //#######################################################//
     //------------------INITIALIZING VARIABLES---------------//
@@ -942,14 +866,15 @@
             while (checktrialmatrix == 0){
               curiousgeorge++;
               createTrialMatrix(block)
-              if(toolong < 99999 &
-              trialmatrix[6].length == blocklength &
-              trialmatrix[5].length == blocklength &
-              trialmatrix[4].length == blocklength &
-              trialmatrix[3].length == blocklength &
-              trialmatrix[2].length == blocklength &
-              trialmatrix[1].length == blocklength &
-              trialmatrix[0].length == blocklength) {checktrialmatrix = 1}
+              if(toolong < 99999 //&
+              //trialmatrix[6].length == blocklength &
+              //trialmatrix[5].length == blocklength &
+              //trialmatrix[4].length == blocklength &
+              //trialmatrix[3].length == blocklength &
+              //trialmatrix[2].length == blocklength &
+              //trialmatrix[1].length == blocklength &
+              //trialmatrix[0].length == blocklength
+            ) {checktrialmatrix = 1}
             }
             instructions();}
 
@@ -1054,8 +979,8 @@
               <input type="hidden" id="workerId" name="workerId" value="">
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
-              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary_numprimedurability">
-              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary_numprimedurability">
+              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary_numprimedurability2">
+              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary_numprimedurability2">
             </form>
           </td>
         </tr>
