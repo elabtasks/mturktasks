@@ -25,7 +25,7 @@
 
     //---------------------TRIAL COUNTS--------------------//
     var numberofblocks = 10;
-    var blocklength = 150;
+    var blocklength = 147;
     var posttestorder = 0;
 
     //----------------------SHUFFLE FUNCTION------------------//
@@ -133,7 +133,7 @@
 
       //----------------------MiniBlock Loop---------------------//
       //This should create enough miniblocks to fit the given blocklength
-      for (var j = 0; j < 5; j++){
+      for (var j = 0; j < 7; j++){
 
           //----------------------Prime - 1st Block---------------------//
           category_balence = 0
@@ -141,20 +141,20 @@
             toolong++;
 
             picture_prime1 = []
-            for (var g=0;g<10;g++){
-              picture_prime1.push(random_img[g+(picorder*(blocklength/3))+(j*10)])
-              picture_prime1.push(random_img[g+(picorder*(blocklength/3))+(j*10)])
+            for (var g=0;g<7;g++){
+              picture_prime1.push(random_img[g+(picorder*(blocklength/3))+(j*7)])
+              picture_prime1.push(random_img[g+(picorder*(blocklength/3))+(j*7)])
             }
 
             category1 = []
-            for (var g=0;g<10;g++){
+            for (var g=0;g<7;g++){
               tempcat = math.randomInt(0,2)
               category1.push(tempcat)
               category1.push(tempcat)
             }
 
             action1 = []
-            for (var g=0;g<10;g++){
+            for (var g=0;g<7;g++){
               tempact = math.randomInt(0,2)
               action1.push(tempact)
               action1.push(tempact)
@@ -164,14 +164,34 @@
 
             //now assign category switch
             category_switch1 = []
-            for (var g=0;g<20;g++){
-              if(g == 0){category_switch1.push(2)}
-              else{
-                if(category1[g] != category1[g-1]){
-                  category_switch1.push(0) //switch
+            for (var g=0;g<14;g++){
+              if (j == 0){
+                if(g == 0){category_switch1.push(2)}
+                else{
+                  if(category1[g] != category1[g-1]){
+                    category_switch1.push(0) //switch
+                  }
+                  if(category1[g] == category1[g-1]){
+                    category_switch1.push(1) //repeat
+                  }
                 }
-                if(category1[g] == category1[g-1]){
-                  category_switch1.push(1) //repeat
+              }
+              if (j > 0){
+                if(g == 0){
+                  if(category1[g] != category_final[-1]){
+                    category_switch1.push(0) //switch
+                  }
+                  if(category1[g] == category_final[-1]){
+                    category_switch1.push(1) //repeat
+                  }
+                }
+                else{
+                  if(category1[g] != category1[g-1]){
+                    category_switch1.push(0) //switch
+                  }
+                  if(category1[g] == category1[g-1]){
+                    category_switch1.push(1) //repeat
+                  }
                 }
               }
             }
@@ -179,7 +199,7 @@
             //now assign action switch
             action_switch1 = []
             correct_answer1 = []
-            for (var g = 0; g < 20; g++){
+            for (var g = 0; g < 14; g++){
               if (category1[g] == 0 && action1[g] == 0 &&
                 correct_largesmall[picture_prime1[g]] == 0 &&
                 correct_mannon[picture_prime1[g]] == 0){
@@ -262,7 +282,7 @@
                 }
             };
 
-            for (var g=0;g<20;g++){
+            for (var g=0;g<14;g++){
               if(g == 0){action_switch1.push(2)}
               else{
                 if(correct_answer1[g] != correct_answer1[g-1]){
@@ -275,7 +295,7 @@
             }
 
             matchingcheck = [0]
-            for (var g=0;g<20;g++){
+            for (var g=0;g<14;g++){
               if(picture_prime1.indexOf(picture_prime1[g]) > 0){
                 if(category_switch1[picture_prime1.indexOf(picture_prime1[g])] != category_switch1[picture_prime1.lastIndexOf(picture_prime1[g])]
               ){
@@ -285,15 +305,15 @@
             }
 
             stop = [0]
-            for (var g=1; g <20; g++){
+            for (var g=1; g < 14; g++){
               if (picture_prime1[g] == picture_prime1[g-1]){
                 stop.push(1)
               }
             }
 
-            if(math.sum(category_switch1) > 6 && math.sum(category_switch1) < 13 &&
-            math.sum(action_switch1) > 6 && math.sum(action_switch1) < 13 &&
-            math.sum(correct_answer1) > 960 && math.sum(correct_answer1) < 980 &&
+            if(math.sum(category_switch1) > 5 && math.sum(category_switch1) < 9 &&
+            math.sum(action_switch1) > 5 && math.sum(action_switch1) < 9 &&
+            math.sum(correct_answer1) > 677 && math.sum(correct_answer1) < 681 &&
               math.sum(matchingcheck) == 0  && math.sum(stop) == 0){
               category_balence = 1
               }
@@ -317,37 +337,49 @@
       while(probe_pic_order == 0 & toolong < 1000000){
         toolong++;
 
+        picture_probe7 = []
+        for (var g=0;g<7;g++){
+          picture_probe7.push(random_img[g+(picorder*(blocklength/3))])
+        }
+        shuffle(picture_probe7)
+
+        picture_probe6 = []
+        for (var g=7;g<14;g++){
+          picture_probe6.push(random_img[g+(picorder*(blocklength/3))])
+        }
+        shuffle(picture_probe6)
+
         picture_probe5 = []
-        for (var g=0;g<10;g++){
+        for (var g=14;g<21;g++){
           picture_probe5.push(random_img[g+(picorder*(blocklength/3))])
         }
         shuffle(picture_probe5)
 
         picture_probe4 = []
-        for (var g=10;g<20;g++){
+        for (var g=21;g<28;g++){
           picture_probe4.push(random_img[g+(picorder*(blocklength/3))])
         }
         shuffle(picture_probe4)
 
         picture_probe3 = []
-        for (var g=20;g<30;g++){
+        for (var g=28;g<35;g++){
           picture_probe3.push(random_img[g+(picorder*(blocklength/3))])
         }
         shuffle(picture_probe3)
 
         picture_probe2 = []
-        for (var g=30;g<40;g++){
+        for (var g=35;g<42;g++){
           picture_probe2.push(random_img[g+(picorder*(blocklength/3))])
         }
         shuffle(picture_probe2)
 
         picture_probe1 = []
-        for (var g=40;g<50;g++){
+        for (var g=42;g<49;g++){
           picture_probe1.push(random_img[g+(picorder*(blocklength/3))])
         }
         shuffle(picture_probe1)
 
-        picture_probe = picture_probe1.concat(picture_probe2.concat(picture_probe3.concat(picture_probe4.concat(picture_probe5))))
+        picture_probe = picture_probe1.concat(picture_probe2.concat(picture_probe3.concat(picture_probe4.concat(picture_probe5.concat(picture_probe6.concat(picture_probe7))))))
 
         category_probe = []
         for (var g=0;g<blocklength/3;g++){
@@ -979,8 +1011,8 @@
               <input type="hidden" id="workerId" name="workerId" value="">
               <input type="hidden" id="hitId" name="hitId" value="">
               <input type="hidden" id="RTs" name="RTs" value="">
-              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary_numprimedurability2">
-              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary_numprimedurability2">
+              <input type="hidden" id="demographics" name="demographics" value="OSCon_boundary_numprimedurability3">
+              <input type="hidden" id="ExpName" name="ExpName" value="OSCon_boundary_numprimedurability3">
             </form>
           </td>
         </tr>
