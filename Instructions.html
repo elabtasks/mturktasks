@@ -43,6 +43,170 @@
       runTrial();
 		}
 
+    //-------------------CLOCK SCREENS----------------//
+    function clock(time, angle){
+      if(i!=5) {
+        return; //stop the execution of function
+      }
+      if(i = 5){
+      if (angle < 350){
+        type = 0;
+        acc = 99;
+      }
+      if (angle > 350){
+        type = 4;
+      }
+
+      if (angle < 360)
+      {
+        $("#startButton").hide();
+        ctx.fillStyle = "white";
+        ctx.font="60px Arial";
+        ctx.clearRect(0, (myCanvas.height/2)-110, myCanvas.width, myCanvas.height);
+        ctx.strokeStyle = "white";
+
+        //clock circle
+        ctx.beginPath();
+        ctx.arc(myCanvas.width/2, (myCanvas.height/2)+100, 10, 0, 2 * Math.PI);
+        ctx.fill();
+
+        //clock circle
+        ctx.beginPath();
+        ctx.lineWidth = 20;
+        ctx.arc(myCanvas.width/2, (myCanvas.height/2)+100, 200, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        //clock hand
+        ctx.beginPath();
+        ctx.lineWidth = 20;
+        ctx.moveTo(myCanvas.width/2, (myCanvas.height/2)+100);
+        ctx.lineTo((myCanvas.width/2)+(0+(180*Math.sin(angle*(Math.PI/180)))), ((myCanvas.height/2)+100)+(-(180*Math.cos(angle*(Math.PI/180)))));
+        ctx.stroke();
+
+        timeoutclock = setTimeout(function(){clock(time,angle+1)},(time*1000)/360);
+      }
+      else
+      {
+        $("#startButton").hide();
+        ctx.fillStyle = "white";
+        ctx.font="60px Arial";
+        ctx.clearRect(0, (myCanvas.height/2)-110, myCanvas.width, myCanvas.height);
+        ctx.strokeStyle = "white";
+
+        //clock circle
+        ctx.beginPath();
+        ctx.arc(myCanvas.width/2, (myCanvas.height/2)+100, 10, 0, 2 * Math.PI);
+        ctx.fill();
+
+        //clock circle
+        ctx.beginPath();
+        ctx.lineWidth = 20;
+        ctx.arc(myCanvas.width/2, (myCanvas.height/2)+100, 200, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        //clock hand
+        ctx.beginPath();
+        ctx.lineWidth = 20;
+        ctx.moveTo(myCanvas.width/2, (myCanvas.height/2)+100);
+        ctx.lineTo((myCanvas.width/2)+(0), ((myCanvas.height/2)+100)-(180));
+        ctx.stroke();
+
+
+        timeoutclock = setTimeout(iti_screen_clock,500);
+      }
+    }
+    };
+
+    function iti_screen_clock(){
+      type = 0;
+
+      $("#startButton").hide();
+      ctx.fillStyle = "white";
+      ctx.font="60px Arial";
+      ctx.clearRect(0, (myCanvas.height/2)-110, myCanvas.width, myCanvas.height);
+      ctx.strokeStyle = "white";
+
+      //clock circle
+      ctx.beginPath();
+      ctx.arc(myCanvas.width/2, (myCanvas.height/2)+100, 10, 0, 2 * Math.PI);
+      ctx.fill();
+
+      //clock circle
+      ctx.beginPath();
+      ctx.lineWidth = 20;
+      ctx.arc(myCanvas.width/2, (myCanvas.height/2)+100, 200, 0, 2 * Math.PI);
+      ctx.stroke();
+
+      //clock hand
+      ctx.beginPath();
+      ctx.lineWidth = 20;
+      ctx.moveTo(myCanvas.width/2, (myCanvas.height/2)+100);
+      ctx.lineTo((myCanvas.width/2)+(0), ((myCanvas.height/2)+100)-(180));
+      ctx.stroke();
+
+      //sets up the text attributes
+      ctx.font="bold 50px Arial";
+      ctx.textBaseline="middle";
+      ctx.textAlign="center";
+
+      //determines which feedback to give
+      if (acc == 1) {
+        ctx.fillStyle="green";
+        ctx.fillText("Correct",myCanvas.width/2,((myCanvas.height/2)+100)+100);
+      }
+      else if (acc == 99) {
+        ctx.fillStyle="white";
+        ctx.fillText("Too Slow",myCanvas.width/2,((myCanvas.height/2)+100)+100);
+      }
+      //timeout variable
+      timeoutITI = setTimeout(isi_screen_clock,200);
+
+      if(i!=5) {
+        return; //stop the execution of function
+      }
+    };
+
+    function isi_screen_clock(){
+      type = 0;
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      ctx.clearRect(0, (myCanvas.height/2)-110, myCanvas.width, myCanvas.height);
+
+      $("#startButton").hide();
+      ctx.fillStyle = "white";
+      ctx.font="60px Arial";
+      ctx.clearRect(0, (myCanvas.height/2)-110, myCanvas.width, myCanvas.height);
+      ctx.strokeStyle = "white";
+
+      //clock circle
+      ctx.beginPath();
+      ctx.arc(myCanvas.width/2, (myCanvas.height/2)+100, 10, 0, 2 * Math.PI);
+      ctx.fill();
+
+      //clock circle
+      ctx.beginPath();
+      ctx.lineWidth = 20;
+      ctx.arc(myCanvas.width/2, (myCanvas.height/2)+100, 200, 0, 2 * Math.PI);
+      ctx.stroke();
+
+      //clock hand
+      ctx.beginPath();
+      ctx.lineWidth = 20;
+      ctx.moveTo(myCanvas.width/2, (myCanvas.height/2)+100);
+      ctx.lineTo((myCanvas.width/2)+(0), ((myCanvas.height/2)+100)-(180));
+      ctx.stroke();
+
+      //timeout variable
+      timeoutISI = setTimeout(runTrial,200);
+
+      if(i!=5) {
+        return; //stop the execution of function
+      }
+
+    };
+
+
+
     function blockinstruction1(){
 
       $("#continueButton").show();
@@ -53,10 +217,11 @@
         ctx.font="25px Arial";
         ctx.fillStyle="white";
         ctx.textBaseline="left";
+        ctx.textAlign="center";
+        ctx.fillText("Today you will be completing 2 simple tasks.", (myCanvas.width)/2, (myCanvas.height/2)-410);
+        ctx.fillText("The first task we will go over here is the 'picture task':", (myCanvas.width)/2, (myCanvas.height/2)-380);
+        ctx.fillText("__________________________________________", (myCanvas.width)/2, (myCanvas.height/2)-370);
         ctx.textAlign="left";
-        ctx.fillText("Today you will be completing a simple task.", (myCanvas.width)-900, (myCanvas.height/2)-400);
-        ctx.fillText("__________________________________________", (myCanvas.width)-900, (myCanvas.height/2)-380);
-
         ctx.fillText("On each trial, you will be presented with a picture that will have one letter on", 0, (myCanvas.height/2)-330);
         ctx.fillText("its left, and one letter on its right. These letters will indicate how you should", (0.0), (myCanvas.height/2)-300);
         ctx.fillText("respond to each picture you see. ", (0.0), (myCanvas.height/2)-270);
@@ -87,8 +252,8 @@
 
         ctx.fillText("M", 200, (myCanvas.height/2)+160);
         ctx.fillText("N", 380, (myCanvas.height/2)+160);
-        ctx.fillText("M", 500, (myCanvas.height/2)+160);
-        ctx.fillText("N", 680, (myCanvas.height/2)+160);
+        ctx.fillText("N", 500, (myCanvas.height/2)+160);
+        ctx.fillText("M", 680, (myCanvas.height/2)+160);
 
         ctx.fillText("S", 200, (myCanvas.height/2)+300);
         ctx.fillText("L", 380, (myCanvas.height/2)+300);
@@ -232,94 +397,26 @@
       ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
       ctx.font="25px Arial";
       ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="left";
-
-      ctx.fillText("While you are completing this task, you may find yourself thinking about", 0, (myCanvas.height/2)-370);
-      ctx.fillText("things other than the task. These thoughts are referred to as", 0, (myCanvas.height/2)-340);
-      ctx.fillText("“task-unrelated thoughts.” Having task-unrelated thoughts is perfectly", 0, (myCanvas.height/2)-310);
-      ctx.fillText("normal, especially when one has to do the same thing for a long period ", 0, (myCanvas.height/2)-280);
-      ctx.fillText("of time.", 0, (myCanvas.height/2)-250);
-
-      ctx.fillText("While you are completing this task, we would like to determine how", 0, (myCanvas.height/2)-200);
-      ctx.fillText("frequently you are focused on the task and how frequently you are", 0, (myCanvas.height/2)-170);
-      ctx.fillText("thinking about thoughts that are unrelated to the task. To do this,", 0, (myCanvas.height/2)-140);
-      ctx.fillText("every once in a while, the task will temporarily stop and you will be  ", 0, (myCanvas.height/2)-110);
-      ctx.fillText("presented a thought-sampling screen that will ask you to indicate whether,", 0, (myCanvas.height/2)-80);
-      ctx.fillText("just before seeing the thought-sampling screen, you were focused on the", 0, (myCanvas.height/2)-50);
-      ctx.fillText("task or focused on task-unrelated thoughts.", 0, (myCanvas.height/2)-20);
-
+      ctx.textBaseline="left";
       ctx.textAlign="center";
-      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
-      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
+      ctx.fillText("The second task we will go over here is the 'clock task':", (myCanvas.width)/2, (myCanvas.height/2)-400);
+      ctx.fillText("__________________________________________", (myCanvas.width)/2, (myCanvas.height/2)-390);
+      ctx.textAlign="left";
+      ctx.fillText("Throughout the task, you will be asked to complete a 'clock task' over", 0, (myCanvas.height/2)-340);
+      ctx.fillText("a period of minutes. Every time the clock hand makes a full rotation", 0, (myCanvas.height/2)-310);
+      ctx.fillText("to the 12 O'Clock position, you need to immediately press any button.", 0, (myCanvas.height/2)-280);
+      ctx.fillText("This will happen repeatedly over he course of a few minutes and will ", 0, (myCanvas.height/2)-250);
+      ctx.fillText("count towards your accuracy score. If you press the button at the right", 0, (myCanvas.height/2)-220);
+
+      ctx.fillText("time, the word 'Correct' will appear. If you are too slow, then the words", 0, (myCanvas.height/2)-190);
+      ctx.fillText("'Too Slow' will appear -- this counts as an incorrect trial. You can try now", 0, (myCanvas.height/2)-160);
+      ctx.fillText("by pressing any button when the clock below returns to the 12 o'clock position.", 0, (myCanvas.height/2)-130);
+
+      clock(5,0)
+
     }
     else if (i == 6){
-      $("#startButton").hide();
-      $("#backButton").show();
-
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="left";
-
-      ctx.fillText("Being focused on the task means that, just before the thought-sampling ", 0, (myCanvas.height/2)-400);
-      ctx.fillText("screen appeared, you were focused on some aspect of the task at hand. ", 0, (myCanvas.height/2)-370);
-      ctx.fillText("For example, if you were thinking about your performance on the task, or ", 0, (myCanvas.height/2)-340);
-      ctx.fillText("if you were thinking about when you should make a button press, these ", 0, (myCanvas.height/2)-310);
-      ctx.fillText("thoughts would count as being on-task. ", 0, (myCanvas.height/2)-280);
-
-      ctx.fillText("On the other hand, experiencing task-unrelated thoughts means that you ", 0, (myCanvas.height/2)-200);
-      ctx.fillText("were thinking about something completely unrelated to the task. Some ", 0, (myCanvas.height/2)-170);
-      ctx.fillText("examples of task-unrelated thoughts include thoughts about what to eat ", 0, (myCanvas.height/2)-140);
-      ctx.fillText("for dinner, thoughts about an upcoming event, or thoughts about   ", 0, (myCanvas.height/2)-110);
-      ctx.fillText("something that happened to you earlier in the day. Any thoughts that you ", 0, (myCanvas.height/2)-80);
-      ctx.fillText("have that are not related to the task you are completing count as task", 0, (myCanvas.height/2)-50);
-      ctx.fillText("-unrelated.", 0, (myCanvas.height/2)-20);
-
-      ctx.textAlign="center";
-      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
-      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
-    }
-    else if (i == 7){
-      $("#startButton").hide();
-      $("#backButton").show();
-
-      ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="left";
-
-      ctx.fillText("Importantly, task-unrelated thoughts can occur in cases where you are ", 0, (myCanvas.height/2)-400);
-      ctx.fillText("trying to focus on the task, but your thoughts unintentionally drift to task-", 0, (myCanvas.height/2)-370);
-      ctx.fillText("unrelated topics, OR they can occur in cases where you are not trying to", 0, (myCanvas.height/2)-340);
-      ctx.fillText("focus on the task, and you begin to think about task-unrelated topics. ", 0, (myCanvas.height/2)-310);
-      ctx.fillText("When the thought-sampling screen is presented, we will ask you to ", 0, (myCanvas.height/2)-280);
-      ctx.fillText("indicate which (if any) of these two types of task-unrelated thoughts you ", 0, (myCanvas.height/2)-250);
-      ctx.fillText("were experiencing. ", 0, (myCanvas.height/2)-220);
-
-      ctx.fillText("To do this, we will present you with a thought-sampling screen that", 0, (myCanvas.height/2)-180);
-      ctx.fillText("looks like this:", 0, (myCanvas.height/2)-150);
-
-      ctx.font="25px Arial";
-      ctx.fillStyle="white";
-      ctx.textBaseline="middle";
-      ctx.textAlign="center";
-
-      ctx.fillText("__________________________________________", (myCanvas.width/2), (myCanvas.height/2)-130);
-
-      ctx.fillText("Just prior to the onset of this screen, I was:", (myCanvas.width/2), (myCanvas.height/2)-50);
-      ctx.fillText("(5) Focused on the task.", (myCanvas.width/2), (myCanvas.height/2));
-      ctx.fillText("(6) Not focused on the task, but I WAS trying to focus on it.", (myCanvas.width/2), (myCanvas.height/2)+50);
-      ctx.fillText("(7) Not focused on the task, and I WASN'T trying to focus on it.", (myCanvas.width/2), (myCanvas.height/2)+100);
-
-      ctx.fillText("Please press the corresponding number to indiciate your choice.", (myCanvas.width/2), (myCanvas.height/2)+200);
-
-      ctx.fillText("Use the buttons below to see the next instructions or go back", (myCanvas.width/2), (myCanvas.height/2)+350);
-      ctx.fillText("to the previous instructions.", (myCanvas.width/2), (myCanvas.height/2)+400);
-    }
-    else if (i == 8){
+      //clearTimeout(timeoutISI)
       $("#startButton").hide();
       $("#backButton").show();
 
@@ -337,7 +434,7 @@
     }
 
     function runTrial(){
-      if (i < 9){
+      if (i < 7){
         blockinstruction1();
       }
       else {
@@ -347,6 +444,14 @@
     }
 
 loadImage();
+jokes=1
+//Detect events likes clicks or button presses
+$("body").keypress(function(event){
+  //clearTimeout();
+  if (type == 4) {key = event.keyCode || event.which};
+  if (type == 4) {acc = 1;}
+  else{jokes++;}
+});
 
 
 $("#continueButton").click(function(){i++; runTrial();});
@@ -370,7 +475,7 @@ $("#backButton").click(function(){i--; runTrial();});
                     <input type="hidden" id="workerId" name="workerId" value="">
                     <input type="hidden" id="hitId" name="hitId" value="">
                     <input type="hidden" id="RTs" name="RTs" value="">
-                    <input type="hidden" id="ExpName" name="ExpName" value="SCSAswitch_MW_2_replication">
+                    <input type="hidden" id="ExpName" name="ExpName" value="SCSAswitch_MW_2">
                     <p style="font-family: Arial; color: white; font-size:24px"></p>
                   </td>
                 </tr>
