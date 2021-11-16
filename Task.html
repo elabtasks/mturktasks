@@ -30,69 +30,79 @@
 
     //define each css click element
     document.getElementById('category1').addEventListener("click", function() {
-        d1 = new Date();
-        onset2 = d1.getTime() - runStart;
-        respTime = (d1.getTime() - runStart) - onset;
-        data[logCounter] = ["SMC:", i, onset, onset2, 1, respTime,trialmatrix[0][i],
-            trialmatrix[1][i],trialmatrix[2][i],withinsubs_random, 9999, 9999];
-        logCounter++;
-        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 1; showpicture(1, IMAGEstudyinterval);});
+        if (buttoncolor[0] != 'black'){
+            d1 = new Date();
+            onset2 = d1.getTime() - runStart;
+            respTime = (d1.getTime() - runStart) - onset;
+            data[logCounter] = ["SMC:", i, onset, onset2, 1, respTime,trialmatrix[0][i],
+                trialmatrix[1][i],trialmatrix[2][i],withinsubs_random, 9999, 9999];
+            logCounter++;
+            clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 1; showpicture(1, IMAGEstudyinterval);
+        }
+    });
     document.getElementById('category2').addEventListener("click", function() {
+        if (buttoncolor[1] != 'black'){
         d1 = new Date();
         onset2 = d1.getTime() - runStart;
         respTime = (d1.getTime() - runStart) - onset;
         data[logCounter] = ["SMC:", i, onset, onset2, 2, respTime,trialmatrix[0][i],
             trialmatrix[1][i],trialmatrix[2][i],withinsubs_random, 9999, 9999];
         logCounter++;
-        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 2; showpicture(2, IMAGEstudyinterval);});
+        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 2; showpicture(2, IMAGEstudyinterval);}});
     document.getElementById('category3').addEventListener("click", function() {
+        if (buttoncolor[2] != 'black'){
         d1 = new Date();
         onset2 = d1.getTime() - runStart;
         respTime = (d1.getTime() - runStart) - onset;
         data[logCounter] = ["SMC:", i, onset, onset2, 3, respTime,trialmatrix[0][i],
             trialmatrix[1][i],trialmatrix[2][i],withinsubs_random, 9999, 9999];
         logCounter++;
-        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 3; showpicture(3, IMAGEstudyinterval);});
+        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 3; showpicture(3, IMAGEstudyinterval);}});
     document.getElementById('category4').addEventListener("click", function() {
+        if (buttoncolor[3] != 'black'){
         d1 = new Date();
         onset2 = d1.getTime() - runStart;
         respTime = (d1.getTime() - runStart) - onset;
         data[logCounter] = ["SMC:", i, onset, onset2, 4, respTime,trialmatrix[0][i],
             trialmatrix[1][i],trialmatrix[2][i],withinsubs_random, 9999, 9999];
         logCounter++;
-        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 4; showpicture(4, IMAGEstudyinterval);});
+        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 4; showpicture(4, IMAGEstudyinterval);}});
     document.getElementById('category5').addEventListener("click", function() {
+        if (buttoncolor[4] != 'black'){
         d1 = new Date();
         onset2 = d1.getTime() - runStart;
         respTime = (d1.getTime() - runStart) - onset;
         data[logCounter] = ["SMC:", i, onset, onset2, 5, respTime,trialmatrix[0][i],
             trialmatrix[1][i],trialmatrix[2][i],withinsubs_random, 9999, 9999];
         logCounter++;
-        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 5; showpicture(5, IMAGEstudyinterval);});
+        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 5; showpicture(5, IMAGEstudyinterval);}});
     document.getElementById('category6').addEventListener("click", function() {
+        if (buttoncolor[5] != 'black'){
         d1 = new Date();
         onset2 = d1.getTime() - runStart;
         respTime = (d1.getTime() - runStart) - onset;
         data[logCounter] = ["SMC:", i, onset, onset2, 6, respTime,trialmatrix[0][i],
             trialmatrix[1][i],trialmatrix[2][i],withinsubs_random, 9999, 9999];
         logCounter++;
-        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 6; showpicture(6, IMAGEstudyinterval);});
+        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 6; showpicture(6, IMAGEstudyinterval);}});
     document.getElementById('category7').addEventListener("click", function() {
+        if (buttoncolor[6] != 'black'){
         d1 = new Date();
         onset2 = d1.getTime() - runStart;
         respTime = (d1.getTime() - runStart) - onset;
         data[logCounter] = ["SMC:", i, onset, onset2, 7, respTime,trialmatrix[0][i],
             trialmatrix[1][i],trialmatrix[2][i],withinsubs_random, 9999, 9999];
         logCounter++;
-        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 7; showpicture(7, IMAGEstudyinterval);});
+        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 7; showpicture(7, IMAGEstudyinterval);}});
     document.getElementById('category8').addEventListener("click", function() {
+        if (buttoncolor[7] != 'black'){
         d1 = new Date();
         onset2 = d1.getTime() - runStart;
         respTime = (d1.getTime() - runStart) - onset;
         data[logCounter] = ["SMC:", i, onset, onset2, 8, respTime,trialmatrix[0][i],
             trialmatrix[1][i],trialmatrix[2][i],withinsubs_random, 9999, 9999];
         logCounter++;
-        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 8; showpicture(8, IMAGEstudyinterval);});
+        clearTimeout(timeoutIMAGE); stimscreencount = 1; categorychoice = 8; showpicture(8, IMAGEstudyinterval);}});
 
     document.getElementById('category1_test').addEventListener("click", function() {
         d1 = new Date();
