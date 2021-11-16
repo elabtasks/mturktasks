@@ -49,7 +49,7 @@ canvas {
 #consentbutton {
   position:absolute;
   left:45%;
-  top:85%;
+  top:110%;
   background-color:#008000;
 	border-radius:28px;
 	border:1px solid #006400;
@@ -68,7 +68,7 @@ canvas {
 }
 #consentbutton:active {
 	position:absolute;
-	top:85.2%;
+	top:110.2%;
 }
 
 #Granite {
