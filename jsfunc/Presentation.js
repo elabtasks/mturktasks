@@ -849,6 +849,11 @@ const iti_screen = function(){
   if (slow == 0){
     wrapText(ctx,"Too Slow",(myCanvas.width/2),(myCanvas.height/3)-25,400,20,"verdana");
     wrapText(ctx,text,(myCanvas.width/2),(myCanvas.height/3)+25,400,20,"verdana");
+
+    data[logCounter] = ["SR:", i, 9999, 9999, 7, 9999,
+      trialmatrix[0][i],trialmatrix[1][i],trialmatrix[2][i],trialmatrix[3][i],
+      9999, 9999];
+      logCounter++;
   }
 
   //timeout variable
