@@ -635,7 +635,7 @@ let namestates = function (){
   
   ctx.textAlign="left";
   text1_namestates = "Now we will take a break from the learning task to do something new."
-  text2_namestates = "Below, you'll see a textbox and a submit button. Using your keyboard and mouse, please enter the name of a single U.S. state CAPITAL before submitting enter. You will do this for all 50 states, until you cannot remember any more capitals, or until 3 minutes elapses."
+  text2_namestates = "Below, you'll see a textbox and a submit button. Using your keyboard and mouse, please enter the name of a single U.S. state before submitting enter. You will do this for all 50 states, until you cannot remember any more, or until 3 minutes elapses."
   text3_namestates = "Please do NOT use any external assistance, including (but not limited to) maps or websites. Just do your best!"
 
   wrapText(ctx,text1_namestates,100,(myCanvas.height/3)-200,700,20,"verdana");
