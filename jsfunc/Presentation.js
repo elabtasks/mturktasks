@@ -260,8 +260,8 @@ const learn_picture = function (){
       document.getElementById("category7").style.color=buttoncolortext[6];
       document.getElementById("category8").style.color=buttoncolortext[7];  
 
-      interleaved_choice = interleaved1[choice_num-1]+1
-      switch(interleaved1[choice_num-1]){
+      interleaved_choice = categorychoice-1
+      switch(categorychoice-1){
         case 0:
           document.getElementById("category1").style.background='#cce7ff';
           document.getElementById("category1").style.color='black';
@@ -305,7 +305,7 @@ const learn_picture = function (){
     }
 
     if(interleaved1[choice_num]+1 != categorychoice & choice_num != 0){
-      interleaved_choice = interleaved1[choice_num]+1
+      interleaved_choice = categorychoice-1
       document.getElementById("category1").style.background=buttoncolor[0];
       document.getElementById("category2").style.background=buttoncolor[1];
       document.getElementById("category3").style.background=buttoncolor[2];
@@ -324,7 +324,7 @@ const learn_picture = function (){
       document.getElementById("category7").style.color=buttoncolortext[6];
       document.getElementById("category8").style.color=buttoncolortext[7];
 
-      switch(interleaved1[choice_num]){
+      switch(categorychoice-1){
         case 0:
           document.getElementById("category1").style.background='#cce7ff';
           document.getElementById("category1").style.color='black';
