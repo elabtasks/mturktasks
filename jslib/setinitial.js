@@ -10,7 +10,7 @@ ISIinterval = 500
 
 //---------------------TRIAL COUNTS--------------------//
 totallength = 84;
-choice_total = 32;
+choice_total = 20;
 
 //#######################################################//
 //-------------Starting HTML and JS Funct----------------//
